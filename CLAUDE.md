@@ -111,3 +111,23 @@ Frontend: Via Pinia stores or `app_settings` global
 │   └── seeders/       # Database seeders
 └── public/            # Web root (compiled assets)
 ```
+
+## SaaS-Ready Architecture (Future Proofing)
+
+The system is designed with a "Build Simple Now, Scale Later" approach. It currently operates for a single-user but is structured to easily transition to multi-tenant SaaS.
+
+### Tenant Strategy
+- **Internal Tenants**: Every user is currently treated as their own tenant.
+- **`tenant_id`**: All domain models (`Account`, `Category`, `Transaction`, etc.) use `tenant_id` instead of `user_id` to indicate workspace ownership. For now, `tenant_id` references `users.id`.
+- **Transitions**: When transitioning to a full SaaS model, a `tenants` table will be introduced, and `tenant_id` foreign keys will simply be repointed. No massive data migrations will be needed for existing user boundaries.
+- **Data Isolation**: Always scope queries using the tenant. Avoid querying globally where possible.
+
+### Development Guidelines for Domain Models
+- Use `$table->foreignId('tenant_id')->constrained('users')` in migrations to define ownership.
+- Use the `tenant()` relationship in models instead of `user()`.
+- For models where the *actor* matters (like `Transaction`), use both `tenant_id` (Workspace) and `user_id` (Actor).
+
+### Credit Card Implementation
+- Stored as `account_type = 'credit_card'`.
+- Use the `meta` JSON column to store `credit_limit`, `billing_cycle_day`, and `payment_due_day`.
+- Expenses push the balance into the negative. Payments towards the card (transfers from Bank to Credit Card) move the balance towards zero.

@@ -117,8 +117,6 @@ import Message from '@/components/Message'
 import SettingsForm from '@/components/SettingsForm'
 import { InputField ,AppLoader} from '@appsbd/vue3-appsbd-libs'
 import appsbdUtls from '@/libs/AppsbdUtls.js'
-import {useUserStore} from '@/modules/User/UserStore.js'
-import {useLoginStore} from '@/modules/User/loginStore.js'
 import ImageUploader from '@/components/ImageUploader.vue'
 import CustomUploader from '@/components/CustomUploader.vue'
 

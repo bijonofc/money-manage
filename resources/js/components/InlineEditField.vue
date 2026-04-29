@@ -1,5 +1,6 @@
 <template>
-    <div class="inline-edit-field d-flex align-items-sm-center flex-md-row flex-column justify-content-sm-between align-items-start  py-2">
+    <div
+        class="inline-edit-field d-flex align-items-sm-center flex-md-row flex-column justify-content-sm-between align-items-start  py-2">
 
         <label v-if="label" class="fw-medium me-2 mb-1 mb-sm-0">
             <translate>{{ label }}</translate>:
@@ -7,29 +8,32 @@
 
         <div class="d-flex align-items-center gap-2  justify-content-sm-end content w-100">
             <template v-if="!editing">
-            <span class="fw-semibold text-break text-secondary">
-              {{ getDisplayValue(modelValue) || placeholder }}
-            </span>
-                <i v-if="!disabled && $CheckACL('np.customer-update')"  class="apb apb-pen-square text-primary edit-icon" @click="startEdit"></i>
+                <span class="fw-semibold text-break text-secondary">
+                    {{ getDisplayValue(modelValue) || placeholder }}
+                </span>
+                <i v-if="!disabled && $CheckACL('np.customer-update')" class="apb apb-pen-square text-primary edit-icon"
+                    @click="startEdit"></i>
             </template>
             <template v-else class="w-100">
 
-                    <div class="edit-input-wrapper flex-grow-1 w-100">
-                        <slot name="editor" :modelValue="internalValue"  :updateModelValue="(val) => (internalValue = val)">
-                            <template v-if="type === 'textarea'">
-                                <textarea class="form-control form-control-sm" rows="3" :placeholder="placeholder" v-model="internalValue"></textarea>
-                            </template>
-                            <template v-else>
-                                <input :type="type" v-model="internalValue" class="form-control form-control-sm" :placeholder="placeholder"/>
-                            </template>
-                        </slot>
-                    </div>
+                <div class="edit-input-wrapper flex-grow-1 w-100">
+                    <slot name="editor" :modelValue="internalValue" :updateModelValue="(val) => (internalValue = val)">
+                        <template v-if="type === 'textarea'">
+                            <textarea class="form-control form-control-sm" rows="3" :placeholder="placeholder"
+                                v-model="internalValue"></textarea>
+                        </template>
+                        <template v-else>
+                            <input :type="type" v-model="internalValue" class="form-control form-control-sm"
+                                :placeholder="placeholder" />
+                        </template>
+                    </slot>
+                </div>
 
 
 
                 <div class="action-icons d-flex align-items-center gap-1" v-if="$CheckACL('np.customer-update')">
                     <i v-if="!isShowLoader" class="apb apb-circle-check text-success action-icon" @click="saveEdit"></i>
-                    <small-loader v-if="isShowLoader" :show="isShowLoader" color="#28a745" size="6"/>
+                    <small-loader v-if="isShowLoader" :show="isShowLoader" color="#28a745" size="6" />
                     <i class="apb apb-x-circle text-danger action-icon" @click="cancelEdit"></i>
                 </div>
             </template>
@@ -41,13 +45,12 @@
 import { ref, watch } from "vue";
 import SmallLoader from "@/components/SmallLoader.vue";
 import AppsbdUtls from "@/libs/AppsbdUtls.js";
-import { useTempCustomerStore } from "@/modules/AdminPanel/TempCustomer/TempCustomerStore.js";
-import {useLoginStore} from "@/modules/AdminPanel/User/loginStore.js";
+import { useLoginStore } from "@/modules/AdminPanel/User/loginStore.js";
 import { useCustomerStore } from "@/modules/AdminPanel/Customer/CustomerStore.js";
 import appHelper from "@/libs/AppHelper.js";
 const tempStore = useTempCustomerStore();
 const loginStore = useLoginStore();
-const customerStore=useCustomerStore();
+const customerStore = useCustomerStore();
 
 const props = defineProps({
     modelValue: [String, Number, Boolean, Object],
@@ -109,7 +112,7 @@ const saveEdit = async () => {
             if (props.prop_key == "pkg_id") {
                 const pkg = loginStore.packageList.find(p => p.id == internalValue.value);
                 if (pkg) {
-                    emit("update-pkg-info", { price: parseFloat(pkg.price)});
+                    emit("update-pkg-info", { price: parseFloat(pkg.price) });
                 }
             }
         }
@@ -137,7 +140,7 @@ const getDisplayValue = (val) => {
             if (val === "N" || val === false) return "No";
             return "-";
         case "next_bill_date":
-             return appHelper.formatDate(val);
+            return appHelper.formatDate(val);
 
         default:
             return val;
@@ -151,6 +154,7 @@ watch(
 
 <style scoped lang="scss">
 .inline-edit-field {
+
     .edit-icon,
     .action-icon {
         font-size: .98rem;
@@ -174,6 +178,7 @@ watch(
         .content {
             width: 100%;
         }
+
         //flex-direction: column;
 
         //.edit-input-wrapper {

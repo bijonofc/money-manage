@@ -38,6 +38,15 @@ import { createAppsbdCore } from '@/libs/AppsbdCore.js'
 import attrOption from "@/libs/attrOption.js";
 import vue3GoogleLogin from 'vue3-google-login';
 
+// Fallback for app_settings when running outside blade template (e.g., direct Vite dev)
+window.app_settings = window.app_settings || {
+    base_url: 'http://localhost:8000',
+    api_url: 'http://localhost:8000/api/admin/v1/',
+    currencySymbol: '৳',
+    locale: 'en',
+    site_key: '',
+    gl_client_id: '',
+};
 
 createAppsbdURL({api_url:app_settings.api_url});
 createAppsbdCore({api_url:app_settings.api_url});

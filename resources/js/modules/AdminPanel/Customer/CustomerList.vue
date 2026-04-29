@@ -120,7 +120,6 @@ import { EliteColumnModel } from '@appsbd/vue3-elite-grid'
 import APBDRequestParam from '@/libs/APBDRequestParam'
 import { ApbdFilterPanel,AnimatedButton } from '@appsbd/vue3-appsbd-libs'
 
-import AddPackageModal from "@/modules/AdminPanel/Package/AddPackageModal.vue";
 import DetailModal from "@/modules/AdminPanel/Customer/DetailModal.vue";
 import LedgerModal from "@/modules/AdminPanel/Customer/LedgerModal.vue";
 import SmallLoader from "@/components/SmallLoader.vue";
