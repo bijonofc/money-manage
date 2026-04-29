@@ -1,0 +1,258 @@
+.sidemenu {
+    height: 100% !important;
+    z-index: 89;
+    width: var(--ab-sidebar-width);
+    background-color: var(--ab-sidebar-bg);
+    border-right: 1px solid var(--ab-divider, rgba(207, 207, 215, 0.14));
+    box-shadow: 0 calc(var(--ab-header-h) + 10px) 11px -4px rgba(0, 0, 0, 0.06);
+    transition: width 0.5s ease, background-color 0.5s ease;
+
+    .brand-container {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        height: var(--ab-header-h);
+        padding-left: 1rem;
+        border-bottom: 1px solid var(--ab-divider, rgba(207, 207, 215, 0.14));
+        background-color: var(--ab-header-bg);
+        .collapse-icon {
+            display: none;
+            width: 45px;
+            height: 45px;
+            margin-right: 15px;
+            border-radius: 5px;
+            background: var(--ab-link-bg);
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+
+            &:hover {
+                background: var(--ab-link-hover-bg);
+                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            &.ab-active {
+                background: var(--ab-link-active-bg);
+            }
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-width: 100%;
+            height: var(--ab-header-h);
+            overflow: hidden;
+
+            .apd-small {
+                display: none;
+            }
+
+            > img {
+                max-width: 100%;
+                max-height: 70px;
+                object-fit: contain;
+                border-radius: 10%;
+
+            }
+
+        }
+        .toggle-menu{
+            display: none;
+
+        }
+    }
+
+    .ul-links {
+        padding: 0;
+        height: 100%;
+
+        li {
+            list-style: none;
+            border-bottom: 1px solid var(--ab-divider, rgba(207, 207, 215, 0.14));
+            transition: all 0.4s ease;
+
+            .ab-menu-a {
+                display: flex;
+                align-items: center;
+                width: 100%;
+                padding: 1rem 1rem 1rem 1.72rem;
+                color: var(--ab-link-color);
+                text-decoration: none;
+                border-right: 3px solid transparent;
+                transition: background-color 0.3s ease;
+
+                &:hover {
+                    background-color: var(--ab-hover-bg, rgba(233, 233, 233, 0.28));
+                }
+
+                &:focus {
+                    outline: none !important;
+                }
+
+                &.ab-active,&.ab-exact-active {
+                    color: var(--ab-theme-color) !important;
+                    background-color: var(--ab-link-active-bg) !important;
+                    // border-right:3px solid var(--ab-primary-active) !important;
+                }
+
+                .link_name {
+                    font-size: 14px;
+                    font-weight: 600;
+                    text-transform: uppercase;
+                    font-variant: contextual;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .license_icon {
+                    position: absolute;
+                    right: 10px;
+                    width: 24px;
+                    height: 25px;
+                    font-size: 13px;
+                    text-align: center;
+
+                    > i {
+                        display: inline-block;
+                        transform: rotate(90deg);
+                        margin-left: 8px;
+                        margin-top: 7px;
+                        color: var(--ab-license-icon);
+                    }
+                }
+            }
+            >ul.sub-menu{
+                background: var(--ab-sidebar-submenu, #bfbfbf);
+                --ab-link-color: var(--ab-sidebar-submenu-color, #fff);;
+                li{
+                    a{
+
+                        font-size:0.7rem;
+                        padding: 0.5rem 0.5rem 0.5rem 2rem;
+                        span.icon-wrapper{
+                            width: 25px;
+                            height: 25px;
+                        }
+                        span.link_name{
+                            font-size: 12px;
+                        }
+                        &.ab-active{
+                            background: var(--ab-sidebar-submenu-active, #919191) !important;
+                           --ab-theme-color:var(--ab-sidebar-submenu-active-color, #fff);
+                        }
+
+                    }
+                }
+            }
+        }
+    }
+
+    &.close {
+        width: var(--ab-min-sidebar-width);
+
+        .brand-container {
+            .apd-small {
+                display: unset;
+                height: calc(var(--ab-header-h) - (20px + 0.7rem));
+                aspect-ratio: 1 / 1;
+
+                + .apd-full {
+                    display: none;
+                }
+            }
+            .app_name{
+                display:none;
+            }
+        }
+
+        .ul-links {
+            .link_name {
+                display: none;
+            }
+
+            .license_icon {
+                right: 5px;
+            }
+        }
+
+        .sidebar-item {
+            position: relative;
+
+            .hover-sub-menu {
+                display: none;
+                pointer-events: none;
+            }
+
+            .icons-link:hover .hover-sub-menu {
+                display: block;
+                pointer-events: auto;
+            }
+        }
+    }
+}
+
+/* Mobile View */
+@media (max-width: 768px) {
+    .sidemenu {
+        position: absolute;
+        width: 200px;
+        z-index: 1030;
+        transition: width 0.5s ease;
+
+        .ul-links li a {
+            padding: 1rem;
+
+            .link_name {
+                font-size: 11px;
+            }
+        }
+
+        &:not(.close) {
+            box-shadow: 0 62px 129px 37px #ccc;
+        }
+
+        &.close {
+            width: 0;
+            //z-index: -90;
+            position: absolute;
+            left: -100px;
+            transition: all .5s ease-out;
+
+            .ul-links li .sub-menu {
+                //display: none;
+            }
+        }
+
+        .brand-container {
+            justify-content: center;
+            position: relative;
+
+            .brand-logo {
+                padding-right: 48px;
+            }
+            .toggle-menu{
+                display: block;
+
+            }
+
+            .collapse-icon {
+                display: flex;
+                position: absolute;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+                transition: all 0.3s ease;
+            }
+        }
+    }
+
+    .app-body {
+        //position: absolute;
+    }
+
+    .sidemenu.close ~ .app-body {
+        width: 100%;
+    }
+}

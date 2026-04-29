@@ -1,0 +1,22 @@
+.quillWrapper{
+    width: 100%;
+
+  }
+.ql-container{
+  min-height: 150px;
+}
+  .ql-align-center{
+    text-align: center;
+  }
+  .ql-align-justify{
+    text-align: justify;
+  }
+  .ql-align-right{
+    text-align: right;
+  }
+.ql-toolbar.ql-snow {
+  border-radius: 5px 5px 0 0;
+}
+.ql-container.ql-snow {
+  border-radius:0 0 5px 5px;
+}

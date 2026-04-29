@@ -1,0 +1,191 @@
+.ab-modal {
+    --bs-modal-box-shadow:var(--ab-modal-box-shadow);
+    --bs-modal-border-color:var(--ab-modal-border-color);
+    --bs-modal-header-border-color:var(--ab-modal-header-border-color);
+    --bs-modal-footer-border-color:var(--ab-modal-footer-border-color);
+    --bs-modal-footer-gap: var(--ab-modal-footer-gap);
+    --bs-modal-bg: var(--ab-modal-bg);
+    --bs-modal-padding: 1.5rem;
+    .modal-dialog{
+     --bs-modal-border-radius: var(--ab-modal-border-radius);
+    }
+    .modal-body {
+      position: relative;
+      padding: var(--bs-modal-padding);
+      .modal-loader {
+        left: 0;
+        right: 0;
+        bottom: 0;
+        top: 0;
+        position: absolute;
+
+        &::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          top: 0;
+          background: rgba(107, 107, 107, 0.226);
+          z-index: 98;
+        }
+
+        .loader-content {
+          z-index: 99;
+          position: absolute;
+          top: 50%;
+          transform: translateY(-50%);
+          text-align: center;
+          left: 0;
+          right: 0;
+          color: #fff;
+
+        }
+      }
+      .card{
+        border-color: var(--ab-card-bg);
+        .card-header.card-header-sm{
+          background-color: var(--ab-card-bg);
+          border-color: var(--ab-card-bg);
+          //background-color: var(--eg-cell-header-color);
+        }
+        .card-body{
+          //background-color: var(--ab-card-bg);
+          .table.table-theme{
+            &.table-sm{
+              tbody, td, tfoot, th, thead, tr {
+                padding: .25rem 1rem;
+                border-color: var(--ab-card-bg);
+              }
+
+            }
+            tbody, td, tfoot, th, thead, tr {
+              padding: 5px;
+               border-color: var(--ab-card-bg);
+            }
+          }
+        }
+      }
+    }
+
+    .modal-content {
+      --bs-modal-border-radius:inherit;
+      --bs-modal-color:var(--ab-modal-color);
+      .modal-header{
+        color: var(--ab-theme-color);
+        font-size: 14px;
+        font-weight: 500;
+        border-top-left-radius: inherit;
+        border-top-right-radius: inherit;
+      }
+      .modal-footer{
+        border-bottom-left-radius: inherit;
+        border-bottom-right-radius: inherit;
+      }
+      select{
+        outline: none !important;
+        box-shadow: none !important;
+        border-radius: 6px;
+      }
+      label {
+        color: var(--ab-body-color);
+        font-size: 14px;
+      }
+
+      .multiselect {
+        border-radius: 6px;
+        min-height: 35px;
+        border-color: var(--ab-border-color) !important;
+        &.is-active {
+          outline: none !important;
+          box-shadow: none !important;
+          color: #212529;
+          background-color: #fff;
+          border-color: var(--ab-border-color);
+        }
+
+        .multiselect-placeholder {
+          padding-right: 0px !important;
+          font-size: 13px;
+        }
+        .multiselect-tags{
+          .multiselect-tag{
+            background-color: var(--ab-border-color) ;
+            color: #000;
+          }
+        }
+        .multiselect-clear{
+          .multiselect-clear-icon{
+            background-color: var(--ab-btn-bg-color);
+            &:hover{
+              background-color: red;
+            }
+          }
+        }
+        .multiselect-caret{
+          background-color: var(--ab-btn-bg-color);
+        }
+
+        .multiselect-dropdown {
+          border-radius: 6px;
+        }
+        input{
+          border-radius: 6px !important;
+          border: none !important;
+        }
+        .multiselect-wrapper{
+          height:35px;
+          min-height:unset;
+        }
+      }
+
+      .input-group, .form-control {
+        border-radius: 6px;
+        min-height: 35px;
+      }
+      .input-group:not(.has-validation)>:not(:last-child):not(.dropdown-toggle):not(.dropdown-menu) {
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+        //min-height: unset;
+      }
+      .input-group-sm {
+        .form-select {
+          padding-right: 2rem !important;
+          border-top-left-radius: 6px;
+          border-bottom-left-radius: 6px;
+        }
+
+        label.v-popper--has-tooltip {
+          color: #fff;
+          font-size: 13px;
+          border-top-right-radius: 6px;
+          border-bottom-right-radius: 6px;
+        }
+      }
+
+      .col-sm-4 {
+        textarea.form-control-sm {
+          min-height: 102px;
+        }
+      }
+
+
+    }
+  // need to fixed later.
+  /**
+    @media (min-width: 1200px) {
+      .modal-xl {
+        max-width: 900px;
+      }
+
+    }
+
+   */
+
+    @media (min-width: 768px) {
+      .input-group, .form-control-md {
+        border-radius: 6px;
+        min-height: 35px;
+      }
+    }
+  }

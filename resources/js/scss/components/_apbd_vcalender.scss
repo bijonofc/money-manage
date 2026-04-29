@@ -1,0 +1,28 @@
+
+  .form-control {
+    &.has-vc-container {
+     // padding: 0;
+    }
+  }
+  .vc-container {
+    padding: 0;
+    background: none;
+    border:none;
+    .vc-time-picker {
+      padding: 0;
+      .vc-time-select-group{
+        padding: 0;
+        border:none;
+        background: none;
+        svg{
+          display:none;
+        }
+        *{
+          border:none;
+        }
+        .vc-base-select{
+          height: 18px;
+        }
+      }
+    }
+  }

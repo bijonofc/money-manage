@@ -1,0 +1,55 @@
+@import "global_vriable";
+@import "components/mixin";
+body {
+    background:var(--ab-np-white);
+}
+.#{$prefix}app {
+    @import "components/main";
+    @import "components/header";
+    @import "components/sidebar";
+    @import "components/guest";
+    @import "components/button";
+    @import "components/tab_btn";
+    @import "components/typography";
+    @import "components/utilities";
+    @import "components/common";
+    @import "components/input";
+    @import "components/input-group";
+    @import "components/modal";
+    @import "components/card";
+    @import "components/app-loader";
+    @import "components/ql-editor";
+    @import "components/grid_fixing";
+    @import "components/mixin";
+    @import "components/dropdown";
+    @import "components/badge";
+    @import "components/list";
+    @import "components/apbd_vcalender";
+
+    @import "components/multiselect";
+    @import "components/footer";
+    @import "components/apbd_common";
+    @import "components/settings_form";
+    @import "components/new_fixing";
+    @import "components/apbd_loading_button";
+
+    @import "components/google_login_btn";
+    @import "components/animated";
+}
+@import "components/vdropdown";
+body {
+    &.apbd-hide-re-badge {
+        .grecaptcha-badge {
+            visibility: hidden;
+        }
+    }
+
+    .grecaptcha-badge {
+        @media (max-width: 576px) {
+            display: none !important;
+        }
+    }
+
+}
+
+@import "components/rtl";

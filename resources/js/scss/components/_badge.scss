@@ -1,0 +1,40 @@
+.badge {
+    --bs-badge-padding-x: var(--ab-badge-padding-x);
+    --bs-badge-padding-y: var(--ab-badge-padding-y);
+    --bs-badge-border-radius: var(--ab-badge-border-radius);
+    --bs-badge-font-size: var(--ab-badge-font-size);
+    --bs-badge-font-weight: var(--ab-badge-font-weight);
+    --bs-badge-color: var(--ab-badge-color);
+
+    
+    display: inline-block;
+    line-height: 1;     
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    &.rounded-pill {
+        --bs-border-radius-pill: var(--ab-border-radius-pill);
+    }
+    &.rounded-full{
+        width: 20px;
+        height: 20px;
+        --bs-badge-padding-x: unset;
+        --bs-badge-padding-y: unset;
+        border-radius: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    &.badge-round{
+        width: 24px;
+        height: 24px;
+        --bs-badge-padding-x: unset;
+        --bs-badge-padding-y: unset;
+        border-radius: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+  
+  
+}

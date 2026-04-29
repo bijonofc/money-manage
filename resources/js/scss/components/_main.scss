@@ -1,0 +1,47 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+html,
+body {
+    overflow: hidden;
+
+}
+
+.app-ui {
+   --bs-font-sans-serif: 'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Kalpurush', sans-serif,system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    display: flex;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+  //  background: #fff;
+    .app-body {
+      width: 100%;
+      height:100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      .home-section {
+        height: calc(100vh - var(--ab-header-h));
+        .main-content-wrap{
+          font-family: var(--bs-font-family);
+          letter-spacing: .37px;
+          font-size: 1rem;
+          font-weight: 300;
+          line-height: 1.5;
+          color: var(--ab-body-color);
+          text-align: left;
+          height: 100%;
+          width: 100%;
+          background: var(--ab-body-bg);
+          overflow: auto;
+          padding: 1.5rem;
+        }
+
+
+      }
+
+
+
+    }
+
+  }
+
+

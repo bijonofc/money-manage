@@ -1,0 +1,7 @@
+html[dir="rtl"]{
+  .ab-app {
+    @import "../rtl_components/sidebar";
+    @import "../rtl_components/utilities";
+
+  }
+}

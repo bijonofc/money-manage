@@ -1,0 +1,144 @@
+.apbd-v-error{
+  color: red;
+  font-size: var(--ab-input-label-font-size);
+}
+.apbd-h-34px{
+  height:34px;
+}
+.b-agree-ctrn{
+  >*{
+    white-space: nowrap !important;
+    padding: 0;
+  }
+}
+.apbd-sd{
+  .elite-grid{
+    padding: 0px !important;
+    .elite-grid-content{
+      border-radius: 6px;
+    }
+  }
+}
+.o-visible{
+  overflow: visible !important;
+}
+.o-unset{
+  overflow: unset !important;
+}
+.small-note{
+  font-size: .675em;
+}
+.text-italic{
+  font-style: italic;
+}
+.app-content-body{
+  .multiselect-placeholder{
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+  }
+  .card{
+    .card-body{
+      border-radius: inherit;
+      .apbd-body-nav
+      {
+        ul.nav-tabs{
+          li.nav-item{
+            .nav-link{
+              cursor: pointer;
+              border: none;
+              border-top-right-radius:0;
+              border-top-left-radius: 0;
+              &.active{
+                color: #fff;
+                background-color: var(--apbd-theme-color);
+              }
+            }
+            &:first-child{
+              .nav-link{
+                border-top-right-radius:0;
+                border-top-left-radius: 0.25rem;
+                margin-bottom: -1px;
+              }
+            }
+          }
+        }
+      }
+      .apsbd-default-card
+      {
+        border-radius: 2px;
+        overflow: hidden;
+        box-shadow: 0 0 5px -3px #bababa;
+        .card-body{
+          padding: 0rem 1rem;
+        }
+      }
+    }
+  }
+}
+form{
+  button[type=submit] {
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+    &::after {
+      width: 0px;
+    }
+  }
+}
+
+.apbd-pointer{
+  cursor: pointer;
+    &:hover{
+        color:var(--ab-main-color);
+
+    }
+}
+.apbd-text-bold{
+  font-weight: bold;
+}
+.app-content-footer {
+  .app-version {
+    font-size: 12px;
+    color:#858383;
+  }
+}
+.apbd-cp{
+  font-size: 12px;
+  color:#858383;
+  &:hover {
+    >a{
+      color: var(--apbd-btn-bg-color);
+    }
+  }
+  >a{
+    font-style: normal;
+    text-decoration: none;
+    color:#858383;
+    font-weight: bold;
+  }
+}
+.swal2-container {
+  z-index: 10000;
+}
+.apbd-spin {
+  animation-name: spin;
+  animation-duration: 1000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+}
+@keyframes spin {
+  from {
+    transform:rotate(0deg);
+  }
+  to {
+    transform:rotate(360deg);
+  }
+}
+
+.cursor-pointer{
+    cursor: pointer;
+}

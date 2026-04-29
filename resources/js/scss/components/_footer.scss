@@ -1,0 +1,34 @@
+.footer {
+  min-height: var(--ab-footer-h);
+  background-color: var(--ab-header-bg);
+  box-shadow: var(--ab-header-bs);
+  color: #ddd;
+  padding: 20px 0;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.left-content {
+  font-size: 14px;
+}
+
+.right-content a {
+  color: #5d49ff;
+  margin-left: 10px;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+.right-content a:hover {
+  color: #ddd;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 15px;
+}

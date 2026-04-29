@@ -1,0 +1,163 @@
+.apbd-sd {
+  .elite-grid {
+    padding: 0px !important;
+
+    .elite-grid-content {
+      border-radius: 6px;
+    }
+  }
+}
+.aspect-ratio-1x1{
+  aspect-ratio: 1 / 1;
+}
+
+.elite-grid .elite-grid-content {
+  background-color: var(--ab-card-bg) !important;
+    //overflow: hidden !important;
+}
+.elite-grid .elite-grid-header {
+  background: unset !important;
+  padding: unset !important;
+  border-bottom: unset !important;
+}
+.elite-grid .elite-grid-content table.eg-table thead tr th {
+  border-bottom: 1px solid var(--ab-border-color) !important;
+  padding: 0.75rem 1rem !important;
+}
+
+.elite-grid .elite-grid-content table.eg-table tbody tr td {
+  padding: 0.75rem 1rem !important;
+  border-bottom: 1px solid var(--ab-border-color) !important;
+}
+
+.elite-grid .eg-pagination .eg-pg-status .eg-row-select {
+  background-color: var(--ab-card-bg) !important;
+}
+
+
+
+.elite-grid .eg-pagination {
+  margin-bottom: 10px;
+}
+
+.eg-cell-action {
+  text-align: center;
+}
+
+
+.ab-required:after {
+  content: "*";
+  color: #ff6e30;
+  margin-left: 5px;
+  margin-bottom: 0px;
+
+
+}
+
+.apbd-v-error {
+  color: #ff6e30;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+//.ps{
+//  height: 450px;
+//}
+
+
+// for filterpanel
+.apbd-body-control {
+  .body-header-panel {
+    .input-group {
+      width: unset;
+      flex-wrap: nowrap;
+
+      .multiselect-sm.input-operators {
+        min-width: unset;
+        width: 65px !important;
+        flex: unset;
+
+        .multiselect-multiple-label, .multiselect-placeholder, .multiselect-single-label {
+          padding-right: 0px;
+        }
+      }
+
+      .form-select {
+        width: unset;
+      }
+
+      .range-input-panel {
+        display: flex;
+        align-items: center;
+
+        svg {
+          height: 20px;
+        }
+      }
+
+      i {
+        position: absolute;
+        right: 65px;
+        top: 11px;
+        z-index: 9;
+        font-size: 10px;
+        color: red;
+        cursor: pointer;
+
+        &:hover {
+          top: 9px;
+          font-size: 12px;
+        }
+      }
+
+      .form-control {
+        &:focus {
+          border-color: var(--vtpos-theme-form-focus-clr);
+          outline: none;
+          box-shadow: none;
+        }
+      }
+    }
+  }
+}
+
+// elite wizard
+.stepper-wrapper{
+  margin-bottom: 14px;
+}
+.elite-grid .elite-grid-content table.eg-table tbody tr td.eg-data-no-record {
+  color: var(--eg-no-record-color, #cf3316) !important;
+  text-align: center;
+  font-weight: bold;
+}
+.custom-btn{
+  font-size: .813rem;
+  padding: 0.40rem 0.65rem;
+  border-radius:.39rem;
+
+}
+.bg-info{
+  background: #5b9fd37a !important;
+}
+.text-dark{
+  color:var(--ab-body-color) !important;
+}
+.apbd-hover {
+    font-size: 13px;
+    cursor: pointer;
+    &:hover {
+        color: var(--ab-main-color);
+    }
+
+}
+
+label{
+    .form-check{
+        margin-bottom: 0;
+        min-height: unset!important;
+    }
+}

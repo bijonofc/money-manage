@@ -1,0 +1,387 @@
+@import "bs_variable";
+
+[data-bs-theme="dark"]{
+    --ab-np-white:#263039;
+  .v-popper--theme-dropdown,.#{$app_prefix}app{
+    .multiselect-sm{
+        background: #263039;
+        border:  1px solid var(--ab-border-color);
+
+    }
+      --ab-link-hover-bg: #3d3d3d;
+    --ab-body-bg:#{$custom-bg};
+      --ab-np-white:#2D3748;
+    --ab-body-color:#{$white};
+      --ab-sidebar-bg:#2D3748;
+      --ab-visual-gradient: linear-gradient(135deg, #1f1f1f 0%, #2a2a2a 50%, #1b1b1b 100%);
+      --ab-circle-gradient: radial-gradient(circle at 30% 30%, #2b2b2b 0%, #242424 40%, #1a1a1a 100%);
+
+      --eg-cell-header-color:#323b4b;
+      --eg-pg-btn-bg:#525367;
+     --ab-card-bg: #2D3748;
+      --ab-white-smoke: #2D3748;
+    --ab-link-active-bg: #1812125e;
+    --ab-modal-bg:#0c0e10;
+    --bs-body-color:#{$white};
+    --bs-body-bg:#263039;
+    --bs-heading-color: #{$white};
+    --bs-secondary-color: #{$white};
+
+      --ab-sidebar-submenu: #11222e;
+      --ab-sidebar-submenu-color: #f9f9f9;
+      --ab-sidebar-submenu-active: #17101eb5;
+
+
+    //--ab-primary: #{$primary-dark-color};
+    //--ab-primary-hover-bg:red;
+    --ab-primary-active:rgb(146 154 163 / 90%);
+    --ab-white:#000;
+      --ab-custom-white: #2D3748;
+    --ab-dark:#FFF;
+      --ab-comment-mine-bg:#2D3748;
+      --ab-comment-other-bg:#2D3748;
+    --eg-hover-bg:#{$dark};
+    --eg-pg-border-color:#{$dark};
+
+    --eg-table-border-color:#{$dark};
+    --eg-no-record-color:#a78879;
+
+    --ab-border-color: rgb(135 119 135 / 23%);;
+    --ab-link-color:#{$white};
+    --ab-link-bg: #7c8289;
+
+
+   // --bs-modal-bg:#263039 !important;
+     --bs-border-color:var(--ab-border-color);
+    --ab-input-color:#{$white};
+    --ab-input-bg:#{$dark};
+      --ab-form-check-bg:#2D3748;
+      --ab-form-check-border-color:var(--ab-border-color);
+    --ab-input-border-color: #eee;
+    --ab-input-placeholder-color: #{$white};
+    --ab-input-focus-border-color:#{$dark};
+    --ab-focus-box-shadow: 0 0.0525rem 0.105rem 0 rgba(105, 105, 105, 0.55);
+
+    --ab-card-transparent-header-border-color: rgba(207, 207, 215, 0.14);
+    --ab-card-transparent-header-bottom-border-color: 1px solid rgb(105 86 86 / 15%);
+
+    --ab-license-icon: #fffffff2;
+    --ab-license-bg: #3a784b3b;
+    --ab-license-border-color: #53d197;
+    --ab-white-both:#FFF;
+  }
+    .darkmode-background,.darkmode-layer{
+        background:var(--ab-body-bg) !important;
+    }
+}
+.darkmode-background{
+    background:var(--ab-body-bg) !important;
+}
+.darkmode-layer{
+    background:var(--ab-body-bg) !important;
+}
+.v-popper--theme-dropdown,.#{$app_prefix}app {
+    --apbd-theme-color: #{$primary};
+  /**
+  * color variables
+  */
+    --ab-primary:#{$primary};
+    --ab-secondary:#{$secondary};
+    --ab-success:#{$success};
+    --ab-info:#{$info};
+    --ab-warning:#{$warning};
+    --ab-danger:#{$danger};
+    --ab-dark:#{$dark};
+    --ab-custom-bg:#{$custom-bg};
+    --ab-light:#{$light};
+
+    --ab-facebook-bg: #{$facebook};
+    --ab-google-bg:#{$google};
+    --ab-twitter-bg:#{$twitter};
+    --ab-instagram-bg:#{$instagram};
+    --ab-dribble-bg:#{$dribble};
+    --ab-youtube-bg:#{$youtube};
+    --ab-linkedin-bg:#{$linkedin};
+
+    --ab-primary-very-light:#{$primary_very_light};
+    --ab-primary-light:#{$primary_light};
+    --ab-primary-dark:#{$primary_dark};
+    --ab-primary-active:rgb(146 154 163 / 90%);
+
+    --ab-primary-btn-hover:#{$primary_btn-hover};
+    --ab-primary-btn-shadow:#{$primary-btn-shadow};
+
+    --ab-secondary-very-light:#{$secondary_very_light};
+    --ab-secondary-light:#{$secondary-light};
+    --ab-secondary-active:#{$secondary-active};
+    --ab-secondary-btn-hover:#{$secondary-btn-hover};
+    --ab-secondary-btn-shadow:#{$secondary-btn-shadow};
+
+    --ab-success-very-light:#{$success_very_light};
+    --ab-success-light:#{$success-light};
+    --ab-success-dark:#{$success_dark};
+    --ab-success-active:#{$success-active};
+    --ab-success-btn-hover:#{$success-btn-hover};
+    --ab-success-btn-shadow:#{$success-btn-shadow};
+
+    --ab-warning-very-light:#{$warning_very_light};
+    --ab-warning-light:#{$warning-light};
+    --ab-warning-dark:#{$warning_dark};
+    --ab-warning-active:#{$warning-active};
+    --ab-warning-btn-hover:#{$warning-btn-hover};
+    --ab-warning-btn-shadow:#{$warning-btn-shadow};
+
+    --ab-danger-very-light:#{$danger_very_light};
+    --ab-danger-light:#{$danger-light};
+    --ab-danger-dark:#{$danger_dark};
+    --ab-danger-active:#{$danger-active};
+    --ab-danger-btn-hover:#{$danger-btn-hover};
+    --ab-danger-btn-shadow:#{$danger-btn-shadow};
+
+    --ab-info-very-light:#{$info_very_light};
+    --ab-info-light:#{$info-light};
+    --ab-info-dark:#{$info_dark};
+    --ab-info-active:#{$info-active};
+    --ab-info-btn-hover:#{$info-btn-hover};
+    --ab-info-btn-shadow:#{$info-btn-shadow};
+
+    --ab-light-light:#{$light-light};
+    --ab-light-dark:#{$light_dark};
+    --ab-light-active:#{$light-active};
+    --ab-light-btn-hover:#{$light-btn-hover};
+    --ab-light-btn-shadow:#{$light-btn-shadow};
+    --apd-coupon-max-width:562px;
+    --ab-dark-very-light:#{$dark_very_light};
+    --ab-dark-light:#{$dark-light};
+    --ab-dark-active:#{$dark-active};
+    --ab-dark-btn-hover:#{$dark-btn-hover};
+    --ab-dark-btn-shadow:#{$dark-btn-shadow};
+
+
+    /**
+    * body variables
+    */
+
+    --ab-visual-gradient:linear-gradient(135deg, #eef5ff 0%, #ffffff 100%);
+    --ab-circle-gradient:radial-gradient(circle at 30% 30%, #ffffff 0%, #f3f7ff 30%, #eaf2ff 100%);
+    --ab-main-color:#{$primary};
+    --ab-comment-mine-bg:#dcf8c6;
+    --ab-comment-other-bg:#ece9e9;
+    --ab-appsbd-bg-color:#fcfffe;
+
+    --ab-body-bg:#{$body-bg};
+    --ab-body-color:#{$body-color};
+
+    --ab-card-bg:#{$white};
+    --ab-modal-bg: #f5f5f5;
+    --eg-no-record-color: #ff4925;
+    --ab-white:#FFF;
+    --ab-white-smoke: #f5f5f5;
+    --ab-custom-white: #fcf7f7;
+    --ab-np-white: rgb(165 204 174 / 6%);
+
+
+    --ab-license-bg:#bef3cc3b;
+    --ab-license-border-color:#44bf36;
+    --ab-license-icon:#878787;
+
+
+
+
+
+    --ab-body-font-size: 1rem;
+    --ab-body-font-weight: 400;
+    --ab-body-line-height: 1.5;
+    --ab-border-radius: 0.375rem;
+    --ab-border-radius-sm: 0.25rem;
+    --ab-border-radius-lg: 0.5rem;
+    --ab-border-radius-xl: 1rem;
+    --ab-border-radius-xxl: 2rem;
+    --ab-border-radius-2xl: var(--ab-border-radius-xxl);
+    --ab-border-radius-pill: 50rem;
+    --ab-box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+    --ab-box-shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    --ab-box-shadow-lg: 0 1rem 3rem rgba(0, 0, 0, 0.175);
+
+
+    --ab-border-width: 1px;
+    --ab-border-style: solid;
+    --ab-border-color: #dce1e9;
+
+    /**
+    * header variables
+    */
+    --ab-footer-h:3rem;
+    --ab-header-h: 5rem;
+    --ab-header-bs: 0 1px 15px rgba(0, 0, 0, .04), 0 1px 6px rgba(0, 0, 0, .04);
+    --ab-header-z-index: 1020;
+    --ab-header-bg: var(--ab-card-bg);
+    --ab-header-color: var(--ab-theme-color);
+    --ab-header-font-weight: 400;
+    --ab-header-font-size: 1rem;
+    --ab-header-line-height: 1.5;
+    --ab-header-border-bottom-width: 1px;
+    --ab-header-border-bottom-style: solid;
+
+    --ab-sidebar-width: 320px;
+    --ab-min-sidebar-width: 96px;
+    --ab-sidebar-bg: var(--ab-card-bg);
+    --ab-sidebar-bs: 0 4px 20px 1px rgba(0, 0, 0, .06), 0 1px 4px rgba(0, 0, 0, .08);
+    --ab-nav-border-bottom: 1px solid #d1d5db;
+    --ab-side-menu-position: unset;
+    --ab-side-menu-left: unset;
+    --ab-submenu-bg: #f0f0f0;
+
+      /* Button variables */
+  --ab-info-btn-color:#{$info-btn-color};
+  --ab-btn-color: #faf8fa;
+  --ab-btn-bg-disable-color:#cbc2c2ed;
+  --ab-btn-bg-color:#b0c2b0;
+  --ab-btn-default-fs: .813rem;
+  --ab-btn-sm-fs: .81137rem;
+  --ab-btn-lg-fs: 1.10625rem;
+  --ab-btn-xl-fs: 1.18rem;
+  --ab-primary-outline-btn-border-color: #9eacdf;
+  --ab-secondary-outline-btn-border-color:#d3d4df;
+
+  --ab-btn-sm-py: 0.40rem;
+  --ab-btn-sm-px: 0.65rem;
+  --ab-btn-lg-py: 0.067rem;
+  --ab-btn-lg-px: 1.3rem;
+  --ab-btn-xl-py: 0.85rem;
+  --ab-btn-xl-px: 2.3rem;
+
+  --ab-btn-sm-br: .39rem;
+  --ab-btn-lg-br: .5rem;
+
+
+    /**
+    * Links
+    */
+    --ab-link-color: #{$link-color};
+    --ab-link-bg:#{$link-bg};
+    --ab-link-hover-color: lighten(var(--ab-link-color), 15%);
+    --ab-link-hover-bg: #dee2e6;
+   // --ab-link-hover-bg: lighten(var(--ab-link-color), 20%);
+
+    --ab-link-active-color:darken(var(--ab-link-color), 15%);
+    --ab-link-active-bg: #f9f9f9;
+
+
+    --ab-sidebar-submenu: #f4f4f4;
+    --ab-sidebar-submenu-color: #7e7e7e;
+    --ab-sidebar-submenu-active: #7a7a75;
+
+    --ab-link-disabled-color: var(--ab-dark);
+
+    --ab-modal-padding: 1rem;
+    --ab-modal-border-radius: 0.75rem;
+    --ab-modal-color: var(--ab-theme-color);
+    --ab-modal-box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    --ab-modal-border-color: var(--ab-border-color);
+    --ab-modal-header-border-color: var(--ab-border-color);
+    --ab-modal-footer-border-color: var(--ab-border-color);
+    --ab-modal-footer-gap: 1rem;
+
+     /* Input Field */
+
+  --ab-input-padding: 0.525rem;
+  --ab-input-sm-padding: 0.25rem;
+  --ab-input-lg-padding: 1rem;
+
+
+  --ab-input-font-size: 0.875rem;
+  --ab-input-label-font-size: 1rem;
+  --ab-input-sm-font-size: 0.87rem;
+  --ab-input-lg-font-size: 1rem;
+
+
+
+  --ab-input-line-height: 1.25rem;
+  --ab-input-sm-line-height: 1rem;
+  --ab-input-lg-line-height: 1.5rem;
+
+  --ab-input-border-radius: 0.5rem;
+  --ab-input-border-radius-sm: 0.25rem;
+  --ab-input-border-radius-lg: 0.65rem;
+
+  --ab-input-bg: rgb(253, 254, 255);
+  --ab-input-border-color: #dee2e6;
+
+  --ab-input-border-width: 1px;
+  --ab-input-box-shadow: inset 0 1px 2px rgba(70, 69, 69, 0.075);
+  --ab-input-focus-bg: #{$white};
+
+  --ab-input-focus-border-color: rgb(229, 228, 231);
+  --ab-input-focus-width: 1px;
+  --ab-focus-box-shadow: 0 0.0525rem 0.105rem 0 rgba(231, 231, 235, 0.555);
+
+  --ab-input-placeholder-color: var(--ab-secondary);
+
+  --ab-form-check-bg: #e6e0e0f1;
+  --ab-form-check-border-color: #e6e0e0f1;
+  --ab-form-check-border-width:1px;
+
+  /* Range */
+
+  --ab-form-range-track-width: 100%;
+  --ab-box-shadow-inset: inset 0 1px 2px rgba(110, 89, 121, 0.075);
+  --ab-form-range-track-height: .5rem;
+  --ab-form-range-track-cursor: pointer;
+
+  --ab-form-range-track-bg: var(--ab-light);
+  --ab-form-range-track-border-radius: 1rem;
+  --ab-form-range-track-box-shadow: var(--ab-box-shadow-inset);
+
+  --ab-form-range-thumb-width: 1rem;
+  --ab-form-range-thumb-height: var(--ab-form-range-thumb-width);
+  --ab-form-range-thumb-bg: var(--ab-primary-active);
+  --ab-form-range-thumb-border: 0;
+  --ab-form-range-thumb-border-radius: 1rem;
+  --ab-form-range-thumb-box-shadow: 0 .1rem .25rem rgba(var(--ab-primary), 0.1);
+  --ab-form-range-thumb-focus-box-shadow: 0 0 0 1px var(--ab-primary), 0 .1rem .25rem rgba(179, 41, 41, 0.1);
+  --ab-form-range-thumb-focus-box-shadow-width: 1px;
+  --ab-form-range-thumb-active-bg: var(--ab-primary);
+  --ab-form-range-thumb-disabled-bg: var(--ab-secondary);
+  --ab-form-range-thumb-transition: background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+
+  /* Input Group */
+  --ab-input-group-addon-padding-y:  var(--ab-input-padding);
+  --ab-input-group-addon-padding-x:  var(--ab-input-padding);
+  --ab-input-group-addon-font-weight: 400;
+  --ab-input-group-addon-color:  var(--ab-input-color);
+  --ab-input-group-addon-bg:  #f8f9fa;
+  --ab-input-group-addon-border-color: var(--ab-input-border-color);
+    /* Badge */
+    --ab-badge-font-size: 0.77em;
+    --ab-badge-padding-x: .60em;
+    --ab-badge-padding-y: 0.60em;
+  --ab-badge-font-weight: 700;
+  --ab-badge-color: #e9ecef;
+  --ab-badge-border-radius: 0.175rem;
+
+  /* Dropdown */
+  --ab-dropdown-box-shadow: 0 4px 20px 1px rgba(0, 0, 0, .06), 0 1px 4px rgba(0, 0, 0, .08);
+   /* Card */
+   --ab-card-box-shadow:  0 0px 1px 1px rgb(116 51 51 / 6%);
+   --ab-card-header-px: 1.25rem;
+   --ab-card-header-py: 0.75rem;
+   --ab-card-body-fs: 14px;
+   --ab-card-list-border-color: #eee;
+   --ab-card-border-radius: 5px;
+    --apbd-card-defaulf-header-bg: rgba(238, 238, 238, 0.72);
+
+   --ab-card-transparent-header-border-color:rgba(0, 0, 0, .03) !important;
+  --ab-card-transparent-header-bottom-border-color: 1px solid rgb(116 51 51 / 6%);
+
+
+   --ab-btn-bg: var(--ab-primary);
+   --ab-white-both:#FFF;
+
+
+
+
+
+}
+
+

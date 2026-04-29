@@ -1,0 +1,48 @@
+.input-group{
+    --bs-border-radius-sm: var(--ab-input-border-radius-sm);
+    --bs-border-radius-lg: var(--ab-input-border-radius-lg);
+    --bs-body-color:var(--ab-theme-color) ;
+    --bs-border-width: var(--ab-input-border-width);
+    --bs-border-color: var(--ab-border-color);
+    --bs-border-radius: var(--ab-input-border-radius);
+    --bs-tertiary-bg: var(--ab-input-group-addon-bg);
+
+    .input-group-text {
+        display: flex;
+        align-items: center;
+        padding: var(--ab-input-padding);
+        font-size: var(--ab-input-font-size);
+        font-weight: 400;
+        line-height: var(--ab-input-line-height);
+        color: var(--ab-theme-color);
+        text-align: center;
+        white-space: nowrap;
+        background-color: var(--ab-input-bg);
+        border: var(--bs-border-width) solid var(--ab-border-color);
+        border-radius: var(--bs-border-radius);
+    }
+    .form-control,.form-select{
+        width: unset !important;
+       // width: 90% !important;
+    }
+
+
+    &.input-group-sm>.input-group-text {
+        height: 31px;
+        padding: var(--ab-input-sm-padding);
+        font-size: var(--ab-input-sm-font-size);
+        border-radius: var(--bs-border-radius-sm);
+    }
+    &.input-group-lg>.input-group-text {
+        padding: var(--ab-input-lg-padding);
+        font-size: var(--ab-input-lg-font-size);
+        border-radius: var(--bs-border-radius-lg);
+    }
+    .btn{
+        &:focus,&:active{
+            box-shadow: none !important;
+          }
+
+    }
+
+}

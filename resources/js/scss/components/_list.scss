@@ -1,0 +1,30 @@
+.list-group {
+  .list-group-item {
+    --bs-list-group-item-padding-x:1.25rem;
+    --bs-list-group-item-padding-y:0.75rem;
+    font-size: 13px;
+  }
+  .active{
+    --bs-list-group-active-bg:var(--ab-primary);
+    --bs-list-group-active-border-color:var(--ab-primary);
+  }
+}
+.list-group-flush {
+  --bs-list-group-active-border-color:var(--ab-card-list-border-color);
+  >.list-group-item:first-child{
+    border-top-width: 1px;
+  }
+  &:last-child{
+    //border-bottom-left-radius: inherit;
+    //border-bottom-right-radius: inherit;
+    >.list-group-item:last-child{
+      border-bottom-left-radius: inherit;
+      border-bottom-right-radius: inherit;
+    }
+  }
+  &:not(:last-child){
+    >.list-group-item:last-child {
+      border-bottom-width: 1px;
+    }
+  }
+}
