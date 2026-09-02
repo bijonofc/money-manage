@@ -37,7 +37,7 @@
           </template>
 
           <template v-slot:[`slot${role.slug}`]="slotProps" v-for="role in roleStore.getRoles">
-            <span :class="(role.is_super=='Y'?'text-theme':'' || slotProps.rowitem.role_access.includes(role.id)?' text-theme ':' text-danger ')+ (role.editable && $CheckACL('np.change-access')?' apbd-pointer':' apbd-text-bold')"  @click="changePermission(slotProps.rowitem,role)">
+            <span :class="(role.is_super=='Y'?'text-theme':'' || slotProps.rowitem.role_access.includes(role.id)?' text-theme ':' text-danger ')+ (role.editable && ($CheckACL('role-edit') || $CheckACL('np.change-access'))?' apbd-pointer':' apbd-text-bold')"  @click="changePermission(slotProps.rowitem,role)">
               <i class="apb " :class=" role.is_super=='Y'?'apb-check':'' ||  slotProps.rowitem.role_access.includes(role.id)?'apb-check':'apb-x-close small'"></i>
             </span>
           </template>
@@ -216,7 +216,7 @@ export default {
       if(!role.editable){
         return ;
       }
-      if(!this.$CheckACL('np.change-access')){
+      if(!this.$CheckACL('role-edit') && !this.$CheckACL('np.change-access')){
           this.$appsbdUtls.ShowNotificationbyType(this.$translateGettext('gbl.permission.denied'),'e');
         return ;
       }

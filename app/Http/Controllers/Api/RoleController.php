@@ -117,7 +117,7 @@ class RoleController extends Controller
     }
 
     /**
-     * List role permissions.
+     * List role permissions formatted for RoleAccess grid.
      */
     public function roleAccessList(Request $request)
     {
@@ -145,15 +145,36 @@ class RoleController extends Controller
             ['res_id' => 'budget', 'res_title' => 'Budgets', 'action_param' => 'budget-list', 'action_title' => 'View Budgets'],
             ['res_id' => 'savings', 'res_title' => 'Savings Goals', 'action_param' => 'savings-list', 'action_title' => 'View Savings Goals'],
             ['res_id' => 'debt', 'res_title' => 'Debts', 'action_param' => 'debt-list', 'action_title' => 'View Debts'],
+            ['res_id' => 'category', 'res_title' => 'Categories', 'action_param' => 'category-list', 'action_title' => 'View Categories'],
             ['res_id' => 'setting', 'res_title' => 'Settings', 'action_param' => 'setting-view', 'action_title' => 'View Settings'],
         ];
 
-        $roleAccesses = RoleAccess::all();
+        $roleAccesses = RoleAccess::where('role_access', 'Y')->get()->groupBy('resource');
+
+        $rowdata = [];
+        foreach ($resources as $res) {
+            $allowedRoleIds = isset($roleAccesses[$res['action_param']])
+                ? $roleAccesses[$res['action_param']]->pluck('role_id')->toArray()
+                : [];
+
+            $rowdata[] = [
+                'group_title'  => $res['res_title'],
+                'title'        => $res['action_title'],
+                'res'          => $res['action_param'],
+                'role_access'  => $allowedRoleIds,
+                'tooltip_note' => '',
+            ];
+        }
 
         $response = new ApiResponse();
         return $response->displayWithResponse(true, [
-            'resources'    => $resources,
-            'role_access'  => $roleAccesses,
+            'page'            => 1,
+            'limit'           => count($rowdata),
+            'records'         => count($rowdata),
+            'total'           => 1,
+            'rowdata'         => $rowdata,
+            'recordsTotal'    => count($rowdata),
+            'recordsFiltered' => count($rowdata),
         ]);
     }
 
@@ -163,15 +184,57 @@ class RoleController extends Controller
     public function changePermission(Request $request)
     {
         $roleId = $request->input('role_id');
-        $resource = $request->input('resource');
-        $status = $request->input('status') ? 'Y' : 'N';
+        $resource = $request->input('res') ?? $request->input('resource');
+
+        $existing = RoleAccess::where('role_id', $roleId)->where('resource', $resource)->first();
+        $newStatus = ($existing && $existing->role_access === 'Y') ? 'N' : 'Y';
 
         RoleAccess::updateOrCreate(
             ['role_id' => $roleId, 'resource' => $resource],
-            ['role_access' => $status]
+            ['role_access' => $newStatus]
         );
 
         ApiResponse::addInfoArray(__('Permission updated'));
+        $response = new ApiResponse();
+        return $response->displayWithResponse(true, ['role_access' => $newStatus]);
+    }
+
+    /**
+     * Reset permissions for a role.
+     */
+    public function resetPermission(Request $request)
+    {
+        $roleId = $request->input('selected_role');
+        if ($roleId) {
+            RoleAccess::where('role_id', $roleId)->delete();
+        }
+
+        ApiResponse::addInfoArray(__('Role permissions reset successfully'));
+        $response = new ApiResponse();
+        return $response->displayWithResponse(true, null);
+    }
+
+    /**
+     * Copy permissions from one role to another.
+     */
+    public function copyPermission(Request $request)
+    {
+        $fromId = $request->input('from');
+        $toId = $request->input('to');
+
+        if ($fromId && $toId) {
+            RoleAccess::where('role_id', $toId)->delete();
+            $fromAccesses = RoleAccess::where('role_id', $fromId)->get();
+            foreach ($fromAccesses as $access) {
+                RoleAccess::create([
+                    'role_id'     => $toId,
+                    'resource'    => $access->resource,
+                    'role_access' => $access->role_access,
+                ]);
+            }
+        }
+
+        ApiResponse::addInfoArray(__('Role permissions copied successfully'));
         $response = new ApiResponse();
         return $response->displayWithResponse(true, null);
     }

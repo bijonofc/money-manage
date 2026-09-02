@@ -35,6 +35,8 @@ Route::post('notifications/list', [DashboardController::class, 'notificationList
 // Roles & Permissions
 Route::get('role-accesses/list', [RoleController::class, 'roleAccessList']);
 Route::post('role-accesses/change-permission', [RoleController::class, 'changePermission']);
+Route::post('role-accesses/reset-permission', [RoleController::class, 'resetPermission']);
+Route::post('role-accesses/copy-permission', [RoleController::class, 'copyPermission']);
 Route::post('roles/list', [RoleController::class, 'list']);
 Route::apiResource('roles', RoleController::class)->except(['index']);
 Route::get('roles', [RoleController::class, 'list']);
