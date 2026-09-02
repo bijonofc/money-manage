@@ -27,7 +27,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->timestamps();
 
-            $table->index(['user_id', 'is_active']);
+            $table->index(['tenant_id', 'is_active']);
             $table->index(['next_due_date', 'is_active']);
         });
     }

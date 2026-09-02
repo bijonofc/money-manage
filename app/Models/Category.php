@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
+use appsbd\Core\AppModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Category extends Model
+class Category extends AppModel
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'tenant_id',
         'name',
         'type',
         'parent_id',

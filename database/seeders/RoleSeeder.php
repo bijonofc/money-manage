@@ -13,36 +13,34 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        if(Role::count()==0)
-        {
-            Role::factory()->create([
-                'title'=>'Super Admin',
-                'slug'=>'super-admin',
-                'description'=>'Super Admin',
-                'is_super'=>'Y',
+        if (Role::count() == 0) {
+            Role::create([
+                'title' => 'Super Admin',
+                'slug' => 'super-admin',
+                'description' => 'Super Admin',
+                'is_super' => 'Y',
             ]);
 
-            Role::factory()->create([
-                'title'=>'Admin',
-                'slug'=>'admin',
-                'description'=>'Admin',
-                'is_super'=>'N',
+            Role::create([
+                'title' => 'Admin',
+                'slug' => 'admin',
+                'description' => 'Admin',
+                'is_super' => 'N',
             ]);
 
-            Role::factory()->create([
-                'title'=>'Manager',
-                'slug'=>'manager',
-                'description'=>'Manager Role',
-                'is_super'=>'N',
+            Role::create([
+                'title' => 'Manager',
+                'slug' => 'manager',
+                'description' => 'Manager Role',
+                'is_super' => 'N',
             ]);
 
-            Role::factory()->create([
-                'title'=>'Customer',
-                'slug'=>'customer',
-                'description'=>'Customer Role',
-                'is_super'=>'N',
+            Role::create([
+                'title' => 'Customer',
+                'slug' => 'customer',
+                'description' => 'Customer Role',
+                'is_super' => 'N',
             ]);
-
         }
 
     }

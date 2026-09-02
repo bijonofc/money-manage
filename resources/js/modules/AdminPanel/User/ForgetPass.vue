@@ -64,13 +64,21 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-body {
+.login-container {
+    min-height: 100vh;
+    width: 100%;
+    overflow-y: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
     background-color: #f4f6fa;
 }
 
 .login-box {
+    width: 100%;
     max-width: 400px;
-    margin: 80px auto;
+    margin: auto;
     padding: 30px;
     background: var(--ab-card-bg);
     border-radius: 12px;
@@ -104,5 +112,13 @@ body {
 
 .divider:after {
     margin-left: 10px;
+}
+
+@media (max-height: 600px) {
+    .login-container {
+        align-items: flex-start;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
 }
 </style>

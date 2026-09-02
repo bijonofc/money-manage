@@ -41,7 +41,7 @@ import vue3GoogleLogin from 'vue3-google-login';
 // Fallback for app_settings when running outside blade template (e.g., direct Vite dev)
 window.app_settings = window.app_settings || {
     base_url: 'http://localhost:8000',
-    api_url: 'http://localhost:8000/api/admin/v1/',
+    api_url: 'http://localhost:8000/api/v1/',
     currencySymbol: '৳',
     locale: 'en',
     site_key: '',

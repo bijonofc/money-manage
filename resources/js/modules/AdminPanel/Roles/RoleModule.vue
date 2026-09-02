@@ -5,13 +5,13 @@
         <div class="d-flex justify-content-end">
           <ul class="nav apbd-tab-nav w-100">
             <li v-if="true" class="nav-item">
-              <router-link to="/admin/roles" class="btn apbd-tab-btn ">
+              <router-link to="/roles" class="btn apbd-tab-btn ">
                   <i class="apb apb-shield-alt"></i>
                   <translate>role.list</translate>
               </router-link>
             </li>
             <li v-if="true" class="nav-item">
-              <router-link to="/admin/role-access" class="btn apbd-tab-btn">
+              <router-link to="/role-access" class="btn apbd-tab-btn">
                   <i class="apb apb-shield-check"></i>
                   <translate>role.access</translate>
               </router-link>

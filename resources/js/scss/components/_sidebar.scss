@@ -150,9 +150,22 @@
     }
 
     &.close {
-        width: var(--ab-min-sidebar-width);
+        width: var(--ab-min-sidebar-width, 76px);
 
         .brand-container {
+            justify-content: center;
+            padding: 0;
+
+            .brand-logo {
+                padding: 0;
+                justify-content: center;
+            }
+
+            .app-logo {
+                max-width: 36px;
+                max-height: 36px;
+            }
+
             .apd-small {
                 display: unset;
                 height: calc(var(--ab-header-h) - (20px + 0.7rem));
@@ -168,12 +181,33 @@
         }
 
         .ul-links {
-            .link_name {
-                display: none;
-            }
+            li {
+                .ab-menu-a {
+                    padding: 0.85rem 0.25rem !important;
+                    justify-content: center !important;
+                    display: flex;
+                    align-items: center;
+                    text-align: center;
+                }
 
-            .license_icon {
-                right: 5px;
+                .link_name {
+                    display: none !important;
+                }
+
+                .chevron-icon {
+                    display: none !important;
+                }
+
+                .icon-wrapper {
+                    margin: 0 auto;
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                .license_icon {
+                    display: none;
+                }
             }
         }
 

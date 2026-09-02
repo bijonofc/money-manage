@@ -16,6 +16,7 @@
     "dependencies": {
         "@appsbd/vue3-appsbd-libs": "^2.2.0",
         "@appsbd/vue3-elite-grid": "^1.1.7",
+        "@lucide/vue": "^1.39.0",
         "@vee-validate/rules": "^4.15.1",
         "@vitejs/plugin-vue": "^6.0.1",
         "@vueform/multiselect": "^2.6.11",
@@ -25,6 +26,7 @@
         "dayjs": "^1.11.13",
         "floating-vue": "^5.2.2",
         "laravel-echo": "^2.2.3",
+        "lucide-vue-next": "^1.0.0",
         "pinia": "^3.0.3",
         "pinia-plugin-persistedstate": "^4.4.1",
         "pusher-js": "^8.4.0",

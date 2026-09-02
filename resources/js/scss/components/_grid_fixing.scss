@@ -102,6 +102,21 @@
 //  }
 //}
 
+.apbd-src-filter {
+  .input-group {
+    flex-wrap: nowrap;
+    .input-group-text {
+      white-space: nowrap;
+      background-color: var(--ab-input-bg, #f8fafc);
+      font-size: 0.825rem;
+      font-weight: 500;
+    }
+    .form-control, .multiselect {
+      border-radius: 4px;
+    }
+  }
+}
+
 a:focus{
   outline: none !important;
 }

@@ -2,28 +2,30 @@
 
 namespace App\Models;
 
+use appsbd\Core\AppModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Account extends Model
+class Account extends AppModel
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'tenant_id',
         'name',
         'account_type',
         'account_number',
         'balance',
         'currency',
+        'meta',
         'is_active',
         'description',
     ];
 
     protected $casts = [
         'balance' => 'decimal:2',
+        'meta' => 'array',
         'is_active' => 'boolean',
     ];
 

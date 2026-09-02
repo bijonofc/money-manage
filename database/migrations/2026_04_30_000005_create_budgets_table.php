@@ -20,7 +20,7 @@ return new class extends Migration
             $table->decimal('alert_threshold', 5, 2)->default(80.00);
             $table->timestamps();
 
-            $table->index(['user_id', 'period']);
+            $table->index(['tenant_id', 'period']);
         });
     }
 

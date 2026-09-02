@@ -5,7 +5,7 @@
             <ul class="nav apbd-tab-nav w-100">
 
                 <li class="nav-item">
-                    <router-link to="/admin/settings/app-settings" class="apbd-tab-btn" >
+                    <router-link to="/settings/app-settings" class="apbd-tab-btn" >
                         <i class="apb apb-settings-05"></i> <translate>settings.basic</translate>
                     </router-link>
                 </li>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{app()->getLocale()}}" style="overflow: hidden;height: 100%;">
+<html lang="{{app()->getLocale()}}" style="height: 100%;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,7 +33,7 @@
     <script>
         let app_settings={
             base_url:"{{ url('/') }}",
-            api_url:"{{ url('/api/admin/v1') }}/",
+            api_url:"{{ url('/api/v1') }}/",
             currencySymbol:"{{env('CURRENCY_SYMBOL','৳')}}",
             locale:"{{app()->getLocale()}}", // here need a add function to convert php date time format to javascript function.
             site_key:"{{env('TURNSTILE_SITE_KEY','')}}", // here need a add function to convert php date time format to javascript function.
@@ -46,7 +46,9 @@
             --bs-font-sans-serif: 'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Kalpurush', sans-serif,system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
             font-family: var(--bs-body-font-family);
             line-height: 1.6;
+            min-height: 100vh;
             height: 100dvh;
+            overflow-y: auto;
         }
 
     </style>

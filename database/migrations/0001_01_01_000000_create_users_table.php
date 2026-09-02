@@ -21,6 +21,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedBigInteger('role_id')->default(0);
+            $table->char('status', 1)->default('A')->comment('A=Active,I=Inactive');
             $table->rememberToken();
             $table->timestamps();
         });

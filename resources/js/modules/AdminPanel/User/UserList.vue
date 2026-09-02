@@ -1,20 +1,19 @@
 <template>
-
     <div class="row">
         <div class="col-sm-12">
 
             <div class="card">
                 <div class="card-body p-3">
-                    <div class="row">
+                    <div class="row align-items-center">
                         <div class="col-sm-8">
-                            <apbd-filter-panel :filter-options="filterProps" @searchFilter="searchData" @reset="clearSearch" />
+                            <apbd-filter-panel :is-single="true" @searchFilter="searchData" @reset="clearSearch" />
                         </div>
-                        <div class="col-sm-4  d-flex align-items-center justify-content-end gap-2">
-                            <button class="btn btn-sm btn-primary" @click="refreshGrid">
+                        <div class="col-sm-4 d-flex align-items-center justify-content-end gap-2">
+                            <button class="btn btn-sm btn-outline-secondary" @click="refreshGrid">
                                 <i class="apb apb-refresh-ccw-alt"> </i>
                                 <span class="ms-2" v-translate>gbl.reload</span>
                             </button>
-                            <button v-if="$CheckACL('np.user-add')" class="btn btn-sm btn-primary" @click="openModal">
+                            <button v-if="$CheckACL('user-add') || $CheckACL('np.user-add')" class="btn btn-sm btn-primary" @click="openModal">
                                 <i class="apb apb-circle-plus"> </i>
                                 <span class="ms-2" v-translate>gbl.add.new</span>
                             </button>
@@ -23,12 +22,12 @@
                 </div>
             </div>
         </div>
-        <div class="">
+        <div>
             <div class="col-sm-12 mt-3">
                 <elite-grid
                     :is-rounded="true"
                     :is-group-separate-head="true"
-                    action-width="100px"
+                    action-width="180px"
                     :columns="data_column"
                     :show-loader="isShowLoader"
                     :show-header="false"
@@ -47,19 +46,19 @@
                         }}
                     </template>
                     <template v-slot:slotstatus="{rowitem}">
-                          <span :class="rowitem.status=='A'?'text-success':'text-danger'" style="cursor: pointer;" @click="changeStatus(rowitem)">
-                            {{ appsbdUtls.translateGettext(getStatus(rowitem.status)) }}
+                          <span :class="rowitem.status=='A'?'text-success fw-semibold':'text-danger fw-semibold'" style="cursor: pointer;" @click="changeStatus(rowitem)">
+                            {{ rowitem.status == 'A' ? appsbdUtls.translateGettext('Active') : appsbdUtls.translateGettext('Inactive') }}
                           </span>
                     </template>
                     <template v-slot:actionProperty="slotProps">
                         <div class="d-flex gap-2 justify-content-center">
-                            <button v-if="$CheckACL('np.user-update')" class="btn btn-primary btn-sm  d-flex align-items-center gap-2" @click="showModal(slotProps.rowitem.id)">
+                            <button v-if="$CheckACL('user-edit') || $CheckACL('np.user-update')" class="btn btn-primary btn-sm d-flex align-items-center gap-1" @click="showModal(slotProps.rowitem.id)">
                                 <i class="apb apb-edit-01"></i>
-                                <translate>gbl.edit.now</translate>
+                                <span v-translate>gbl.edit.now</span>
                             </button>
-                            <button v-if="$CheckACL('np.user-delete')" class="btn  btn-sm btn-danger  d-flex align-items-center gap-2" @click="deleteUser(slotProps.rowitem.id)">
-                                <i class="apb apb-gear"></i>
-                                <translate>gbl.delete</translate>
+                            <button v-if="$CheckACL('user-delete') || $CheckACL('np.user-delete')" class="btn btn-sm btn-danger d-flex align-items-center gap-1" @click="deleteUser(slotProps.rowitem.id)">
+                                <i class="apb apb-trash-3"></i>
+                                <span v-translate>gbl.delete</span>
                             </button>
                         </div>
                     </template>

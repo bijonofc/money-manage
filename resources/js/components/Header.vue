@@ -1,188 +1,204 @@
 <template>
-  <nav class="navbar custom-navbar">
-    <div class="container-fluid d-flex align-items-center justify-content-between">
-        <div class="d-flex align-items-center gap-2">
-            <span class="toogle_icon" @click="toggleIcon">
-                <i class="apb pointer toggle-menu" :class="dashboardStore.isMini ? 'apb-arrow-right' : 'apb-arrow-left'"></i>
-            </span>
-            <span>
-                {{appsbdUtls.translateGettext(pageTitle)}}
-            </span>
-<!--            <span class="breadcrumb-container d-flex align-items-center">-->
-<!--                <template v-for="(crumb, i) in breadcrumbs" :key="i">-->
-<!--                  <router-link v-if="crumb.to" :to="crumb.to" class="breadcrumb-link">{{ crumb.label }}</router-link>-->
-<!--                  <span v-else class="breadcrumb-current">{{ crumb.label }}</span>-->
-<!--                  <span v-if="i < breadcrumbs.length - 1" class="breadcrumb-separator">/</span>-->
-<!--                </template>-->
-<!--           </span>-->
+  <nav class="navbar custom-navbar shadow-sm">
+    <div class="container-fluid d-flex align-items-center justify-content-between px-3">
+      <!-- Left side: Toggle button & Page Title / Breadcrumb -->
+      <div class="d-flex align-items-center gap-3">
+        <button
+          type="button"
+          class="btn btn-icon btn-light rounded-circle d-flex align-items-center justify-content-center p-2"
+          @click="toggleSidebar"
+          :title="dashboardStore.isMini ? 'Expand Sidebar' : 'Collapse Sidebar'"
+        >
+          <Menu class="w-5 h-5 text-secondary" :size="20" />
+        </button>
+
+        <div class="d-flex flex-column">
+          <h6 class="mb-0 fw-bold text-dark d-flex align-items-center gap-2">
+            {{ appsbdUtls.translateGettext(pageTitle) }}
+          </h6>
         </div>
+      </div>
 
-
-
+      <!-- Right side: Quick stats/actions, Dark mode, Fullscreen, User dropdown -->
       <div class="d-flex align-items-center gap-2">
-<!--           <span class="nav-link custom-link">-->
-<!--               <VDropdown>-->
-<!--                   <i class="apb apb-notification-bell header-icon position-relative">-->
-<!--                        <span v-if="notificationStore.unreadCount > 0" class="notification-badge">-->
-<!--                            {{notificationStore.unreadCount }}-->
-<!--                        </span>-->
-<!--                   </i>-->
-<!--                   <template #popper>-->
-<!--                       <NotificationBell  @open-detail="handleOpenDetail" />-->
-<!--                   </template>-->
-<!--               </VDropdown>-->
+        <!-- Dark Mode Toggle -->
+        <button
+          type="button"
+          class="btn btn-icon btn-light rounded-circle p-2 d-flex align-items-center justify-content-center"
+          @click="AppsbdCore.utls.toggleDarkMode()"
+          :title="AppsbdCore.AppData.darkMode ? 'Light Mode' : 'Dark Mode'"
+        >
+          <Sun v-if="AppsbdCore.AppData.darkMode" class="text-warning" :size="18" />
+          <Moon v-else class="text-secondary" :size="18" />
+        </button>
 
-<!--          </span>-->
-           <span class="nav-link custom-link" @click="AppsbdCore.utls.toggleDarkMode()">
-               <i class="header-icon apb" :class="AppsbdCore.AppData.darkMode ? 'apb-moon-with-one-star' : 'apb-sun-02'"></i>
+        <!-- Fullscreen Toggle -->
+        <button
+          type="button"
+          class="btn btn-icon btn-light rounded-circle p-2 d-flex align-items-center justify-content-center"
+          @click="toggleFullScreen"
+          :title="isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'"
+        >
+          <Minimize2 v-if="isFullscreen" class="text-secondary" :size="18" />
+          <Maximize2 v-else class="text-secondary" :size="18" />
+        </button>
 
-          </span>
-        <span class="nav-link custom-link" @click="toggleFullScreen">
-          <i class="apb header-icon" :class="iconClass"></i>
-        </span>
+        <!-- User Profile Dropdown -->
+        <div class="ms-2">
+          <VDropdown placement="bottom-end" :distance="8" :arrow-padding="12">
+            <button
+              type="button"
+              class="btn btn-light d-flex align-items-center gap-2 py-1 px-2 rounded-pill border shadow-none"
+            >
+              <div class="user-avatar-circle bg-primary text-white fw-bold d-flex align-items-center justify-content-center rounded-circle">
+                {{ userInitials }}
+              </div>
+              <div class="d-none d-md-flex flex-column text-start me-1">
+                <span class="user-name fw-semibold text-dark lh-sm">{{ loggedUser.name || 'User' }}</span>
+                <span class="user-role text-muted small lh-sm">{{ loggedUser.role_title || 'Super Admin' }}</span>
+              </div>
+              <ChevronDown class="text-muted" :size="14" />
+            </button>
 
-          <div class="nav-item">
-              <VDropdown
-                  :distance="5"
-                  :skidding="-60"
-                  :arrow-padding="24"
-                  class=""
+            <template #popper="{ hide }">
+              <div class="user-popover-card p-2 bg-white rounded-3 shadow-lg border" style="min-width: 230px;">
+                <div class="px-3 py-2 mb-2 bg-light rounded-2 border">
+                  <div class="fw-semibold text-dark text-truncate">{{ loggedUser.name || 'Administrator' }}</div>
+                  <div class="text-muted small text-truncate">{{ loggedUser.email || 'admin@example.com' }}</div>
+                </div>
 
+                <router-link
+                  class="dropdown-nav-item d-flex align-items-center gap-2 py-2 px-3 rounded-2 text-decoration-none text-dark"
+                  to="/profile"
+                  @click="hide"
+                >
+                  <User :size="16" class="text-primary" />
+                  <span v-translate>Profile</span>
+                </router-link>
 
-              >
-                  <!-- This will be the popover reference (for the events and position) -->
-                  <span
-                      class="d-flex align-items-center gap-2 text-decoration-none"
-                      href="#"
-                      role="button"
-                      id="userDropdown"
-                      aria-expanded="false"
-                  >
-                    <img :src="userImage" class="rounded-circle shadow" alt="User" width="30" height="30" />
-                </span>
+                <router-link
+                  class="dropdown-nav-item d-flex align-items-center gap-2 py-2 px-3 rounded-2 text-decoration-none text-dark"
+                  to="/settings"
+                  @click="hide"
+                >
+                  <Settings :size="16" class="text-secondary" />
+                  <span v-translate>Settings</span>
+                </router-link>
 
-                  <!-- This will be the content of the popover -->
+                <hr class="my-2 border-secondary-subtle" />
 
-                  <template #popper>
-                      <ul class="dropdown-menu show position-static m-0 shadow-sm">
-                          <li>
-                              <router-link class="dropdown-item" to="/logout" v-translate>
-                                  Logout
-                              </router-link>
-                          </li>
-<!--                          <li>-->
-<!--                              <a class="dropdown-item" target="_blank" href="https://nogorpos.com/about">About</a>-->
-<!--                          </li>-->
-                          <li>
-                              <router-link class="dropdown-item" :to="profileRoute" v-translate>Profile</router-link>
-                          </li>
-<!--                          <li>-->
-<!--                              <a class="dropdown-item" target="_blank" href="https://nogorpos.com/contact">Contact</a>-->
-<!--                          </li>-->
-                      </ul>
-                  </template>
-              </VDropdown>
-          </div>
-
+                <router-link
+                  class="dropdown-nav-item text-danger d-flex align-items-center gap-2 py-2 px-3 rounded-2 text-decoration-none"
+                  to="/logout"
+                  @click="hide"
+                >
+                  <LogOut :size="16" />
+                  <span v-translate>Logout</span>
+                </router-link>
+              </div>
+            </template>
+          </VDropdown>
+        </div>
       </div>
     </div>
   </nav>
 </template>
 
 <script setup>
-import {useDashboardStore} from "@/modules/AdminPanel/Dashboard/DashboardStore.js";
-import { useLoginStore } from '@/modules/AdminPanel/User/loginStore'
-
-const adminStore = useLoginStore()
-
-const activeLoginStore = computed(() => {
-    return appType.value === adminStore
-})
-import defaultLogo from '@/assets/header.jpg';
-const dashboardStore=useDashboardStore();
-
-
+import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { computed, onMounted, ref } from 'vue'
+import { useDashboardStore } from "@/modules/AdminPanel/Dashboard/DashboardStore.js";
+import { useLoginStore } from '@/modules/AdminPanel/User/loginStore.js';
+import AppsbdCore from '@/libs/AppsbdCore.js';
+import appsbdUtls from '@/libs/AppsbdUtls.js';
 
-import AppsbdCore from '@/libs/AppsbdCore.js'
+// Lucide Icons
+import {
+  Menu,
+  Sun,
+  Moon,
+  Maximize2,
+  Minimize2,
+  ChevronDown,
+  User,
+  Settings,
+  LogOut,
+  Wallet,
+} from '@lucide/vue';
 
-
-import appsbdUtls from '@/libs/AppsbdUtls.js'
-
-const iconClass=ref('apb-minimize')
-const darkMode=ref(false)
-const appType = computed(() => window.appType || 'admin')
-const profileRoute = computed(() => `/${appType.value}/profile`)
-const emit = defineEmits(['toggle-dark-mode'])
-const props = defineProps({
-    darkMode: Boolean
-})
-function toggleIcon() {
-    console.log('called');
-    dashboardStore.toggleMenu();
-}
+const dashboardStore = useDashboardStore();
+const loginStore = useLoginStore();
 const route = useRoute();
 
-const pageTitle = computed(() => route.meta.title || 'Default Title');
-const userImage = computed(() => {
-    const user = activeLoginStore.value.loggedUserData
-    return user?.image_url || defaultLogo
-})
+const isFullscreen = ref(false);
 
-function toggleFullScreen() {
-    if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen()
-        iconClass.value = 'apb-minimize'
-    } else {
-        document.exitFullscreen()
-        iconClass.value = 'apb-maximize'
-    }
+const pageTitle = computed(() => route.meta?.title || 'Dashboard');
+const loggedUser = computed(() => loginStore.loggedUserData || {});
+
+const userInitials = computed(() => {
+  const name = loggedUser.value.name || 'Admin';
+  return name.split(' ').map(n => n[0]).slice(0, 2).join('').toUpperCase();
+});
+
+function toggleSidebar() {
+  dashboardStore.toggleMenu();
 }
 
+function toggleFullScreen() {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+    isFullscreen.value = true;
+  } else {
+    document.exitFullscreen();
+    isFullscreen.value = false;
+  }
+}
 </script>
 
 <style lang="scss" scoped>
-.breadcrumb-container {
-    font-size: 1rem;
-    color: #555;
-
-    .breadcrumb-link {
-        color: #007bff;
-        text-decoration: none;
-
-        &:hover {
-            text-decoration: underline;
-        }
-    }
-
-    .breadcrumb-current {
-        font-weight: 500;
-      //  color: #000;
-        color:var(--ab-body-color)
-    }
-
-    .breadcrumb-separator {
-        margin: 0 0.5em;
-        color: #999;
-    }
+.custom-navbar {
+  height: var(--ab-header-h, 60px);
+  background: var(--ab-card-bg, #ffffff);
+  border-bottom: 1px solid var(--ab-border-color, #e5e7eb);
+  z-index: 99;
 }
-.notification-badge {
-    width: 18px;
-    height: 18px;
-    position: absolute;
-    display: flex;
-    top: -10px;
-    align-items: center;
-    justify-content: center;
-    right: -12px;
-    background: #dc3545;
-    color: #fff;
-    font-size: 0.65rem;
-    font-weight: 600;
-    border-radius: 50%;
-    padding: 4px 4px;
-    line-height: 1;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+
+.btn-icon {
+  width: 36px;
+  height: 36px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: var(--ab-border-color, #e5e7eb);
+  }
+}
+
+.user-avatar-circle {
+  width: 28px;
+  height: 28px;
+  font-size: 11px;
+  background: linear-gradient(135deg, #4f46e5, #6366f1);
+}
+
+.user-name {
+  font-size: 0.85rem;
+}
+
+.user-role {
+  font-size: 0.72rem;
+}
+
+.user-popover-card {
+  background-color: var(--ab-card-bg, #ffffff);
+  color: var(--ab-body-color, #1f2937);
+}
+
+.dropdown-nav-item {
+  font-size: 0.88rem;
+  transition: all 0.15s ease;
+
+  &:hover {
+    background-color: rgba(99, 102, 241, 0.08);
+  }
 }
 </style>

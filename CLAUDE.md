@@ -40,8 +40,8 @@ php artisan test --filter=Name      # Run specific test
 
 ### Backend (Laravel 12)
 - **Entry Point**: `public/index.php` → `bootstrap/app.php`
-- **Routing**: `routes/web.php` - SPA-style catch-all routes serving Vue app
-- **Controllers**: Minimal - extends `App\Http\Controllers\Controller`
+- **Routing**: `routes/web.php` (SPA catch-all) & `routes/api.php` (REST API with `/api/v1` prefix)
+- **Controllers**: `app/Http/Controllers/Api/` (API endpoints)
 - **Models**: Located in `app/Models/`, use `appsbd\Core\AppModel` base class
 - **Helpers**: `app/Helpers/helpers.php` (global helpers), `app/Helpers/BanglaHelper.php`
 - **Services**: `app/Services/` - business logic layer (e.g., `SettingService`)
@@ -49,13 +49,14 @@ php artisan test --filter=Name      # Run specific test
 
 ### Frontend (Vue 3)
 - **Entry**: `resources/js/app.js` - initializes Vue app with plugins
-- **Router**: `resources/js/router/AdminRoutes.js` - all admin routes under `/admin/*`
+- **Router**: `resources/js/router/AdminRoutes.js` - clean top-level routes (`/dashboard`, `/accounts`, `/transactions`, `/budgets`, `/savings-goals`, `/debts`, `/categories`, `/settings`, `/profile`)
 - **State**: Pinia stores in `resources/js/modules/*/Store.js` files
 - **Components**: `resources/js/components/` (shared), `resources/js/modules/` (feature-specific)
 - **Path Alias**: `@` resolves to `resources/js/`
 - **Build**: Vite outputs to `public/build/`
 
 ### Key Frontend Libraries
+- **Icons**: `@lucide/vue` (Lucide icons for Vue 3)
 - **State Management**: Pinia with persistence plugin
 - **Routing**: Vue Router with `requiresAuth` meta guards
 - **HTTP**: Axios via `AppsbdAxiosHelper`

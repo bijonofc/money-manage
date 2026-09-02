@@ -12,7 +12,7 @@ class BudgetAlert extends Model
 
     protected $fillable = [
         'budget_id',
-        'user_id',
+        'tenant_id',
         'percentage',
         'is_notified',
         'notified_at',

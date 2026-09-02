@@ -2,17 +2,17 @@
 
 namespace App\Models;
 
+use appsbd\Core\AppModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class SavingsGoal extends Model
+class SavingsGoal extends AppModel
 {
     use HasFactory;
 
     protected $fillable = [
-        'user_id',
+        'tenant_id',
         'name',
         'target_amount',
         'current_amount',

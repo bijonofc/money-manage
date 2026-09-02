@@ -9,184 +9,46 @@ import RoleList from "@/modules/AdminPanel/Roles/RoleList.vue";
 import UserList from "@/modules/AdminPanel/User/UserList.vue";
 import Profile from "@/modules/AdminPanel/User/Profile.vue";
 import Login from "@/modules/AdminPanel/User/Login.vue";
-import {useLoginStore} from "@/modules/AdminPanel/User/loginStore.js";
+import { useLoginStore } from "@/modules/AdminPanel/User/loginStore.js";
 import TemplateList from "@/modules/AdminPanel/EmailTemplate/TemplateList.vue";
-import CustomerList from "@/modules/AdminPanel/Customer/CustomerList.vue";
 
 import Dashboard from "@/modules/AdminPanel/Dashboard/dashboard.vue";
+import AccountList from "@/modules/AdminPanel/Accounts/AccountList.vue";
+import TransactionList from "@/modules/AdminPanel/Transactions/TransactionList.vue";
+import BudgetList from "@/modules/AdminPanel/Budgets/BudgetList.vue";
+import SavingsList from "@/modules/AdminPanel/Savings/SavingsList.vue";
+import DebtList from "@/modules/AdminPanel/Debts/DebtList.vue";
+import CategoryList from "@/modules/AdminPanel/Categories/CategoryList.vue";
+
 import ForgetPass from "@/modules/AdminPanel/User/ForgetPass.vue";
 import BasicSettings from "@/modules/AdminPanel/Settings/BasicSettings.vue";
 import NotificationSettings from "@/modules/AdminPanel/Settings/NotificationSettings.vue";
 import AdminSetting from "@/modules/AdminPanel/Settings/AdminSetting.vue";
 import ResetPassword from "@/modules/AdminPanel/User/ResetPassword.vue";
-import ContactList from "@/modules/AdminPanel/Contact/ContactList.vue";
-
 
 const routes = [
+    // Auth Routes
     {
         path: '/login',
         name: "login",
         component: Login,
-        props: { panel: 'admin' },
-        meta:{title:'Login'}
+        meta: { title: 'Login' }
     },
     {
-        path: '/admin/reset-password/:token',
+        path: '/forget-pass',
+        name: "forgetPass",
+        component: ForgetPass,
+        meta: { title: 'Forget Password' }
+    },
+    {
+        path: '/reset-password/:token',
         name: 'reset-password',
         component: ResetPassword,
         props: route => ({
             token: route.params.token,
             email: route.query.email
         }),
-        meta: {
-            title: 'Reset Password'
-        }
-    },
-
-    {
-        path: "/",
-        redirect: "/admin/",
-    },
-    {
-        path: "/admin",
-        name: "Admin",
-        redirect: "/admin/",
-        /*beforeEnter: (to, from, next) => {
-            const store = useLoginStore();
-            next({ name: 'login' });
-        },*/
-        children:[
-            {
-                path: "/admin/",
-                name: "dashboard",
-                component: Dashboard,
-                meta:{requiresAuth: true,title:'Dashboard'},
-
-            },
-            {
-                path: '/admin/customers',
-                name: 'customers',
-                meta: { requiresAuth: true,title: 'Customers' },
-                component: CustomerList,
-            },
-            {
-                path: '/admin/contacts',
-                name: 'contacts',
-                meta: { requiresAuth: true,title: 'Contacts' },
-                component: ContactList,
-            },
-            {
-                path: '/admin/activity',
-                name: 'Activity',
-                component: ActivityLog,
-                meta: { requiresAuth: true, title:"Activity Logs" }
-            },
-            {
-                path: '/admin/email-template',
-                name: 'EmailTemplate',
-                component: TemplateList,
-                meta: { requiresAuth: true, title:"Email Template" }
-            },
-            {
-                path: "/admin/users",
-                name: "user",
-                meta: {
-                    title:"User",
-                    requiresAuth: true
-                },
-                component: UserList,
-            },
-            {
-                path: "/admin/settings",
-                name: "settings",
-                meta: {
-                    title:"Settings",
-                    requiresAuth: true
-                },
-                redirect:'/admin/settings/app-settings',
-                component: AdminSetting,
-                children: [
-
-                    {
-                        path: "/admin/settings/app-settings",
-                        name: "app.settings",
-                        meta: {
-                            title:"Settings",
-                            requiresAuth: true
-                        },
-                        component: BasicSettings,
-                    },
-                    {
-                        path: "/admin/settings/noti-settings",
-                        name: "admin.noti",
-                        meta: {
-                            title:"Notification Settings",
-                            requiresAuth: true
-                        },
-                        component: NotificationSettings,
-                    },
-
-
-                ]
-            },
-            {
-                path: "/admin/profile",
-                name: "profile",
-                meta: {
-                    title:"Profile",
-                    requiresAuth: true
-                },
-                component: Profile,
-            },
-            {
-                path: "/admin/forget-pass",
-                name: "forgetPass",
-                component: ForgetPass,
-                meta:{title:'Forget Password'}
-            },
-
-            {
-                path: '/admin/role',
-                name: 'roles',
-                meta: {
-                    title: "Roles",
-                    requiresAuth: true,
-                    caps:['role-list','access-list']
-                },
-
-                component: RoleModule,
-                redirect: (to) => {
-                    if (ACL.checkACL('role-list')) {
-                        return '/admin/roles'
-                    } else if (ACL.checkACL('access-list')) {
-                        return '/admin/role-access'
-                    }else {
-                        return null;
-                    }
-                },
-                children: [
-                    {
-                        path: '/admin/roles',
-                        component: RoleList,
-                        meta: {
-                            title: "Roles",
-                            requiresAuth: true,
-                            caps:['role-list'],
-
-                        },
-                    },
-                    {
-                        path: '/admin/role-access',
-                        component: RoleAccess,
-                        meta: {
-                            title: "Roles Access",
-                            requiresAuth: true,
-                            caps:['access-list']
-                        },
-                    }
-                ]
-            },
-        ]
+        meta: { title: 'Reset Password' }
     },
     {
         path: "/logout",
@@ -198,6 +60,173 @@ const routes = [
         }
     },
 
+    // Main App Top-Level Routes
+    {
+        path: "/",
+        redirect: "/dashboard",
+    },
+    {
+        path: "/dashboard",
+        name: "dashboard",
+        component: Dashboard,
+        meta: { requiresAuth: true, title: 'Dashboard' },
+    },
+    {
+        path: "/accounts",
+        name: "accounts",
+        component: AccountList,
+        meta: { requiresAuth: true, title: 'Accounts' },
+    },
+    {
+        path: "/transactions",
+        name: "transactions",
+        component: TransactionList,
+        meta: { requiresAuth: true, title: 'Transactions' },
+    },
+    {
+        path: "/budgets",
+        name: "budgets",
+        component: BudgetList,
+        meta: { requiresAuth: true, title: 'Budgets' },
+    },
+    {
+        path: "/savings-goals",
+        name: "savings-goals",
+        component: SavingsList,
+        meta: { requiresAuth: true, title: 'Savings Goals' },
+    },
+    {
+        path: "/debts",
+        name: "debts",
+        component: DebtList,
+        meta: { requiresAuth: true, title: 'Debts & Loans' },
+    },
+    {
+        path: "/categories",
+        name: "categories",
+        component: CategoryList,
+        meta: { requiresAuth: true, title: 'Categories' },
+    },
+    {
+        path: "/users",
+        name: "user",
+        component: UserList,
+        meta: { requiresAuth: true, title: "Users" },
+    },
+    {
+        path: "/profile",
+        name: "profile",
+        component: Profile,
+        meta: { requiresAuth: true, title: "Profile" },
+    },
+    {
+        path: "/activity",
+        name: "Activity",
+        component: ActivityLog,
+        meta: { requiresAuth: true, title: "Activity Logs" }
+    },
+    {
+        path: "/email-template",
+        name: "EmailTemplate",
+        component: TemplateList,
+        meta: { requiresAuth: true, title: "Email Template" }
+    },
+
+    // Roles & Access
+    {
+        path: '/role',
+        name: 'roles',
+        meta: {
+            title: "Roles",
+            requiresAuth: true,
+            caps: ['role-list', 'access-list']
+        },
+        component: RoleModule,
+        redirect: () => {
+            if (ACL.checkACL('role-list')) {
+                return '/roles';
+            } else if (ACL.checkACL('access-list')) {
+                return '/role-access';
+            } else {
+                return '/dashboard';
+            }
+        },
+        children: [
+            {
+                path: '/roles',
+                component: RoleList,
+                meta: {
+                    title: "Roles",
+                    requiresAuth: true,
+                    caps: ['role-list'],
+                },
+            },
+            {
+                path: '/role-access',
+                component: RoleAccess,
+                meta: {
+                    title: "Roles Access",
+                    requiresAuth: true,
+                    caps: ['access-list']
+                },
+            }
+        ]
+    },
+
+    // Settings
+    {
+        path: "/settings",
+        name: "settings",
+        meta: {
+            title: "Settings",
+            requiresAuth: true
+        },
+        redirect: '/settings/app-settings',
+        component: AdminSetting,
+        children: [
+            {
+                path: "/settings/app-settings",
+                name: "app.settings",
+                meta: {
+                    title: "Settings",
+                    requiresAuth: true
+                },
+                component: BasicSettings,
+            },
+            {
+                path: "/settings/noti-settings",
+                name: "admin.noti",
+                meta: {
+                    title: "Notification Settings",
+                    requiresAuth: true
+                },
+                component: NotificationSettings,
+            },
+        ]
+    },
+
+    // Backwards Compatibility / Legacy Redirects from /admin/*
+    { path: '/admin', redirect: '/dashboard' },
+    { path: '/admin/dashboard', redirect: '/dashboard' },
+    { path: '/admin/accounts', redirect: '/accounts' },
+    { path: '/admin/transactions', redirect: '/transactions' },
+    { path: '/admin/budgets', redirect: '/budgets' },
+    { path: '/admin/savings-goals', redirect: '/savings-goals' },
+    { path: '/admin/debts', redirect: '/debts' },
+    { path: '/admin/categories', redirect: '/categories' },
+    { path: '/admin/users', redirect: '/users' },
+    { path: '/admin/roles', redirect: '/roles' },
+    { path: '/admin/role-access', redirect: '/role-access' },
+    { path: '/admin/profile', redirect: '/profile' },
+    { path: '/admin/settings', redirect: '/settings' },
+    { path: '/admin/settings/app-settings', redirect: '/settings/app-settings' },
+    { path: '/admin/settings/noti-settings', redirect: '/settings/noti-settings' },
+    { path: '/admin/activity', redirect: '/activity' },
+    { path: '/admin/email-template', redirect: '/email-template' },
+    { path: '/admin/forget-pass', redirect: '/forget-pass' },
+    { path: '/admin/reset-password/:token', redirect: to => `/reset-password/${to.params.token}` },
+
+    // 404
     {
         path: "/:pathMatch(.*)*",
         name: "NotFound",
@@ -205,34 +234,30 @@ const routes = [
     },
 ];
 
-
 const adminRoutes = createRouter({
     history: createWebHistory(),
-  routes,
-  linkActiveClass: "ab-active apbd-active",
-    linkExactActiveClass:"ab-exact-active"
-
+    routes,
+    linkActiveClass: "ab-active apbd-active",
+    linkExactActiveClass: "ab-exact-active"
 });
 
 adminRoutes.beforeEach((to, from, next) => {
-    const isLoggedIn = useLoginStore().isLoggedIn;
-    const store=useLoginStore();
-    if (store.isLoggedIn && store.needPassChange) {
+    const store = useLoginStore();
+    const isLoggedIn = store.isLoggedIn;
 
-        if (to.name !== 'login' && to.name !=='logout') {
+    if (store.isLoggedIn && store.needPassChange) {
+        if (to.name !== 'login' && to.name !== 'logout') {
             return next(false);
         }
-
     }
+
     if (to.meta.requiresAuth && !isLoggedIn) {
         next({ name: 'login' });
-    } else if ((to.name === 'login' || to.name === 'reset-password') && isLoggedIn) {
-        next({ name: 'Admin' });
+    } else if ((to.name === 'login' || to.name === 'reset-password' || to.name === 'forgetPass') && isLoggedIn) {
+        next({ name: 'dashboard' });
     } else {
         next();
     }
-})
-
-
+});
 
 export default adminRoutes;

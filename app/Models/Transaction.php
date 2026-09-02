@@ -2,17 +2,19 @@
 
 namespace App\Models;
 
+use appsbd\Core\AppModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Transaction extends Model
+class Transaction extends AppModel
 {
     use HasFactory;
 
     protected $fillable = [
+        'tenant_id',
         'user_id',
+        'parent_id',
         'transaction_type',
         'amount',
         'category_id',
