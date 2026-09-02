@@ -42,6 +42,7 @@ class TransactionController extends Controller
             'category_id'      => 'nullable|exists:categories,id',
             'from_account_id'  => 'nullable|exists:accounts,id',
             'date'             => 'required|date',
+            'time'             => 'nullable|string',
             'description'      => 'nullable|string',
             'payment_method'   => 'nullable|in:cash,card,bank_transfer,mobile,check,other',
         ]);
@@ -69,6 +70,7 @@ class TransactionController extends Controller
                 'account_id'       => $accountId,
                 'from_account_id'  => $fromAccountId,
                 'date'             => $request->input('date'),
+                'time'             => $request->input('time'),
                 'description'      => $request->input('description'),
                 'reference_number' => $request->input('reference_number'),
                 'payment_method'   => $request->input('payment_method'),
@@ -129,7 +131,7 @@ class TransactionController extends Controller
 
         $transaction->fill($request->only([
             'transaction_type', 'amount', 'category_id', 'account_id',
-            'from_account_id', 'date', 'description', 'reference_number',
+            'from_account_id', 'date', 'time', 'description', 'reference_number',
             'payment_method', 'tags',
         ]));
         $transaction->save();

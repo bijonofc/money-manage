@@ -72,3 +72,7 @@ Route::apiResource('savings-goals', SavingsGoalController::class);
 Route::match(['get', 'post'], 'debts/list', [DebtController::class, 'index']);
 Route::post('debts/{id}/pay', [DebtController::class, 'pay']);
 Route::apiResource('debts', DebtController::class);
+
+// Reports & Analytics
+Route::match(['get', 'post'], 'reports/overview', [\App\Http\Controllers\Api\ReportController::class, 'overview']);
+Route::match(['get', 'post'], 'reports/export', [\App\Http\Controllers\Api\ReportController::class, 'export']);

@@ -21,6 +21,7 @@ class Transaction extends AppModel
         'account_id',
         'from_account_id',
         'date',
+        'time',
         'description',
         'reference_number',
         'payment_method',

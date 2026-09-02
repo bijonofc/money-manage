@@ -99,44 +99,37 @@
         <!-- DYNAMIC FIELDS ACCORDING TO TYPE -->
 
         <!-- CASE 1 & 2: EXPENSE OR INCOME -->
-        <div v-if="form.transaction_type !== 'transfer'" class="row g-3 mb-3">
+        <div v-if="form.transaction_type !== 'transfer'">
           
-          <!-- Dynamic Account Label: "From Account" for Expense vs "To Account" for Income -->
-          <div class="col-12 col-sm-6">
-            <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-muted mb-1.5">
-              <span>{{ form.transaction_type === 'expense' ? 'From Account' : 'To Account' }}</span>
-              <span class="text-danger ms-1">*</span>
-            </label>
-            <div class="input-group input-group-modern">
-              <span class="input-group-text bg-light border-end-0 text-muted ps-3">
-                <Wallet :size="16" />
-              </span>
-              <select v-model="form.account_id" class="form-select form-control-modern border-start-0 ps-2" required>
-                <option value="" disabled>Select account...</option>
-                <option v-for="acc in accountList" :key="acc.id" :value="acc.id">
-                  {{ acc.name }} (৳{{ formatNumber(acc.balance) }})
-                </option>
-              </select>
+          <div class="row g-3 mb-3">
+            <!-- Dynamic Account Label: "From Account" for Expense vs "To Account" for Income -->
+            <div class="col-12">
+              <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-muted mb-1.5">
+                <span>{{ form.transaction_type === 'expense' ? 'From Account' : 'To Account' }}</span>
+                <span class="text-danger ms-1">*</span>
+              </label>
+              <div class="input-group input-group-modern">
+                <span class="input-group-text bg-light border-end-0 text-muted ps-3">
+                  <Wallet :size="16" />
+                </span>
+                <select v-model="form.account_id" class="form-select form-control-modern border-start-0 ps-2" required>
+                  <option value="" disabled>Select account...</option>
+                  <option v-for="acc in accountList" :key="acc.id" :value="acc.id">
+                    {{ acc.name }} (৳{{ formatNumber(acc.balance) }})
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
 
-          <!-- Category Selector -->
-          <div class="col-12 col-sm-6">
-            <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-muted mb-1.5 d-flex align-items-center justify-content-between">
-              <span>Category <span class="text-danger">*</span></span>
-              <span v-if="filteredCategories.length === 0" class="text-xxs text-muted">No categories</span>
-            </label>
-            <div class="input-group input-group-modern">
-              <span class="input-group-text bg-light border-end-0 text-muted ps-3">
-                <Tag :size="16" />
-              </span>
-              <select v-model="form.category_id" class="form-select form-control-modern border-start-0 ps-2" required>
-                <option :value="null" disabled>Select category...</option>
-                <option v-for="cat in filteredCategories" :key="cat.id" :value="cat.id">
-                  {{ cat.icon ? cat.icon + ' ' : '' }}{{ cat.name }}
-                </option>
-              </select>
-            </div>
+          <!-- Visual Category Picker -->
+          <div class="mb-3">
+            <CategoryPicker
+              v-model="form.category_id"
+              :type="form.transaction_type"
+              :categories="allCategories"
+              @category-created="handleCategoryCreated"
+            />
           </div>
 
         </div>
@@ -195,9 +188,10 @@
           </div>
         </div>
 
-        <!-- DATE & SHORTCUTS -->
+        <!-- DATE & TIME -->
         <div class="row g-3 mb-3">
-          <div class="col-12 col-sm-6">
+          <!-- Date -->
+          <div class="col-12 col-sm-7">
             <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-muted mb-1.5 d-flex align-items-center justify-content-between">
               <span>Date <span class="text-danger">*</span></span>
               <div class="d-flex gap-1">
@@ -232,22 +226,46 @@
             </div>
           </div>
 
-          <!-- NOTE / DESCRIPTION -->
-          <div class="col-12 col-sm-6">
-            <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-muted mb-1.5">
-              Note (Optional)
+          <!-- Time -->
+          <div class="col-12 col-sm-5">
+            <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-muted mb-1.5 d-flex align-items-center justify-content-between">
+              <span>Time</span>
+              <button
+                type="button"
+                class="btn-date-preset badge border-0 px-2 py-0.5 text-xxs fw-medium transition-all bg-light text-muted hover-badge"
+                @click="setTimeNow"
+              >
+                Now
+              </button>
             </label>
             <div class="input-group input-group-modern">
               <span class="input-group-text bg-light border-end-0 text-muted ps-3">
-                <FileText :size="16" />
+                <Clock :size="16" />
               </span>
               <input
-                v-model="form.description"
-                type="text"
+                v-model="form.time"
+                type="time"
                 class="form-control form-control-modern border-start-0 ps-2"
-                :placeholder="notePlaceholder"
               />
             </div>
+          </div>
+        </div>
+
+        <!-- NOTE / DESCRIPTION -->
+        <div class="mb-3">
+          <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-muted mb-1.5">
+            Note (Optional)
+          </label>
+          <div class="input-group input-group-modern">
+            <span class="input-group-text bg-light border-end-0 text-muted ps-3">
+              <FileText :size="16" />
+            </span>
+            <input
+              v-model="form.description"
+              type="text"
+              class="form-control form-control-modern border-start-0 ps-2"
+              :placeholder="notePlaceholder"
+            />
           </div>
         </div>
 
@@ -290,11 +308,13 @@ import {
   Smartphone,
   Tag,
   Calendar,
+  Clock,
   FileText,
   Check,
   X,
   AlertCircle,
 } from '@lucide/vue';
+import CategoryPicker from '@/components/CategoryPicker.vue';
 
 const props = defineProps({
   modelValue: {
@@ -319,7 +339,32 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(['update:modelValue', 'save']);
+const emit = defineEmits(['update:modelValue', 'save', 'category-created']);
+
+const customCategories = ref([]);
+
+const allCategories = computed(() => {
+  const list = [...props.categoryList];
+  for (const cat of customCategories.value) {
+    if (!list.some(c => c.id === cat.id)) {
+      list.push(cat);
+    }
+  }
+  return list;
+});
+
+function handleCategoryCreated(newCat) {
+  customCategories.value.push(newCat);
+  form.value.category_id = newCat.id;
+  emit('category-created', newCat);
+}
+
+function getCurrentTimeString() {
+  const now = new Date();
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  return `${hours}:${minutes}`;
+}
 
 const amountInputRef = ref(null);
 const rawAmount = ref('');
@@ -331,6 +376,7 @@ const form = ref({
   from_account_id: '',
   category_id: null,
   date: new Date().toISOString().split('T')[0],
+  time: getCurrentTimeString(),
   description: '',
 });
 
@@ -376,6 +422,10 @@ function setDateYesterday() {
   form.value.date = getYesterdayString();
 }
 
+function setTimeNow() {
+  form.value.time = getCurrentTimeString();
+}
+
 function setTransactionType(type) {
   form.value.transaction_type = type;
 
@@ -390,7 +440,7 @@ function setTransactionType(type) {
       }
     }
   } else {
-    // Select first appropriate category
+    // Select first appropriate category if current category does not match new type
     const relevantCats = filteredCategories.value;
     if (relevantCats.length > 0 && (!form.value.category_id || !relevantCats.some(c => c.id === form.value.category_id))) {
       form.value.category_id = relevantCats[0].id;
@@ -399,11 +449,11 @@ function setTransactionType(type) {
 }
 
 const filteredCategories = computed(() => {
-  if (!props.categoryList || props.categoryList.length === 0) return [];
+  if (!allCategories.value || allCategories.value.length === 0) return [];
   if (form.value.transaction_type === 'income') {
-    return props.categoryList.filter(c => c.type === 'income' || c.category_type === 'income' || !c.type);
+    return allCategories.value.filter(c => c.type === 'income' || c.category_type === 'income');
   } else if (form.value.transaction_type === 'expense') {
-    return props.categoryList.filter(c => c.type === 'expense' || c.category_type === 'expense' || !c.type);
+    return allCategories.value.filter(c => c.type === 'expense' || c.category_type === 'expense');
   }
   return [];
 });
@@ -480,6 +530,7 @@ watch(
           from_account_id: props.editData.from_account_id || '',
           category_id: props.editData.category_id || null,
           date: props.editData.date || getTodayString(),
+          time: props.editData.time || getCurrentTimeString(),
           description: props.editData.description || '',
         };
         rawAmount.value = props.editData.amount ? props.editData.amount.toString() : '';
@@ -491,6 +542,7 @@ watch(
           from_account_id: props.accountList[0]?.id || '',
           category_id: filteredCategories.value[0]?.id || null,
           date: getTodayString(),
+          time: getCurrentTimeString(),
           description: '',
         };
         rawAmount.value = '';

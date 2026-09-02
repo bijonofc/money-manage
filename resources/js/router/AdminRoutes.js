@@ -19,6 +19,7 @@ import BudgetList from "@/modules/AdminPanel/Budgets/BudgetList.vue";
 import SavingsList from "@/modules/AdminPanel/Savings/SavingsList.vue";
 import DebtList from "@/modules/AdminPanel/Debts/DebtList.vue";
 import CategoryList from "@/modules/AdminPanel/Categories/CategoryList.vue";
+import ReportsPage from "@/modules/AdminPanel/Reports/ReportsPage.vue";
 import DesignShowcase from "@/modules/AdminPanel/DesignShowcase/DesignShowcase.vue";
 
 import ForgetPass from "@/modules/AdminPanel/User/ForgetPass.vue";
@@ -107,6 +108,12 @@ const routes = [
         name: "categories",
         component: CategoryList,
         meta: { requiresAuth: true, title: 'Categories' },
+    },
+    {
+        path: "/reports",
+        name: "reports",
+        component: ReportsPage,
+        meta: { requiresAuth: true, title: 'Financial Reports' },
     },
     {
         path: "/design-showcase",

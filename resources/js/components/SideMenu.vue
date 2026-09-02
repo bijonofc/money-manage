@@ -41,6 +41,7 @@ import {
     Target,
     CreditCard,
     Tag,
+    BarChart3,
     Users,
     Shield,
     Settings,
@@ -131,6 +132,15 @@ const menus = [
         route: '/categories',
         has_icon: true,
         iconComponent: markRaw(Tag)
+    },
+    {
+        id: 'reports',
+        acl: 'report-list',
+        name: 'reports',
+        title: 'Reports',
+        route: '/reports',
+        has_icon: true,
+        iconComponent: markRaw(BarChart3)
     },
     {
         id: 'users',

@@ -337,8 +337,9 @@
             </div>
 
             <!-- Dynamic Field Layout -->
-            <div v-if="inlineTx.transaction_type !== 'transfer'" class="row g-3 mb-3">
-              <div class="col-12 col-sm-6">
+            <!-- Dynamic Field Layout -->
+            <div v-if="inlineTx.transaction_type !== 'transfer'">
+              <div class="mb-3">
                 <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-muted mb-1.5">
                   {{ inlineTx.transaction_type === 'expense' ? 'From Account' : 'To Account' }} <span class="text-danger">*</span>
                 </label>
@@ -354,20 +355,13 @@
                 </div>
               </div>
 
-              <div class="col-12 col-sm-6">
-                <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-muted mb-1.5">
-                  Category <span class="text-danger">*</span>
-                </label>
-                <div class="input-group input-group-modern">
-                  <span class="input-group-text bg-light border-end-0 text-muted ps-3">
-                    <Tag :size="16" />
-                  </span>
-                  <select v-model="inlineTx.category_id" class="form-select form-control-modern border-start-0 ps-2">
-                    <option v-for="cat in (inlineTx.transaction_type === 'expense' ? sampleExpenseCategories : sampleIncomeCategories)" :key="cat.id" :value="cat.id">
-                      {{ cat.icon }} {{ cat.name }}
-                    </option>
-                  </select>
-                </div>
+              <!-- Visual Category Picker in Showcase -->
+              <div class="mb-3">
+                <CategoryPicker
+                  v-model="inlineTx.category_id"
+                  :type="inlineTx.transaction_type"
+                  :categories="[...sampleExpenseCategories, ...sampleIncomeCategories]"
+                />
               </div>
             </div>
 
@@ -414,9 +408,9 @@
               </div>
             </div>
 
-            <!-- Date and Note -->
+            <!-- Date and Time -->
             <div class="row g-3 mb-3">
-              <div class="col-12 col-sm-6">
+              <div class="col-12 col-sm-7">
                 <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-muted mb-1.5 d-flex align-items-center justify-content-between">
                   <span>Date <span class="text-danger">*</span></span>
                   <span class="badge bg-light text-muted text-xxs">Today · Sep 2, 2026</span>
@@ -429,21 +423,34 @@
                 </div>
               </div>
 
-              <div class="col-12 col-sm-6">
+              <div class="col-12 col-sm-5">
                 <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-muted mb-1.5">
-                  Note (Optional)
+                  Time
                 </label>
                 <div class="input-group input-group-modern">
                   <span class="input-group-text bg-light border-end-0 text-muted ps-3">
-                    <FileText :size="16" />
+                    <Clock :size="16" />
                   </span>
-                  <input
-                    v-model="inlineTx.description"
-                    type="text"
-                    class="form-control form-control-modern border-start-0 ps-2"
-                    placeholder="What was this for?"
-                  />
+                  <input v-model="inlineTx.time" type="time" class="form-control form-control-modern border-start-0 ps-2" />
                 </div>
+              </div>
+            </div>
+
+            <!-- Note / Description -->
+            <div class="mb-3">
+              <label class="form-label text-xs fw-bold text-uppercase tracking-wider text-muted mb-1.5">
+                Note (Optional)
+              </label>
+              <div class="input-group input-group-modern">
+                <span class="input-group-text bg-light border-end-0 text-muted ps-3">
+                  <FileText :size="16" />
+                </span>
+                <input
+                  v-model="inlineTx.description"
+                  type="text"
+                  class="form-control form-control-modern border-start-0 ps-2"
+                  placeholder="What was this for?"
+                />
               </div>
             </div>
 
@@ -493,6 +500,7 @@
 import { ref, computed } from 'vue';
 import AccountFormModal from '@/modules/AdminPanel/Accounts/AccountFormModal.vue';
 import TransactionFormModal from '@/modules/AdminPanel/Transactions/TransactionFormModal.vue';
+import CategoryPicker from '@/components/CategoryPicker.vue';
 import AppsbdUtls from '@/libs/AppsbdUtls.js';
 
 import {
@@ -511,6 +519,7 @@ import {
   PencilLine,
   Tag,
   Calendar,
+  Clock,
   FileText,
   Check,
   ChevronDown,
