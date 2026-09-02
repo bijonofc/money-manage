@@ -83,56 +83,13 @@
       </div>
     </div>
 
-    <!-- Create/Edit Modal -->
-    <div v-if="showModal" class="modal-backdrop-custom d-flex align-items-center justify-content-center">
-      <div class="modal-card bg-white rounded-4 shadow-lg p-4" style="max-width: 480px; width: 100%;">
-        <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
-          <h5 class="fw-bold mb-0">{{ editId ? 'Edit Account' : 'New Account' }}</h5>
-          <button type="button" class="btn-close" @click="showModal = false"></button>
-        </div>
-
-        <form @submit.prevent="saveAccount">
-          <div class="mb-3">
-            <label class="form-label small fw-semibold">Account Name *</label>
-            <input v-model="form.name" type="text" class="form-control" placeholder="e.g. City Bank Salary" required />
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label small fw-semibold">Account Type *</label>
-            <select v-model="form.account_type" class="form-select" required>
-              <option value="bank">Bank Account</option>
-              <option value="cash">Cash in Hand</option>
-              <option value="mobile">Mobile Money (bKash/Nagad/Rocket)</option>
-              <option value="credit_card">Credit Card</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-
-          <div class="row g-2 mb-3">
-            <div class="col-8">
-              <label class="form-label small fw-semibold">Starting Balance</label>
-              <input v-model.number="form.balance" type="number" step="0.01" class="form-control" placeholder="0.00" />
-            </div>
-            <div class="col-4">
-              <label class="form-label small fw-semibold">Currency</label>
-              <input v-model="form.currency" type="text" class="form-control" placeholder="BDT" />
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label small fw-semibold">Account Number (Optional)</label>
-            <input v-model="form.account_number" type="text" class="form-control" placeholder="XXXX-XXXX-XXXX" />
-          </div>
-
-          <div class="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" class="btn btn-light rounded-pill px-4" @click="showModal = false">Cancel</button>
-            <button type="submit" class="btn btn-primary rounded-pill px-4" :disabled="saving">
-              {{ saving ? 'Saving...' : 'Save Account' }}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+    <!-- Redesigned Account Modal -->
+    <AccountFormModal
+      v-model="showModal"
+      :edit-data="selectedAccount"
+      :saving="saving"
+      @save="saveAccount"
+    />
   </div>
 </template>
 
@@ -141,6 +98,7 @@ import { ref, computed, onMounted } from 'vue';
 import AxiosHelper from '@/libs/AppsbdAxiosHelper.js';
 import AppsbdURL from '@/libs/AppsbdURL.js';
 import AppsbdUtls from '@/libs/AppsbdUtls.js';
+import AccountFormModal from './AccountFormModal.vue';
 
 import {
   Wallet,
@@ -158,17 +116,9 @@ const accounts = ref([]);
 const loading = ref(false);
 const saving = ref(false);
 const showModal = ref(false);
-const editId = ref(null);
+const selectedAccount = ref(null);
 
 const currencySymbol = computed(() => window.app_settings?.currencySymbol || '৳');
-
-const form = ref({
-  name: '',
-  account_type: 'bank',
-  balance: 0,
-  currency: 'BDT',
-  account_number: '',
-});
 
 function getAccClass(type) {
   switch (type) {
@@ -201,31 +151,23 @@ async function loadAccounts() {
 }
 
 function openCreateModal() {
-  editId.value = null;
-  form.value = {
-    name: '',
-    account_type: 'bank',
-    balance: 0,
-    currency: 'BDT',
-    account_number: '',
-  };
+  selectedAccount.value = null;
   showModal.value = true;
 }
 
 function openEditModal(acc) {
-  editId.value = acc.id;
-  form.value = { ...acc };
+  selectedAccount.value = { ...acc };
   showModal.value = true;
 }
 
-async function saveAccount() {
+async function saveAccount(formData) {
   try {
     saving.value = true;
     let res;
-    if (editId.value) {
-      res = await AxiosHelper.put(AppsbdURL.route(`accounts/${editId.value}`), form.value);
+    if (selectedAccount.value?.id) {
+      res = await AxiosHelper.put(AppsbdURL.route(`accounts/${selectedAccount.value.id}`), formData);
     } else {
-      res = await AxiosHelper.post(AppsbdURL.route('accounts'), form.value);
+      res = await AxiosHelper.post(AppsbdURL.route('accounts'), formData);
     }
 
     if (res?.status) {
@@ -266,14 +208,6 @@ onMounted(loadAccounts);
     transform: translateY(-2px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
   }
-}
-
-.modal-backdrop-custom {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  z-index: 1050;
-  backdrop-filter: blur(2px);
 }
 
 .spin-anim {

@@ -19,6 +19,7 @@ import BudgetList from "@/modules/AdminPanel/Budgets/BudgetList.vue";
 import SavingsList from "@/modules/AdminPanel/Savings/SavingsList.vue";
 import DebtList from "@/modules/AdminPanel/Debts/DebtList.vue";
 import CategoryList from "@/modules/AdminPanel/Categories/CategoryList.vue";
+import DesignShowcase from "@/modules/AdminPanel/DesignShowcase/DesignShowcase.vue";
 
 import ForgetPass from "@/modules/AdminPanel/User/ForgetPass.vue";
 import BasicSettings from "@/modules/AdminPanel/Settings/BasicSettings.vue";
@@ -106,6 +107,12 @@ const routes = [
         name: "categories",
         component: CategoryList,
         meta: { requiresAuth: true, title: 'Categories' },
+    },
+    {
+        path: "/design-showcase",
+        name: "designShowcase",
+        component: DesignShowcase,
+        meta: { requiresAuth: false, title: 'UX Redesign Showcase' },
     },
     {
         path: "/users",

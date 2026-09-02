@@ -45,6 +45,7 @@ import {
     Shield,
     Settings,
     Activity,
+    Sparkles,
 } from '@lucide/vue';
 
 const { proxy } = getCurrentInstance();
@@ -68,6 +69,14 @@ const menus = [
         route: '/dashboard',
         has_icon: true,
         iconComponent: markRaw(LayoutDashboard)
+    },
+    {
+        id: 'design-showcase',
+        name: 'designShowcase',
+        title: 'UX Showcase',
+        route: '/design-showcase',
+        has_icon: true,
+        iconComponent: markRaw(Sparkles)
     },
     {
         id: 'accounts',

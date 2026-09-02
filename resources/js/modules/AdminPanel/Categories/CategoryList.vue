@@ -225,14 +225,6 @@ onMounted(loadCategories);
   height: 34px;
 }
 
-.modal-backdrop-custom {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  z-index: 1050;
-  backdrop-filter: blur(2px);
-}
-
 .spin-anim {
   animation: spin 1s linear infinite;
 }

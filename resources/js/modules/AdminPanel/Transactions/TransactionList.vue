@@ -135,65 +135,14 @@
       </div>
     </div>
 
-    <!-- Create Modal -->
-    <div v-if="showModal" class="modal-backdrop-custom d-flex align-items-center justify-content-center">
-      <div class="modal-card bg-white rounded-4 shadow-lg p-4" style="max-width: 500px; width: 100%;">
-        <div class="d-flex align-items-center justify-content-between mb-3 border-bottom pb-2">
-          <h5 class="fw-bold mb-0">Record Transaction</h5>
-          <button type="button" class="btn-close" @click="showModal = false"></button>
-        </div>
-
-        <form @submit.prevent="saveTransaction">
-          <div class="row g-2 mb-3">
-            <div class="col-6">
-              <label class="form-label small fw-semibold">Type *</label>
-              <select v-model="form.transaction_type" class="form-select" required>
-                <option value="expense">Expense</option>
-                <option value="income">Income</option>
-                <option value="transfer">Transfer</option>
-              </select>
-            </div>
-            <div class="col-6">
-              <label class="form-label small fw-semibold">Amount *</label>
-              <input v-model.number="form.amount" type="number" step="0.01" min="0.01" class="form-control" placeholder="0.00" required />
-            </div>
-          </div>
-
-          <div class="row g-2 mb-3">
-            <div class="col-6">
-              <label class="form-label small fw-semibold">Account *</label>
-              <select v-model="form.account_id" class="form-select" required>
-                <option v-for="acc in accountList" :key="acc.id" :value="acc.id">{{ acc.name }}</option>
-              </select>
-            </div>
-            <div class="col-6">
-              <label class="form-label small fw-semibold">Category</label>
-              <select v-model="form.category_id" class="form-select">
-                <option :value="null">None</option>
-                <option v-for="cat in categoryList" :key="cat.id" :value="cat.id">{{ cat.name }}</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label small fw-semibold">Date *</label>
-            <input v-model="form.date" type="date" class="form-control" required />
-          </div>
-
-          <div class="mb-3">
-            <label class="form-label small fw-semibold">Description / Notes</label>
-            <input v-model="form.description" type="text" class="form-control" placeholder="e.g. Grocery shopping" />
-          </div>
-
-          <div class="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" class="btn btn-light rounded-pill px-4" @click="showModal = false">Cancel</button>
-            <button type="submit" class="btn btn-primary rounded-pill px-4" :disabled="saving">
-              {{ saving ? 'Saving...' : 'Save Transaction' }}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+    <!-- Redesigned Record Transaction Modal -->
+    <TransactionFormModal
+      v-model="showModal"
+      :account-list="accountList"
+      :category-list="categoryList"
+      :saving="saving"
+      @save="saveTransaction"
+    />
   </div>
 </template>
 
@@ -202,6 +151,7 @@ import { ref, computed, onMounted } from 'vue';
 import AxiosHelper from '@/libs/AppsbdAxiosHelper.js';
 import AppsbdURL from '@/libs/AppsbdURL.js';
 import AppsbdUtls from '@/libs/AppsbdUtls.js';
+import TransactionFormModal from './TransactionFormModal.vue';
 
 import {
   ArrowLeftRight,
@@ -223,15 +173,6 @@ const filterType = ref('');
 const filterAccount = ref('');
 
 const currencySymbol = computed(() => window.app_settings?.currencySymbol || '৳');
-
-const form = ref({
-  transaction_type: 'expense',
-  amount: '',
-  account_id: '',
-  category_id: null,
-  date: new Date().toISOString().split('T')[0],
-  description: '',
-});
 
 function formatNumber(val) {
   const n = parseFloat(val);
@@ -262,7 +203,6 @@ async function loadDependencies() {
     const accRes = await AxiosHelper.post(AppsbdURL.route('accounts/list'), {});
     if (accRes?.data?.rowdata) {
       accountList.value = accRes.data.rowdata;
-      if (accountList.value.length > 0) form.value.account_id = accountList.value[0].id;
     }
 
     const catRes = await AxiosHelper.post(AppsbdURL.route('categories/list'), {});
@@ -275,21 +215,13 @@ async function loadDependencies() {
 }
 
 function openCreateModal() {
-  form.value = {
-    transaction_type: 'expense',
-    amount: '',
-    account_id: accountList.value[0]?.id || '',
-    category_id: null,
-    date: new Date().toISOString().split('T')[0],
-    description: '',
-  };
   showModal.value = true;
 }
 
-async function saveTransaction() {
+async function saveTransaction(formData) {
   try {
     saving.value = true;
-    const res = await AxiosHelper.post(AppsbdURL.route('transactions'), form.value);
+    const res = await AxiosHelper.post(AppsbdURL.route('transactions'), formData);
     if (res?.status) {
       AppsbdUtls.ShowServerResponseNotification(res.msg || 'Transaction recorded', 3000);
       showModal.value = false;
@@ -321,14 +253,6 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
-.modal-backdrop-custom {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  z-index: 1050;
-  backdrop-filter: blur(2px);
-}
-
 .spin-anim {
   animation: spin 1s linear infinite;
 }
