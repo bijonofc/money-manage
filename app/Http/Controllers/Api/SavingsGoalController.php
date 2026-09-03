@@ -114,6 +114,7 @@ class SavingsGoalController extends Controller
     public function contribute(Request $request, $id)
     {
         $tenantId = auth()->id() ?? 1;
+        $userId = auth()->id() ?? 1;
         $goal = SavingsGoal::where('tenant_id', $tenantId)->find($id);
 
         if (!$goal) {
@@ -122,22 +123,56 @@ class SavingsGoalController extends Controller
             return $response->displayWithResponse(false, null, 404);
         }
 
-        $amount = $request->input('amount', 0);
+        $amount = (float)$request->input('amount', 0);
         if ($amount <= 0) {
             ApiResponse::addErrorArray(__('Invalid contribution amount'));
             $response = new ApiResponse();
             return $response->displayWithResponse(false, null, 422);
         }
 
-        $contribution = SavingsContribution::create([
-            'goal_id' => $goal->id,
-            'amount'  => $amount,
-            'note'    => $request->input('note'),
-        ]);
+        $accountId = $request->input('account_id');
+        $note = $request->input('note');
 
-        $goal->increment('current_amount', $amount);
+        $contribution = \Illuminate\Support\Facades\DB::transaction(function () use ($goal, $amount, $accountId, $note, $tenantId, $userId) {
+            if ($accountId) {
+                $account = \App\Models\Account::where('tenant_id', $tenantId)->find($accountId);
+                if ($account) {
+                    $account->decrement('balance', $amount);
 
-        ApiResponse::addInfoArray(__('Contribution added successfully'));
+                    $category = \App\Models\Category::where('tenant_id', $tenantId)
+                        ->where('type', 'expense')
+                        ->where(function ($q) {
+                            $q->where('name', 'like', '%Saving%')
+                              ->orWhere('name', 'like', '%Investment%')
+                              ->orWhere('name', 'like', '%Other%');
+                        })
+                        ->first();
+
+                    \App\Models\Transaction::create([
+                        'tenant_id'        => $tenantId,
+                        'user_id'          => $userId,
+                        'transaction_type' => 'expense',
+                        'amount'           => $amount,
+                        'account_id'       => $accountId,
+                        'category_id'      => $category ? $category->id : null,
+                        'date'             => now()->toDateString(),
+                        'time'             => now()->format('H:i'),
+                        'description'      => "Savings deposit for goal: {$goal->name}" . ($note ? " - {$note}" : ''),
+                    ]);
+                }
+            }
+
+            $contrib = SavingsContribution::create([
+                'goal_id' => $goal->id,
+                'amount'  => $amount,
+                'note'    => $note,
+            ]);
+
+            $goal->increment('current_amount', $amount);
+            return $contrib;
+        });
+
+        ApiResponse::addInfoArray(__('Contribution recorded and account updated successfully'));
         $response = new ApiResponse();
         return $response->displayWithResponse(true, $contribution);
     }
