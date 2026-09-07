@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import { reactive, defineEmits, defineProps } from 'vue'
+import { reactive } from 'vue'
 import FileCard from './FileCard.vue'
 import SmallLoader from '@/components/SmallLoader.vue'
 

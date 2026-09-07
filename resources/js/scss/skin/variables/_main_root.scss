@@ -1,4 +1,5 @@
-@import "bs_variable";
+@use "bs_variable";
+@use "variable" as *;
 
 [data-bs-theme="dark"]{
     --ab-np-white:#263039;

@@ -7,7 +7,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, nextTick, defineExpose } from 'vue'
+import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 
 const emit = defineEmits(['scroll', 'top', 'bottom', 'direction'])
 

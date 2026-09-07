@@ -54,8 +54,8 @@
   
   <script>
   import {Form} from "vee-validate";
-  import AppLoader from "@/components/AppLoader";
-  import ResponseMsg from "@/components/ResponseMsg";
+  import AppLoader from "@/components/AppLoader.vue";
+  import ResponseMsg from "@/components/ResponseMsg.vue";
   export default {
     name: 'Modal',
     props: {

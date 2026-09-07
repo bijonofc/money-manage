@@ -1,3 +1,5 @@
+@use "variable" as *;
+
 .#{$app_prefix}app {
     --#{$bs_prefix}blue: #0d6efd;
     --#{$bs_prefix}indigo: #6610f2;

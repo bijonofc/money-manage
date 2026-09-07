@@ -29,8 +29,8 @@
 </template>
 
 <script>
-import RoleList from "@/modules/AdminPanel/roles/RoleList";
-import RoleAccess from "@/modules/AdminPanel/roles/RoleAccess";
+import RoleList from "@/modules/AdminPanel/Roles/RoleList.vue";
+import RoleAccess from "@/modules/AdminPanel/Roles/RoleAccess.vue";
 
 export default {
   name: "RoleModule",

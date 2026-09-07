@@ -1,3 +1,5 @@
+@use "mixin" as *;
+
 .nav.apbd-tab-nav {
     @include max-screen(575px) {
         justify-content: space-between;

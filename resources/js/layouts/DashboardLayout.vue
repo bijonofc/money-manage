@@ -19,7 +19,7 @@
 
 import Header from "@/components/Header.vue";
 import SideMenu from '@/components/SideMenu.vue'
-import {computed, defineProps} from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps({
     darkMode: Boolean,

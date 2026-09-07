@@ -1,17 +1,30 @@
+@use "sass:math";
+
+@function to-screen-unit($res) {
+    @if math.is-unitless($res) {
+        @return $res * 1px;
+    }
+    @return $res;
+}
+
 @mixin max-screen($res-first, $res-last: $res-first) {
     @if $res-first == $res-last {
-        @media screen and (max-width: if(unitless($res-first), $res-first*$units, $res-first)) {
+        $max: to-screen-unit($res-first);
+        @media screen and (max-width: $max) {
             @content;
         }
     } @else if $res-first < $res-last {
-        @media screen and (min-width: if(unitless($res-first), $res-first*$units, $res-first)) and (max-width: if(unitless($res-last), $res-last*$units, $res-last)) {
+        $min: to-screen-unit($res-first);
+        $max: to-screen-unit($res-last);
+        @media screen and (min-width: $min) and (max-width: $max) {
             @content;
         }
     }
 }
 
 @mixin min-screen($res) {
-    @media screen and (min-width: if(unitless($res), $res*$units, $res)) {
+    $min: to-screen-unit($res);
+    @media screen and (min-width: $min) {
         @content;
     }
 }

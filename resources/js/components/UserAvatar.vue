@@ -33,7 +33,7 @@
 </template>
 
 <script setup>
-import { ref, computed, defineProps, defineEmits } from 'vue'
+import { ref, computed } from 'vue'
 import { Dropdown as VDropdown } from 'floating-vue'
 import UserPopover from '@/components/UserPopover.vue'
 

@@ -1,3 +1,6 @@
+@use "variable" as *;
+@use "sass:color";
+
 .#{$app_prefix}app {
     $grid_primary_color: #2a3436;
     $grid_button_bg_color: #727374;
@@ -10,7 +13,7 @@
   --eg-no-record-color: #{rgba($grid_primary_color,0.8)};
   --eg-row-group-title-color: #41444b;
   --eg-cell-index-color: #7f848d;
-  --eg-table-border-color: #{rgba(darken($grid_primary_color,10%),0.10)};;
+  --eg-table-border-color: #{rgba(color.adjust($grid_primary_color, $lightness: -10%),0.10)};;
   --eg-hover-bg: #{rgba($grid_primary_color,0.02)};
   --eg-pg-border-color:#ccc;
   --eg-pg-btn-action-size:40px;

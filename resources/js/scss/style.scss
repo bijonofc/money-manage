@@ -1,43 +1,39 @@
-@import "global_vriable";
-@import "components/mixin";
-body {
-    background:var(--ab-np-white);
-}
-.#{$prefix}app {
-    @import "components/main";
-    @import "components/header";
-    @import "components/sidebar";
-    @import "components/guest";
-    @import "components/button";
-    @import "components/tab_btn";
-    @import "components/typography";
-    @import "components/utilities";
-    @import "components/common";
-    @import "components/input";
-    @import "components/input-group";
-    @import "components/modal";
-    @import "components/card";
-    @import "components/app-loader";
-    @import "components/ql-editor";
-    @import "components/grid_fixing";
-    @import "components/mixin";
-    @import "components/dropdown";
-    @import "components/badge";
-    @import "components/list";
-    @import "components/apbd_vcalender";
+@use "global_vriable" as *;
+@use "components/mixin" as *;
+@use "components/main";
+@use "components/header";
+@use "components/sidebar";
+@use "components/guest";
+@use "components/button";
+@use "components/tab_btn";
+@use "components/typography";
+@use "components/utilities";
+@use "components/common";
+@use "components/input";
+@use "components/input-group";
+@use "components/modal";
+@use "components/card";
+@use "components/app-loader";
+@use "components/ql-editor";
+@use "components/grid_fixing";
+@use "components/dropdown";
+@use "components/badge";
+@use "components/list";
+@use "components/apbd_vcalender";
+@use "components/multiselect";
+@use "components/footer";
+@use "components/apbd_common";
+@use "components/settings_form";
+@use "components/new_fixing";
+@use "components/apbd_loading_button";
+@use "components/google_login_btn";
+@use "components/animated";
+@use "components/vdropdown";
+@use "components/rtl";
 
-    @import "components/multiselect";
-    @import "components/footer";
-    @import "components/apbd_common";
-    @import "components/settings_form";
-    @import "components/new_fixing";
-    @import "components/apbd_loading_button";
-
-    @import "components/google_login_btn";
-    @import "components/animated";
-}
-@import "components/vdropdown";
 body {
+    background: var(--ab-np-white);
+
     &.apbd-hide-re-badge {
         .grecaptcha-badge {
             visibility: hidden;
@@ -49,7 +45,4 @@ body {
             display: none !important;
         }
     }
-
 }
-
-@import "components/rtl";

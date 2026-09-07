@@ -1,81 +1,69 @@
+@use "sass:color";
+
 $app_prefix:'ab-';
 $bs_prefix:'bs-';
 
-
-
-
-
-
-
-
-
 $primary: #137035;
-$primary_dark:darken($primary,10%);
-$primary_light:lighten($primary,25%);
-$primary_very_light:lighten($primary,30%);
-$primary-active:lighten($primary,6%);
-$primary-btn-hover:darken($primary,5%);
-$primary-link-hover:darken($primary,15%);
-$primary-btn-shadow:lighten($primary,5%);
-
-
+$primary_dark: color.adjust($primary, $lightness: -10%);
+$primary_light: color.adjust($primary, $lightness: 25%);
+$primary_very_light: color.adjust($primary, $lightness: 30%);
+$primary-active: color.adjust($primary, $lightness: 6%);
+$primary-btn-hover: color.adjust($primary, $lightness: -5%);
+$primary-link-hover: color.adjust($primary, $lightness: -15%);
+$primary-btn-shadow: color.adjust($primary, $lightness: 5%);
 
 $secondary: rgba(171, 175, 177, 0.945);
-$secondary-light:lighten($secondary,60%);
-$secondary-active:darken($secondary,10%);
-$secondary-btn-hover:darken($secondary,5%);
-$secondary-btn-shadow:lighten($secondary,5%);
-$secondary_very_light:lighten($secondary,40%);
+$secondary-light: color.adjust($secondary, $lightness: 60%);
+$secondary-active: color.adjust($secondary, $lightness: -10%);
+$secondary-btn-hover: color.adjust($secondary, $lightness: -5%);
+$secondary-btn-shadow: color.adjust($secondary, $lightness: 5%);
+$secondary_very_light: color.adjust($secondary, $lightness: 40%);
 
 $success:  #32722b;
-$success_dark:darken($success,5%);
-$success-light:lighten($success,55%);
-$success-active:darken($success,10%);
-$success-btn-hover:darken($success,5%);
-$success-btn-shadow:lighten($success,5%);
-$success_very_light:lighten($success,50%);
+$success_dark: color.adjust($success, $lightness: -5%);
+$success-light: color.adjust($success, $lightness: 55%);
+$success-active: color.adjust($success, $lightness: -10%);
+$success-btn-hover: color.adjust($success, $lightness: -5%);
+$success-btn-shadow: color.adjust($success, $lightness: 5%);
+$success_very_light: color.adjust($success, $lightness: 50%);
 
 $warning:#e97d23;
-$warning-dark:darken($warning,5%);
-$warning-light:lighten($warning,40%);
-$warning-active:darken($warning,10%);
-$warning-btn-hover:darken($warning,5%);
-$warning-btn-shadow:lighten($warning,5%);
-$warning_very_light:lighten($warning,40%);
+$warning-dark: color.adjust($warning, $lightness: -5%);
+$warning-light: color.adjust($warning, $lightness: 40%);
+$warning-active: color.adjust($warning, $lightness: -10%);
+$warning-btn-hover: color.adjust($warning, $lightness: -5%);
+$warning-btn-shadow: color.adjust($warning, $lightness: 5%);
+$warning_very_light: color.adjust($warning, $lightness: 40%);
 
 $danger:#DC3545;
-$danger-dark:darken($danger,5%);
-$danger-light:lighten($danger,35%);
-$danger-active:darken($danger,10%);
-$danger-btn-hover:darken($danger,5%);
-$danger-btn-shadow:lighten($danger,5%);
-$danger_very_light:lighten($danger,40%);
+$danger-dark: color.adjust($danger, $lightness: -5%);
+$danger-light: color.adjust($danger, $lightness: 35%);
+$danger-active: color.adjust($danger, $lightness: -10%);
+$danger-btn-hover: color.adjust($danger, $lightness: -5%);
+$danger-btn-shadow: color.adjust($danger, $lightness: 5%);
+$danger_very_light: color.adjust($danger, $lightness: 40%);
 
 $light:#f8f6f68e;
-$light-dark:darken($light,5%);
-$light-light:lighten($light,15%);
-$light-active:darken($light,10%);
-$light-btn-hover:darken($light,5%);
-$light-btn-shadow:lighten($light,5%);
+$light-dark: color.adjust($light, $lightness: -5%);
+$light-light: color.adjust($light, $lightness: 15%);
+$light-active: color.adjust($light, $lightness: -10%);
+$light-btn-hover: color.adjust($light, $lightness: -5%);
+$light-btn-shadow: color.adjust($light, $lightness: 5%);
 
 $dark: rgba(57, 62, 69, 0.67);
-$dark-light:lighten($dark,60%);
-$dark-active:darken($dark,10%);
-$dark-btn-hover:darken($dark,5%);
-$dark-btn-shadow:lighten($dark,20%);
-$dark_very_light:lighten($dark,60%);
+$dark-light: color.adjust($dark, $lightness: 60%);
+$dark-active: color.adjust($dark, $lightness: -10%);
+$dark-btn-hover: color.adjust($dark, $lightness: -5%);
+$dark-btn-shadow: color.adjust($dark, $lightness: 20%);
+$dark_very_light: color.adjust($dark, $lightness: 60%);
 
 $info: #B7E0FF;
-$info-dark:darken($info,5%);
-$info-light:lighten($info,35);
-$info-active:darken($info,10%);
-$info-btn-hover:darken($info,5%);
-$info-btn-shadow:lighten($info,5%);
-$info_very_light:lighten($info,40%);
-
-
-
-
+$info-dark: color.adjust($info, $lightness: -5%);
+$info-light: color.adjust($info, $lightness: 35%);
+$info-active: color.adjust($info, $lightness: -10%);
+$info-btn-hover: color.adjust($info, $lightness: -5%);
+$info-btn-shadow: color.adjust($info, $lightness: 5%);
+$info_very_light: color.adjust($info, $lightness: 40%);
 
 $twitter:rgb(3, 159, 245);
 $google:rgb(236, 65, 44);
@@ -99,13 +87,8 @@ $custom-bg:#1A202C;
 $body-bg: #ffffff;
 $body-color: #333;
 
-
 $primary-dark-color:#6D76FF;
 
 $button_color:#fff;
 $button_bg_color:$primary;
-$button_bg_hover:darken($primary,10);
-
-
-
-
+$button_bg_hover: color.adjust($primary, $lightness: -10%);

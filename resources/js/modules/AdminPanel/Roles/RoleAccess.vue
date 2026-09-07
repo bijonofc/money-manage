@@ -116,7 +116,7 @@ import EliteGrid from '@appsbd/vue3-elite-grid';
 import {EliteColumnModel} from '@appsbd/vue3-elite-grid';
 import {mapStores} from 'pinia'
 import {useRoleStore} from "./role";
-import APBDGridLoader from "@/components/APBDGridLoader";
+import APBDGridLoader from "@/components/APBDGridLoader.vue";
 import Multiselect from '@vueform/multiselect'
 import {ApbdFilterPanel,Modal,ResponseMsg} from '@appsbd/vue3-appsbd-libs'
 

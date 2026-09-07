@@ -109,9 +109,9 @@ import EliteGrid from '@appsbd/vue3-elite-grid';
 import {EliteColumnModel} from '@appsbd/vue3-elite-grid';
 import {mapStores} from 'pinia'
 import {useRoleStore} from "./role";
-import APBDGridLoader from "@/components/APBDGridLoader";
-import RoleAddForm from "@/modules/AdminPanel/roles/RoleAddForm";
-import RoleDeleteForm from "@/modules/AdminPanel/roles/RoleDeleteForm";
+import APBDGridLoader from "@/components/APBDGridLoader.vue";
+import RoleAddForm from "@/modules/AdminPanel/Roles/RoleAddForm.vue";
+import RoleDeleteForm from "@/modules/AdminPanel/Roles/RoleDeleteForm.vue";
 import APBDRequestParam from "@/libs/APBDRequestParam";
 import {ApbdFilterPanel,Modal,ResponseMsg} from '@appsbd/vue3-appsbd-libs'
 import appsbdUtls from "../../../libs/AppsbdUtls.js";
