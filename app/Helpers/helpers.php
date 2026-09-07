@@ -1,65 +1,69 @@
 <?php
+
 use App\Services\SettingService;
+
 if (! function_exists('app_setting')) {
-    function app_setting($key, $default = null, $group = null) {
+    function app_setting($key, $default = null, $group = null)
+    {
         $query = \App\Models\AppSetting::where('s_key', $key);
         if ($group) {
             $query->where('group_slug', $group);
         }
         $setting = $query->first();
+
         return $setting ? $setting->setting_value : $default;
     }
 }
-if (!function_exists('get_option')) {
+if (! function_exists('get_option')) {
     function get_option(string $key, $default = null)
     {
-        $service = new SettingService();
+        $service = new SettingService;
+
         return $service->get($key, $default);
     }
 }
 
-if (!function_exists('set_option')) {
+if (! function_exists('set_option')) {
     function set_option(string $key, $value, string $groupSlug = 'basic_settings')
     {
-        $service = new SettingService();
+        $service = new SettingService;
         $service->set($key, $value, $groupSlug);
     }
 }
-if (!function_exists('appsbd_get_remote_ip')) {
-    function appsbd_get_remote_ip() {
+if (! function_exists('appsbd_get_remote_ip')) {
+    function appsbd_get_remote_ip()
+    {
         $request = request();
-        if (! \Illuminate\Support\Facades\App::environment( 'production' ) ) {
+        if (! \Illuminate\Support\Facades\App::environment('production')) {
             return '118.179.63.17';
         }
         if ($request->server('HTTP_CF_CONNECTING_IP')) {
             return $request->server('HTTP_CF_CONNECTING_IP');
-        }elseif ($request->server('HTTP_X_REAL_IP')) {
+        } elseif ($request->server('HTTP_X_REAL_IP')) {
             return $request->server('HTTP_X_REAL_IP');
         } elseif ($request->server('HTTP_CLIENT_IP')) {
             return $request->server('HTTP_CLIENT_IP');
         } elseif ($request->server('HTTP_X_FORWARDED_FOR')) {
             return $request->server('HTTP_X_FORWARDED_FOR');
-        }  else {
+        } else {
             return $request->server('REMOTE_ADDR', '-');
         }
     }
 }
-if (!function_exists('appsbd_get_remote_ipinfo')) {
-    function appsbd_get_remote_ipinfo() {
-       $remoteIp = appsbd_get_remote_ip();
-       $ipinfo = \Illuminate\Support\Facades\Http::withOptions([
-           'verify' => false,
-       ])->get("https://free.freeipapi.com/api/json/{$remoteIp}")->json();
-       return $ipinfo;
+if (! function_exists('appsbd_get_remote_ipinfo')) {
+    function appsbd_get_remote_ipinfo()
+    {
+        $remoteIp = appsbd_get_remote_ip();
+        $ipinfo = \Illuminate\Support\Facades\Http::withOptions([
+            'verify' => false,
+        ])->get("https://free.freeipapi.com/api/json/{$remoteIp}")->json();
+
+        return $ipinfo;
     }
 }
-if (!function_exists('turnstile_verify')) {
+if (! function_exists('turnstile_verify')) {
     /**
      * Verify Cloudflare Turnstile token
-     *
-     * @param string $token
-     * @param string|null $ip
-     * @return bool
      */
     function turnstile_verify(string $token, ?string $ip = null): bool
     {
@@ -82,8 +86,36 @@ if (!function_exists('turnstile_verify')) {
 
             return $result['success'] ?? false;
         } catch (\Exception $e) {
-            \Illuminate\Support\Facades\Log::error("Turnstile verification failed: " . $e->getMessage());
+            \Illuminate\Support\Facades\Log::error('Turnstile verification failed: '.$e->getMessage());
+
             return false;
         }
+    }
+}
+
+if (! function_exists('log_activity')) {
+    /**
+     * Helper to log activity.
+     */
+    function log_activity(
+        string $event,
+        string $des,
+        array $desParam = [],
+        ?string $subjectType = null,
+        ?int $subjectId = null,
+        ?int $userId = null,
+        ?int $tenantId = null,
+        ?array $properties = null
+    ) {
+        return \App\Services\ActivityLogger::log(
+            $event,
+            $des,
+            $desParam,
+            $subjectType,
+            $subjectId,
+            $userId,
+            $tenantId,
+            $properties
+        );
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Debt;
 use App\Models\DebtPayment;
 use App\Models\Transaction;
+use App\Services\ActivityLogger;
 use appsbd\Libs\ApiDataResponse;
 use appsbd\Libs\ApiResponse;
 use Illuminate\Http\Request;
@@ -20,8 +21,9 @@ class DebtController extends Controller
     public function index(Request $request)
     {
         $tenantId = auth()->id() ?? 1;
-        $response = new ApiDataResponse();
+        $response = new ApiDataResponse;
         $response->searchFromRequest($request, Debt::class, JsonResource::class, ['payments.transaction.account'], [], ['tenant_id' => $tenantId]);
+
         return $response->display();
     }
 
@@ -31,38 +33,39 @@ class DebtController extends Controller
         $userId = auth()->id() ?? 1;
 
         $validator = Validator::make($request->all(), [
-            'type'             => 'required|in:owed_to,owed_from',
-            'creditor_name'    => 'required|string|max:255',
+            'type' => 'required|in:owed_to,owed_from',
+            'creditor_name' => 'required|string|max:255',
             'principal_amount' => 'required|numeric|min:0.01',
-            'account_id'       => 'nullable|exists:accounts,id',
-            'due_date'         => 'nullable|date',
-            'interest_rate'    => 'nullable|numeric|min:0',
+            'account_id' => 'nullable|exists:accounts,id',
+            'due_date' => 'nullable|date',
+            'interest_rate' => 'nullable|numeric|min:0',
         ]);
 
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $error) {
                 ApiResponse::addErrorArray($error);
             }
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 422);
         }
 
         $debt = DB::transaction(function () use ($request, $tenantId, $userId) {
             $type = $request->input('type');
-            $amount = (float)$request->input('principal_amount');
+            $amount = (float) $request->input('principal_amount');
             $accountId = $request->input('account_id');
 
             $debtRecord = Debt::create([
-                'tenant_id'        => $tenantId,
-                'type'             => $type,
-                'creditor_name'    => $request->input('creditor_name'),
+                'tenant_id' => $tenantId,
+                'type' => $type,
+                'creditor_name' => $request->input('creditor_name'),
                 'creditor_contact' => $request->input('creditor_contact'),
                 'principal_amount' => $amount,
-                'paid_amount'      => $request->input('paid_amount', 0.00),
-                'interest_rate'    => $request->input('interest_rate'),
-                'due_date'         => $request->input('due_date'),
-                'description'      => $request->input('description'),
-                'status'           => $request->input('status', 'active'),
+                'paid_amount' => $request->input('paid_amount', 0.00),
+                'interest_rate' => $request->input('interest_rate'),
+                'due_date' => $request->input('due_date'),
+                'description' => $request->input('description'),
+                'status' => $request->input('status', 'active'),
             ]);
 
             // If an account is selected, record the initial cash movement & transaction
@@ -80,15 +83,15 @@ class DebtController extends Controller
                             ->first();
 
                         Transaction::create([
-                            'tenant_id'        => $tenantId,
-                            'user_id'          => $userId,
+                            'tenant_id' => $tenantId,
+                            'user_id' => $userId,
                             'transaction_type' => 'income',
-                            'amount'           => $amount,
-                            'account_id'       => $accountId,
-                            'category_id'      => $category ? $category->id : null,
-                            'date'             => $request->input('date', now()->toDateString()),
-                            'time'             => now()->format('H:i'),
-                            'description'      => "Loan borrowed from {$debtRecord->creditor_name}" . ($debtRecord->description ? " ({$debtRecord->description})" : ''),
+                            'amount' => $amount,
+                            'account_id' => $accountId,
+                            'category_id' => $category ? $category->id : null,
+                            'date' => $request->input('date', now()->toDateString()),
+                            'time' => now()->format('H:i'),
+                            'description' => "Loan borrowed from {$debtRecord->creditor_name}".($debtRecord->description ? " ({$debtRecord->description})" : ''),
                         ]);
                     } elseif ($type === 'owed_from') {
                         // Loan given to someone: cash is disbursed from my account
@@ -101,15 +104,15 @@ class DebtController extends Controller
                             ->first();
 
                         Transaction::create([
-                            'tenant_id'        => $tenantId,
-                            'user_id'          => $userId,
+                            'tenant_id' => $tenantId,
+                            'user_id' => $userId,
                             'transaction_type' => 'expense',
-                            'amount'           => $amount,
-                            'account_id'       => $accountId,
-                            'category_id'      => $category ? $category->id : null,
-                            'date'             => $request->input('date', now()->toDateString()),
-                            'time'             => now()->format('H:i'),
-                            'description'      => "Loan given to {$debtRecord->creditor_name}" . ($debtRecord->description ? " ({$debtRecord->description})" : ''),
+                            'amount' => $amount,
+                            'account_id' => $accountId,
+                            'category_id' => $category ? $category->id : null,
+                            'date' => $request->input('date', now()->toDateString()),
+                            'time' => now()->format('H:i'),
+                            'description' => "Loan given to {$debtRecord->creditor_name}".($debtRecord->description ? " ({$debtRecord->description})" : ''),
                         ]);
                     }
                 }
@@ -118,8 +121,12 @@ class DebtController extends Controller
             return $debtRecord;
         });
 
+        $typeLabel = $debt->type === 'owed_to' ? 'Borrowed from' : 'Lent to';
+        ActivityLogger::logCreated($debt, "{$typeLabel} {$debt->creditor_name} (".number_format($debt->principal_amount, 2).')');
+
         ApiResponse::addInfoArray(__('Debt record created successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, $debt);
     }
 
@@ -128,13 +135,15 @@ class DebtController extends Controller
         $tenantId = auth()->id() ?? 1;
         $debt = Debt::with(['payments.transaction.account'])->where('tenant_id', $tenantId)->find($id);
 
-        if (!$debt) {
+        if (! $debt) {
             ApiResponse::addErrorArray(__('Debt record not found'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 404);
         }
 
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, $debt);
     }
 
@@ -143,17 +152,22 @@ class DebtController extends Controller
         $tenantId = auth()->id() ?? 1;
         $debt = Debt::where('tenant_id', $tenantId)->find($id);
 
-        if (!$debt) {
+        if (! $debt) {
             ApiResponse::addErrorArray(__('Debt record not found'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 404);
         }
 
         $debt->fill($request->only(['type', 'creditor_name', 'creditor_contact', 'principal_amount', 'paid_amount', 'interest_rate', 'due_date', 'description', 'status']));
         $debt->save();
 
+        $typeLabel = $debt->type === 'owed_to' ? 'Debt to' : 'Loan to';
+        ActivityLogger::logUpdated($debt, "{$typeLabel} {$debt->creditor_name} (".number_format($debt->principal_amount, 2).')');
+
         ApiResponse::addInfoArray(__('Debt record updated successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, $debt);
     }
 
@@ -162,16 +176,20 @@ class DebtController extends Controller
         $tenantId = auth()->id() ?? 1;
         $debt = Debt::where('tenant_id', $tenantId)->find($id);
 
-        if (!$debt) {
+        if (! $debt) {
             ApiResponse::addErrorArray(__('Debt record not found'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 404);
         }
+
+        ActivityLogger::logDeleted($debt, "{$debt->creditor_name}");
 
         $debt->delete();
 
         ApiResponse::addInfoArray(__('Debt record deleted successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, null);
     }
 
@@ -181,29 +199,31 @@ class DebtController extends Controller
         $userId = auth()->id() ?? 1;
         $debt = Debt::where('tenant_id', $tenantId)->find($id);
 
-        if (!$debt) {
+        if (! $debt) {
             ApiResponse::addErrorArray(__('Debt record not found'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 404);
         }
 
         $validator = Validator::make($request->all(), [
-            'amount'       => 'required|numeric|min:0.01',
-            'account_id'   => 'required|exists:accounts,id',
-            'note'         => 'required|string|max:255',
+            'amount' => 'required|numeric|min:0.01',
+            'account_id' => 'required|exists:accounts,id',
+            'note' => 'required|string|max:255',
             'payment_date' => 'nullable|date',
-            'time'         => 'nullable|string|max:10',
+            'time' => 'nullable|string|max:10',
         ]);
 
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $error) {
                 ApiResponse::addErrorArray($error);
             }
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 422);
         }
 
-        $amount = (float)$request->input('amount');
+        $amount = (float) $request->input('amount');
         $accountId = $request->input('account_id');
         $paymentDate = $request->input('payment_date', now()->toDateString());
         $paymentTime = $request->input('time', now()->format('H:i'));
@@ -224,20 +244,20 @@ class DebtController extends Controller
                             ->where('type', 'expense')
                             ->where(function ($q) {
                                 $q->where('name', 'like', '%Debt%')
-                                  ->orWhere('name', 'like', '%Loan%');
+                                    ->orWhere('name', 'like', '%Loan%');
                             })
                             ->first();
 
                         $tx = Transaction::create([
-                            'tenant_id'        => $tenantId,
-                            'user_id'          => $userId,
+                            'tenant_id' => $tenantId,
+                            'user_id' => $userId,
                             'transaction_type' => 'expense',
-                            'amount'           => $amount,
-                            'account_id'       => $accountId,
-                            'category_id'      => $category ? $category->id : null,
-                            'date'             => $paymentDate,
-                            'time'             => $paymentTime,
-                            'description'      => "Debt repayment to {$debt->creditor_name}" . ($note ? " - {$note}" : ''),
+                            'amount' => $amount,
+                            'account_id' => $accountId,
+                            'category_id' => $category ? $category->id : null,
+                            'date' => $paymentDate,
+                            'time' => $paymentTime,
+                            'description' => "Debt repayment to {$debt->creditor_name}".($note ? " - {$note}" : ''),
                         ]);
                         $transactionId = $tx->id;
                     } elseif ($debt->type === 'owed_from') {
@@ -248,21 +268,21 @@ class DebtController extends Controller
                             ->where('type', 'income')
                             ->where(function ($q) {
                                 $q->where('name', 'like', '%Debt%')
-                                  ->orWhere('name', 'like', '%Loan%')
-                                  ->orWhere('name', 'like', '%Other%');
+                                    ->orWhere('name', 'like', '%Loan%')
+                                    ->orWhere('name', 'like', '%Other%');
                             })
                             ->first();
 
                         $tx = Transaction::create([
-                            'tenant_id'        => $tenantId,
-                            'user_id'          => $userId,
+                            'tenant_id' => $tenantId,
+                            'user_id' => $userId,
                             'transaction_type' => 'income',
-                            'amount'           => $amount,
-                            'account_id'       => $accountId,
-                            'category_id'      => $category ? $category->id : null,
-                            'date'             => $paymentDate,
-                            'time'             => $paymentTime,
-                            'description'      => "Debt collection from {$debt->creditor_name}" . ($note ? " - {$note}" : ''),
+                            'amount' => $amount,
+                            'account_id' => $accountId,
+                            'category_id' => $category ? $category->id : null,
+                            'date' => $paymentDate,
+                            'time' => $paymentTime,
+                            'description' => "Debt collection from {$debt->creditor_name}".($note ? " - {$note}" : ''),
                         ]);
                         $transactionId = $tx->id;
                     }
@@ -270,11 +290,11 @@ class DebtController extends Controller
             }
 
             $paymentRecord = DebtPayment::create([
-                'debt_id'        => $debt->id,
+                'debt_id' => $debt->id,
                 'transaction_id' => $transactionId,
-                'amount'         => $amount,
-                'payment_date'   => $paymentDate,
-                'note'           => $note,
+                'amount' => $amount,
+                'payment_date' => $paymentDate,
+                'note' => $note,
             ]);
 
             $debt->increment('paid_amount', $amount);
@@ -285,9 +305,24 @@ class DebtController extends Controller
             return $paymentRecord;
         });
 
+        $actionWord = $debt->type === 'owed_to' ? 'Payment to' : 'Collection from';
+        ActivityLogger::log(
+            event: 'updated',
+            des: 'act.up',
+            desParam: [
+                'uname' => auth()->user()?->name ?? 'User',
+                'model' => "Debt {$actionWord} {$debt->creditor_name}: ".number_format($amount, 2),
+            ],
+            subjectType: Debt::class,
+            subjectId: $debt->id,
+            userId: $userId,
+            tenantId: $tenantId,
+            properties: ['amount' => $amount, 'note' => $note, 'new_paid_total' => $debt->paid_amount]
+        );
+
         ApiResponse::addInfoArray(__('Payment recorded and balance updated successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, $payment);
     }
 }
-

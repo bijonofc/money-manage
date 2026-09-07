@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\RoleAccess;
+use App\Services\ActivityLogger;
 use appsbd\Libs\ApiDataResponse;
 use appsbd\Libs\ApiResponse;
 use Illuminate\Http\Request;
@@ -19,8 +20,9 @@ class RoleController extends Controller
      */
     public function list(Request $request)
     {
-        $response = new ApiDataResponse();
+        $response = new ApiDataResponse;
         $response->searchFromRequest($request, Role::class, JsonResource::class, [], ['users']);
+
         return $response->display();
     }
 
@@ -30,7 +32,7 @@ class RoleController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'title'       => 'required|string|max:100',
+            'title' => 'required|string|max:100',
             'description' => 'nullable|string|max:255',
         ]);
 
@@ -38,21 +40,25 @@ class RoleController extends Controller
             foreach ($validator->errors()->all() as $error) {
                 ApiResponse::addErrorArray($error);
             }
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 422);
         }
 
         $role = Role::create([
-            'title'       => $request->input('title'),
-            'slug'        => Str::slug($request->input('title')),
+            'title' => $request->input('title'),
+            'slug' => Str::slug($request->input('title')),
             'description' => $request->input('description', ''),
-            'is_super'    => 'N',
-            'status'      => 'A',
-            'added_by'    => auth()->id() ?? 1,
+            'is_super' => 'N',
+            'status' => 'A',
+            'added_by' => auth()->id() ?? 1,
         ]);
 
+        ActivityLogger::logCreated($role, $role->title);
+
         ApiResponse::addInfoArray(__('Role created successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, $role);
     }
 
@@ -62,13 +68,15 @@ class RoleController extends Controller
     public function show($id)
     {
         $role = Role::find($id);
-        if (!$role) {
+        if (! $role) {
             ApiResponse::addErrorArray(__('Role not found'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 404);
         }
 
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, $role);
     }
 
@@ -78,16 +86,20 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
         $role = Role::find($id);
-        if (!$role) {
+        if (! $role) {
             ApiResponse::addErrorArray(__('Role not found'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 404);
         }
 
         $role->update($request->only(['title', 'description', 'status']));
 
+        ActivityLogger::logUpdated($role, $role->title);
+
         ApiResponse::addInfoArray(__('Role updated successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, $role);
     }
 
@@ -97,22 +109,27 @@ class RoleController extends Controller
     public function destroy($id)
     {
         $role = Role::find($id);
-        if (!$role) {
+        if (! $role) {
             ApiResponse::addErrorArray(__('Role not found'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 404);
         }
 
         if ($role->is_super === 'Y') {
             ApiResponse::addErrorArray(__('Super admin role cannot be deleted'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 422);
         }
+
+        ActivityLogger::logDeleted($role, $role->title);
 
         $role->delete();
 
         ApiResponse::addInfoArray(__('Role deleted successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, null);
     }
 
@@ -147,6 +164,9 @@ class RoleController extends Controller
             ['res_id' => 'debt', 'res_title' => 'Debts', 'action_param' => 'debt-list', 'action_title' => 'View Debts'],
             ['res_id' => 'category', 'res_title' => 'Categories', 'action_param' => 'category-list', 'action_title' => 'View Categories'],
             ['res_id' => 'setting', 'res_title' => 'Settings', 'action_param' => 'setting-view', 'action_title' => 'View Settings'],
+            ['res_id' => 'setting', 'res_title' => 'Settings', 'action_param' => 'setting-edit', 'action_title' => 'Edit Settings'],
+            ['res_id' => 'activity', 'res_title' => 'Activity Logs', 'action_param' => 'activity-list', 'action_title' => 'View Activity Logs'],
+            ['res_id' => 'activity', 'res_title' => 'Activity Logs', 'action_param' => 'activity-detail', 'action_title' => 'View Activity Details'],
         ];
 
         $roleAccesses = RoleAccess::where('role_access', 'Y')->get()->groupBy('resource');
@@ -158,24 +178,20 @@ class RoleController extends Controller
                 : [];
 
             $rowdata[] = [
-                'group_title'  => $res['res_title'],
-                'title'        => $res['action_title'],
-                'res'          => $res['action_param'],
-                'role_access'  => $allowedRoleIds,
+                'group_title' => $res['res_title'],
+                'title' => $res['action_title'],
+                'res' => $res['action_param'],
+                'role_access' => $allowedRoleIds,
                 'tooltip_note' => '',
             ];
         }
 
-        $response = new ApiResponse();
-        return $response->displayWithResponse(true, [
-            'page'            => 1,
-            'limit'           => count($rowdata),
-            'records'         => count($rowdata),
-            'total'           => 1,
-            'rowdata'         => $rowdata,
-            'recordsTotal'    => count($rowdata),
-            'recordsFiltered' => count($rowdata),
-        ]);
+        $response = new ApiDataResponse;
+        $response->setPage(1, count($rowdata));
+        $response->setRecordCount(count($rowdata));
+        $response->setData($rowdata);
+
+        return $response->display();
     }
 
     /**
@@ -194,8 +210,22 @@ class RoleController extends Controller
             ['role_access' => $newStatus]
         );
 
+        $role = Role::find($roleId);
+        ActivityLogger::log(
+            event: 'updated',
+            des: 'act.up',
+            desParam: [
+                'uname' => auth()->user()?->name ?? 'User',
+                'model' => "Permission: {$resource} for Role ".($role?->title ?? "#{$roleId}"),
+            ],
+            subjectType: RoleAccess::class,
+            subjectId: $roleId,
+            properties: ['role_id' => $roleId, 'resource' => $resource, 'status' => $newStatus]
+        );
+
         ApiResponse::addInfoArray(__('Permission updated'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, ['role_access' => $newStatus]);
     }
 
@@ -210,7 +240,8 @@ class RoleController extends Controller
         }
 
         ApiResponse::addInfoArray(__('Role permissions reset successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, null);
     }
 
@@ -227,15 +258,16 @@ class RoleController extends Controller
             $fromAccesses = RoleAccess::where('role_id', $fromId)->get();
             foreach ($fromAccesses as $access) {
                 RoleAccess::create([
-                    'role_id'     => $toId,
-                    'resource'    => $access->resource,
+                    'role_id' => $toId,
+                    'resource' => $access->resource,
                     'role_access' => $access->role_access,
                 ]);
             }
         }
 
         ApiResponse::addInfoArray(__('Role permissions copied successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, null);
     }
 }

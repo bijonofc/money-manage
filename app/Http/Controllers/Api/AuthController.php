@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Role;
 use App\Models\RoleAccess;
 use App\Models\User;
+use App\Services\ActivityLogger;
 use appsbd\Libs\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +21,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'email'    => 'required|string',
+            'email' => 'required|string',
             'password' => 'required|string',
         ]);
 
@@ -28,7 +29,8 @@ class AuthController extends Controller
             foreach ($validator->errors()->all() as $error) {
                 ApiResponse::addErrorArray($error);
             }
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 422);
         }
 
@@ -39,19 +41,23 @@ class AuthController extends Controller
             ->orWhere('username', $loginInput)
             ->first();
 
-        if (!$user || !Hash::check($password, $user->password)) {
+        if (! $user || ! Hash::check($password, $user->password)) {
             ApiResponse::addErrorArray(__('Invalid email/username or password.'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 401);
         }
 
         Auth::login($user, true);
         $request->session()->regenerate();
 
+        ActivityLogger::logLogin($user, 'standard');
+
         $userData = $this->formatUserData($user);
 
         ApiResponse::addInfoArray(__('Login successful'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, [
             'user_data' => $userData,
         ]);
@@ -68,15 +74,19 @@ class AuthController extends Controller
             Auth::login($user, true);
             $request->session()->regenerate();
 
+            ActivityLogger::logLogin($user, 'social');
+
             ApiResponse::addInfoArray(__('Login successful'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(true, [
                 'user_data' => $this->formatUserData($user),
             ]);
         }
 
         ApiResponse::addErrorArray(__('Social login failed.'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(false, null, 401);
     }
 
@@ -92,15 +102,19 @@ class AuthController extends Controller
             Auth::login($user, true);
             $request->session()->regenerate();
 
+            ActivityLogger::logLogin($user, 'otp');
+
             ApiResponse::addInfoArray(__('Verification successful'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(true, [
                 'user_data' => $this->formatUserData($user),
             ]);
         }
 
         ApiResponse::addErrorArray(__('User not found.'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(false, null, 404);
     }
 
@@ -110,7 +124,8 @@ class AuthController extends Controller
     public function resendOtp(Request $request)
     {
         ApiResponse::addInfoArray(__('OTP sent successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, [
             'retry_after_seconds' => 60,
         ]);
@@ -121,12 +136,18 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
+        $user = Auth::user();
+        if ($user) {
+            ActivityLogger::logLogout($user);
+        }
+
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
         ApiResponse::addInfoArray(__('Logged out successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, null);
     }
 
@@ -137,13 +158,15 @@ class AuthController extends Controller
     {
         $user = Auth::user() ?? User::first();
 
-        if (!$user) {
+        if (! $user) {
             ApiResponse::addErrorArray(__('Unauthenticated'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 401);
         }
 
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, $this->formatUserData($user));
     }
 
@@ -154,33 +177,38 @@ class AuthController extends Controller
     {
         $user = Auth::user() ?? User::first();
 
-        if (!$user) {
+        if (! $user) {
             ApiResponse::addErrorArray(__('Unauthenticated'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 401);
         }
 
         $validator = Validator::make($request->all(), [
-            'name'       => 'sometimes|required|string|max:255',
-            'email'      => 'sometimes|required|email|unique:users,email,' . $user->id,
-            'username'   => 'sometimes|required|string|unique:users,username,' . $user->id,
+            'name' => 'sometimes|required|string|max:255',
+            'email' => 'sometimes|required|email|unique:users,email,'.$user->id,
+            'username' => 'sometimes|required|string|unique:users,username,'.$user->id,
             'contact_no' => 'nullable|string|max:50',
-            'address'    => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $error) {
                 ApiResponse::addErrorArray($error);
             }
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 422);
         }
 
         $user->fill($request->only(['name', 'email', 'username', 'contact_no', 'address']));
         $user->save();
 
+        ActivityLogger::logUpdated($user, $user->name);
+
         ApiResponse::addInfoArray(__('Profile updated successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, $this->formatUserData($user));
     }
 
@@ -206,7 +234,7 @@ class AuthController extends Controller
                     'budget-list', 'budget-add', 'budget-edit', 'budget-delete',
                     'savings-list', 'savings-add', 'savings-edit', 'savings-delete',
                     'debt-list', 'debt-add', 'debt-edit', 'debt-delete',
-                    'activity-list', 'template-list', 'notification-list',
+                    'activity-list', 'activity-detail', 'template-list', 'notification-list',
                 ];
                 foreach ($allCaps as $c) {
                     $caps[$c] = true;
@@ -220,19 +248,19 @@ class AuthController extends Controller
         }
 
         return [
-            'id'         => $user->id,
-            'name'       => $user->name,
-            'username'   => $user->username,
-            'email'      => $user->email,
+            'id' => $user->id,
+            'name' => $user->name,
+            'username' => $user->username,
+            'email' => $user->email,
             'contact_no' => $user->contact_no,
-            'address'    => $user->address,
-            'role_id'    => $user->role_id,
+            'address' => $user->address,
+            'role_id' => $user->role_id,
             'role_title' => $role?->title ?? '',
-            'is_super'   => $role?->is_super ?? 'N',
-            'is_force'   => 'N',
-            'image'      => null,
-            'image_url'  => null,
-            'caps'       => (object)$caps,
+            'is_super' => $role?->is_super ?? 'N',
+            'is_force' => 'N',
+            'image' => null,
+            'image_url' => null,
+            'caps' => (object) $caps,
         ];
     }
 }

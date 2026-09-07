@@ -22,7 +22,7 @@ class DashboardController extends Controller
         $users = User::select('id', 'name', 'email', 'username', 'role_id', 'contact_no')->get();
         $roles = Role::all();
 
-        $accounts = Account::where('tenant_id', $tenantId)->where('is_active', true)->get();
+        $accounts = Account::where('tenant_id', $tenantId)->whereRaw('is_active IS TRUE')->get();
         $totalBalance = $accounts->sum('balance');
 
         $startOfMonth = now()->startOfMonth()->toDateString();
@@ -54,13 +54,13 @@ class DashboardController extends Controller
             ->get();
 
         $savingsGoals = \App\Models\SavingsGoal::where('tenant_id', $tenantId)
-            ->where('is_active', true)
+            ->whereRaw('is_active IS TRUE')
             ->limit(5)
             ->get();
 
         $budgets = \App\Models\Budget::with('category')
             ->where('tenant_id', $tenantId)
-            ->where('is_active', true)
+            ->whereRaw('is_active IS TRUE')
             ->limit(5)
             ->get();
 
@@ -138,3 +138,4 @@ class DashboardController extends Controller
         ]);
     }
 }
+

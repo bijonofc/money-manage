@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Account;
 use App\Models\Transaction;
+use App\Services\ActivityLogger;
 use appsbd\Libs\ApiDataResponse;
 use appsbd\Libs\ApiResponse;
 use Illuminate\Http\Request;
@@ -17,7 +18,7 @@ class TransactionController extends Controller
     public function index(Request $request)
     {
         $tenantId = auth()->id() ?? 1;
-        $response = new ApiDataResponse();
+        $response = new ApiDataResponse;
         $response->setDefaultSortData('date', 'desc');
         $response->searchFromRequest(
             $request,
@@ -27,6 +28,7 @@ class TransactionController extends Controller
             [],
             ['tenant_id' => $tenantId]
         );
+
         return $response->display();
     }
 
@@ -37,21 +39,22 @@ class TransactionController extends Controller
 
         $validator = Validator::make($request->all(), [
             'transaction_type' => 'required|in:income,expense,transfer',
-            'amount'           => 'required|numeric|min:0.01',
-            'account_id'       => 'required|exists:accounts,id',
-            'category_id'      => 'nullable|exists:categories,id',
-            'from_account_id'  => 'nullable|exists:accounts,id',
-            'date'             => 'required|date',
-            'time'             => 'nullable|string',
-            'description'      => 'nullable|string',
-            'payment_method'   => 'nullable|in:cash,card,bank_transfer,mobile,check,other',
+            'amount' => 'required|numeric|min:0.01',
+            'account_id' => 'required|exists:accounts,id',
+            'category_id' => 'nullable|exists:categories,id',
+            'from_account_id' => 'nullable|exists:accounts,id',
+            'date' => 'required|date',
+            'time' => 'nullable|string',
+            'description' => 'nullable|string',
+            'payment_method' => 'nullable|in:cash,card,bank_transfer,mobile,check,other',
         ]);
 
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $error) {
                 ApiResponse::addErrorArray($error);
             }
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 422);
         }
 
@@ -62,19 +65,19 @@ class TransactionController extends Controller
             $fromAccountId = $request->input('from_account_id');
 
             $tx = Transaction::create([
-                'tenant_id'        => $tenantId,
-                'user_id'          => $userId,
+                'tenant_id' => $tenantId,
+                'user_id' => $userId,
                 'transaction_type' => $type,
-                'amount'           => $amount,
-                'category_id'      => $request->input('category_id'),
-                'account_id'       => $accountId,
-                'from_account_id'  => $fromAccountId,
-                'date'             => $request->input('date'),
-                'time'             => $request->input('time'),
-                'description'      => $request->input('description'),
+                'amount' => $amount,
+                'category_id' => $request->input('category_id'),
+                'account_id' => $accountId,
+                'from_account_id' => $fromAccountId,
+                'date' => $request->input('date'),
+                'time' => $request->input('time'),
+                'description' => $request->input('description'),
                 'reference_number' => $request->input('reference_number'),
-                'payment_method'   => $request->input('payment_method'),
-                'tags'             => $request->input('tags'),
+                'payment_method' => $request->input('payment_method'),
+                'tags' => $request->input('tags'),
             ]);
 
             // Update Account Balances
@@ -96,8 +99,12 @@ class TransactionController extends Controller
             return $tx;
         });
 
+        $desc = ($transaction->description ? $transaction->description : ucfirst($transaction->transaction_type)).' ('.number_format($transaction->amount, 2).')';
+        ActivityLogger::logCreated($transaction, $desc);
+
         ApiResponse::addInfoArray(__('Transaction recorded successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, $transaction);
     }
 
@@ -108,13 +115,15 @@ class TransactionController extends Controller
             ->where('tenant_id', $tenantId)
             ->find($id);
 
-        if (!$transaction) {
+        if (! $transaction) {
             ApiResponse::addErrorArray(__('Transaction not found'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 404);
         }
 
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, $transaction);
     }
 
@@ -123,9 +132,10 @@ class TransactionController extends Controller
         $tenantId = auth()->id() ?? 1;
         $transaction = Transaction::where('tenant_id', $tenantId)->find($id);
 
-        if (!$transaction) {
+        if (! $transaction) {
             ApiResponse::addErrorArray(__('Transaction not found'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 404);
         }
 
@@ -136,8 +146,12 @@ class TransactionController extends Controller
         ]));
         $transaction->save();
 
+        $desc = ($transaction->description ? $transaction->description : ucfirst($transaction->transaction_type)).' ('.number_format($transaction->amount, 2).')';
+        ActivityLogger::logUpdated($transaction, $desc);
+
         ApiResponse::addInfoArray(__('Transaction updated successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, $transaction);
     }
 
@@ -146,16 +160,21 @@ class TransactionController extends Controller
         $tenantId = auth()->id() ?? 1;
         $transaction = Transaction::where('tenant_id', $tenantId)->find($id);
 
-        if (!$transaction) {
+        if (! $transaction) {
             ApiResponse::addErrorArray(__('Transaction not found'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 404);
         }
+
+        $desc = ($transaction->description ? $transaction->description : ucfirst($transaction->transaction_type)).' ('.number_format($transaction->amount, 2).')';
+        ActivityLogger::logDeleted($transaction, $desc);
 
         $transaction->delete();
 
         ApiResponse::addInfoArray(__('Transaction deleted successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, null);
     }
 }

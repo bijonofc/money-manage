@@ -1,17 +1,27 @@
 .multiselect-wrapper {
   min-height: 36px;
+  display: flex;
+  align-items: center;
 }
 .multiselect {
     min-height: 36px;
     border-radius: var(--ms-radius, 6px);
     background: var(--ab-card-bg);
     border-color: var(--ab-border-color);
-    &.multiselect-sm{
-        padding: var(--ab-input-sm-padding);
-        min-height: 20px !important;
-        border-radius: var(--ab-input-border-radius-sm);
-        .multiselect-wrapper{
-            min-height: 20px !important;
+    &.multiselect-sm {
+        min-height: 33px !important;
+        height: 33px;
+        border-radius: var(--ab-input-border-radius-sm, 6px);
+        .multiselect-wrapper {
+            min-height: 31px !important;
+            height: 31px;
+        }
+        .multiselect-placeholder,
+        .multiselect-single-label {
+            font-size: 0.8125rem;
+            line-height: 31px;
+            margin: 0 !important;
+            padding-left: 8px !important;
         }
     }
   &.is-active {
@@ -25,34 +35,35 @@
         background: var(--ab-main-color);
         font-size: var(--ms-tag-font-size, .775rem);
         font-weight: var(--ms-tag-font-weight, 500);
-
-
     }
   .multiselect-placeholder {
     padding-right: 0px !important;
-    padding-left: 6px !important;
-    font-size: 13px;
-    margin-bottom: 10px;
+    padding-left: 8px !important;
+    font-size: 0.8125rem;
+    margin-bottom: 0 !important;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
-  .multiselect-wrapper{
-      .multiselect-search{
+  .multiselect-wrapper {
+      .multiselect-search {
           background: var(--ab-card-bg);
           border-radius: var(--ms-radius, 6px);
       }
-    .multiselect-tags{
-      .multiselect-tags-search-wrapper{
-        input[type="text"]{
+    .multiselect-tags {
+      .multiselect-tags-search-wrapper {
+        input[type="text"] {
           padding-left: 6px !important;
-          border:none;
+          border: none;
           min-height: unset;
         }
       }
     }
-
   }
-
 }
-.multiselect-dropdown{
+.multiselect-dropdown {
     background: var(--ab-card-bg) !important;
     color: var(--ab-body-color) !important;
+    border-color: var(--ab-border-color) !important;
+    z-index: 1050 !important;
 }

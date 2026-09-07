@@ -164,14 +164,16 @@ export default {
       let response = await this.roleStore.getData();
       this.isDataLoader = false;
     }
-    if (!this.roleStore.firstAccessLoaded || !(this.roleStore.accessGridData && this.roleStore.accessGridData.records)) {
+    let hasAccessData = this.roleStore.accessGridData && (this.roleStore.accessGridData.records !== undefined || this.roleStore.accessGridData.data?.records !== undefined);
+    if (!this.roleStore.firstAccessLoaded || !hasAccessData) {
       this.loadGridData();
     } else {
       try {
-        if (this.roleStore.gridData.records) {
-          this.gridData.records = this.roleStore.accessGridData.records;
-          this.gridData.total = this.roleStore.accessGridData.total;
-          this.gridData.rowdata = this.roleStore.accessGridData.rowdata;
+        let accessData = this.roleStore.accessGridData.records !== undefined ? this.roleStore.accessGridData : (this.roleStore.accessGridData.data || {});
+        if (accessData.records !== undefined) {
+          this.gridData.records = accessData.records || 0;
+          this.gridData.total = accessData.total || 1;
+          this.gridData.rowdata = accessData.rowdata || [];
         } else {
           this.loadGridData();
         }
@@ -212,6 +214,30 @@ export default {
     }
   },
   methods: {
+    searchData(data) {
+      let val = '';
+      if (typeof data === 'string') {
+        val = data.toLowerCase();
+      } else if (data && typeof data === 'object') {
+        val = (data.search_val || data.src_val || (Array.isArray(data) && data[0]?.src_val) || '').toLowerCase();
+      }
+      let allData = this.roleStore.accessGridData?.rowdata || this.roleStore.accessGridData?.data?.rowdata || [];
+      if (val) {
+        this.gridData.rowdata = allData.filter(item =>
+          (item.title && item.title.toLowerCase().includes(val)) ||
+          (item.group_title && item.group_title.toLowerCase().includes(val)) ||
+          (item.res && item.res.toLowerCase().includes(val))
+        );
+      } else {
+        this.gridData.rowdata = allData;
+      }
+      this.gridData.records = this.gridData.rowdata.length;
+    },
+    clearSearch() {
+      let allData = this.roleStore.accessGridData?.rowdata || this.roleStore.accessGridData?.data?.rowdata || [];
+      this.gridData.rowdata = allData;
+      this.gridData.records = allData.length;
+    },
     async changePermission(item,role){
       if(!role.editable){
         return ;
@@ -265,12 +291,13 @@ export default {
       try {
         let response = await this.roleStore.getAccessData();
         if (response) {
-          this.gridData.records = response.records;
-          this.gridData.total = response.total;
-          this.gridData.rowdata = response.rowdata;
+          let data = response.records !== undefined ? response : (response.data || {});
+          this.gridData.records = data.records ?? 0;
+          this.gridData.total = data.total ?? 1;
+          this.gridData.rowdata = data.rowdata ?? [];
         }
       } catch (e) {
-
+        this.gridData.rowdata = [];
       }
       this.isDataLoader = false;
     },

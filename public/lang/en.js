@@ -329,8 +329,24 @@ const lang = {
         "act.visit.admin": '%{uname} visited %{customer_name} admin panel (%{url})',
         "act.visit.ngpos": '%{uname} visited %{customer_name} nogorpos admin panel (%{url})',
 
+        "alog.log": "Log",
+        "alog.time": "Time",
+        "alog.ip": "IP Address",
+        "alog.url": "URL",
+        "alog": "Activity Log",
+        "alog.user": "User",
+        "alog.action": "Action",
+        "activity.log": "Activity Log",
+        "Activity Logs": "Activity Logs",
 
         "md.User":'User',
+        "md.Account":'Account',
+        "md.Category":'Category',
+        "md.Transaction":'Transaction',
+        "md.Budget":'Budget',
+        "md.SavingsGoal":'Savings Goal',
+        "md.Debt":'Debt',
+        "md.Role":'Role',
         "md.app_settings":'App Settings',
         "md.app_name":'App Name',
         "system user":'system user',
@@ -339,6 +355,7 @@ const lang = {
         "md.Customer":'Customer',
         "md.TempCustomer":'Temp Customer',
         "md.Package":'Package',
+
 
         "customer.summary":'Customer Summary',
         "transaction.summary":'Transaction Summary',

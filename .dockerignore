@@ -1,0 +1,42 @@
+# Directories
+.git
+.github
+.gitignore
+.editorconfig
+node_modules
+vendor
+tests
+.phpunit.result.cache
+.phpunit.cache
+phpunit.xml
+
+# Environment & credentials
+.env
+.env.*
+!.env.example
+/auth.json
+Homestead.json
+Homestead.yaml
+
+# Documentation & IDE
+CLAUDE.md
+README.md
+DEPLOY_RENDER.md
+.idea
+.vscode
+.zed
+.fleet
+.nova
+
+# Temporary and build artifacts
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+storage/pail
+public/hot
+public/storage
+composer.phar
+Thumbs.db
+*.log
+docker-compose.yml

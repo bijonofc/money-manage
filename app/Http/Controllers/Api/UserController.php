@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\ActivityLogger;
 use appsbd\Libs\ApiDataResponse;
 use appsbd\Libs\ApiResponse;
 use Illuminate\Http\Request;
@@ -18,8 +19,9 @@ class UserController extends Controller
      */
     public function list(Request $request)
     {
-        $response = new ApiDataResponse();
+        $response = new ApiDataResponse;
         $response->searchFromRequest($request, User::class, JsonResource::class, ['role']);
+
         return $response->display();
     }
 
@@ -29,35 +31,39 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'name'       => 'required|string|max:255',
-            'email'      => 'required|email|unique:users,email',
-            'username'   => 'required|string|unique:users,username',
-            'password'   => 'required|string|min:4',
-            'role_id'    => 'required|exists:roles,id',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'username' => 'required|string|unique:users,username',
+            'password' => 'required|string|min:4',
+            'role_id' => 'required|exists:roles,id',
             'contact_no' => 'nullable|string|max:50',
-            'address'    => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $error) {
                 ApiResponse::addErrorArray($error);
             }
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 422);
         }
 
         $user = User::create([
-            'name'       => $request->input('name'),
-            'email'      => $request->input('email'),
-            'username'   => $request->input('username'),
-            'password'   => Hash::make($request->input('password')),
-            'role_id'    => $request->input('role_id'),
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'username' => $request->input('username'),
+            'password' => Hash::make($request->input('password')),
+            'role_id' => $request->input('role_id'),
             'contact_no' => $request->input('contact_no'),
-            'address'    => $request->input('address'),
+            'address' => $request->input('address'),
         ]);
 
+        ActivityLogger::logCreated($user, $user->name);
+
         ApiResponse::addInfoArray(__('User created successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, $user);
     }
 
@@ -67,13 +73,15 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::with('role')->find($id);
-        if (!$user) {
+        if (! $user) {
             ApiResponse::addErrorArray(__('User not found'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 404);
         }
 
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, $user);
     }
 
@@ -83,34 +91,39 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find($id);
-        if (!$user) {
+        if (! $user) {
             ApiResponse::addErrorArray(__('User not found'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 404);
         }
 
         $validator = Validator::make($request->all(), [
-            'name'       => 'sometimes|required|string|max:255',
-            'email'      => 'sometimes|required|email|unique:users,email,' . $user->id,
-            'username'   => 'sometimes|required|string|unique:users,username,' . $user->id,
-            'role_id'    => 'sometimes|required|exists:roles,id',
+            'name' => 'sometimes|required|string|max:255',
+            'email' => 'sometimes|required|email|unique:users,email,'.$user->id,
+            'username' => 'sometimes|required|string|unique:users,username,'.$user->id,
+            'role_id' => 'sometimes|required|exists:roles,id',
             'contact_no' => 'nullable|string|max:50',
-            'address'    => 'nullable|string|max:255',
+            'address' => 'nullable|string|max:255',
         ]);
 
         if ($validator->fails()) {
             foreach ($validator->errors()->all() as $error) {
                 ApiResponse::addErrorArray($error);
             }
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 422);
         }
 
         $user->fill($request->only(['name', 'email', 'username', 'role_id', 'contact_no', 'address']));
         $user->save();
 
+        ActivityLogger::logUpdated($user, $user->name);
+
         ApiResponse::addInfoArray(__('User updated successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, $user);
     }
 
@@ -120,16 +133,20 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find($id);
-        if (!$user) {
+        if (! $user) {
             ApiResponse::addErrorArray(__('User not found'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 404);
         }
+
+        ActivityLogger::logDeleted($user, $user->name);
 
         $user->delete();
 
         ApiResponse::addInfoArray(__('User deleted successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, null);
     }
 
@@ -141,9 +158,10 @@ class UserController extends Controller
         $userId = $request->input('user_id', auth()->id());
         $user = User::find($userId);
 
-        if (!$user) {
+        if (! $user) {
             ApiResponse::addErrorArray(__('User not found'));
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 404);
         }
 
@@ -155,15 +173,30 @@ class UserController extends Controller
             foreach ($validator->errors()->all() as $error) {
                 ApiResponse::addErrorArray($error);
             }
-            $response = new ApiResponse();
+            $response = new ApiResponse;
+
             return $response->displayWithResponse(false, null, 422);
         }
 
         $user->password = Hash::make($request->input('password'));
         $user->save();
 
+        ActivityLogger::log(
+            event: 'updated',
+            des: 'act.up',
+            desParam: [
+                'uname' => auth()->user()?->name ?? 'User',
+                'model' => "User Password ({$user->name})",
+            ],
+            subjectType: User::class,
+            subjectId: $user->id,
+            userId: auth()->id(),
+            tenantId: $user->id
+        );
+
         ApiResponse::addInfoArray(__('Password changed successfully'));
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, null);
     }
 }

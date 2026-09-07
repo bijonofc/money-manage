@@ -30,37 +30,40 @@ export const useSettingStore = defineStore('setting',{
             return (await AxiosHelper
                 .post(AppsbdURL.route("settings/list"), params)
                 .then(response => {
-                    const rowdata = response.data?.rowdata || [];
+                    const rowdata = response.data?.rowdata || response.data?.data?.rowdata || response.data?.data || [];
 
                     const grouped = {};
-                    rowdata.forEach(item => {
-                        if (!grouped[item.group_slug]) {
-                            grouped[item.group_slug] = {};
-                        }
-                        grouped[item.group_slug][item.s_key] = item.s_value;
-                    });
+                    if (Array.isArray(rowdata)) {
+                        rowdata.forEach(item => {
+                            if (!grouped[item.group_slug]) {
+                                grouped[item.group_slug] = {};
+                            }
+                            grouped[item.group_slug][item.s_key] = item.s_value ?? item.s_val;
+                        });
+                    }
 
                     this.settingsList = grouped;
                     return this.settingsList;
                 })
                 .catch(error => {
                     console.log(error.message);
-                    return error.response.data;
+                    return error.response?.data || {};
                 }));
         },
 
         updateSettings: async function (params) {
-            console.log(params);
-                return (await AxiosHelper
-                    .post(AppsbdURL.route("settings"),params,true)
-                    .then(response => {
-                        // this.settingsList = response.data?.rowdata;
-                        return response.data;
-                    })
-                    .catch(error => {
-                        console.log(error.message);
-                        return error.response.data;
-                    }));
+            return (await AxiosHelper
+                .post(AppsbdURL.route("settings"), params, true)
+                .then(response => {
+                    if (response.data?.data?.settings) {
+                        this.settingsList = response.data.data.settings;
+                    }
+                    return response.data;
+                })
+                .catch(error => {
+                    console.log(error.message);
+                    return error.response?.data || {};
+                }));
         },
 
      getLog: async function (params) {

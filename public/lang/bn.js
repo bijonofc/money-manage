@@ -451,12 +451,20 @@ const lang= {
 
 
         "md.User": 'ইউজার',
+        "md.Account": 'অ্যাকাউন্ট',
+        "md.Category": 'ক্যাটাগরি',
+        "md.Transaction": 'লেনদেন',
+        "md.Budget": 'বাজেট',
+        "md.SavingsGoal": 'সঞ্চয় লক্ষ্য',
+        "md.Debt": 'ধার/ঋণ',
+        "md.Role": 'ভূমিকা/রোল',
         "system user": 'সিস্টেম ইউজার',
         "alog.log": "লগ",
         "alog.time": "লগের সময়",
         "alog.ip": "আইপি অ্যাড্রেস",
         "alog.url": "ইউআরএল",
         "alog":"অ্যাক্টিভিটি লগ",
+
         " md.Package":"প্যাকেজ",
         "customer.info": "গ্রাহকের জমা দেওয়া তথ্য",
         "gbl.role": "রোল",

@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DebtController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\SavingsGoalController;
+use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +34,7 @@ Route::get('notifications', [DashboardController::class, 'notifications']);
 Route::post('notifications/list', [DashboardController::class, 'notificationList']);
 
 // Roles & Permissions
-Route::get('role-accesses/list', [RoleController::class, 'roleAccessList']);
+Route::match(['get', 'post'], 'role-accesses/list', [RoleController::class, 'roleAccessList']);
 Route::post('role-accesses/change-permission', [RoleController::class, 'changePermission']);
 Route::post('role-accesses/reset-permission', [RoleController::class, 'resetPermission']);
 Route::post('role-accesses/copy-permission', [RoleController::class, 'copyPermission']);
@@ -76,3 +77,15 @@ Route::apiResource('debts', DebtController::class);
 // Reports & Analytics
 Route::match(['get', 'post'], 'reports/overview', [\App\Http\Controllers\Api\ReportController::class, 'overview']);
 Route::match(['get', 'post'], 'reports/export', [\App\Http\Controllers\Api\ReportController::class, 'export']);
+
+// Activity Logs
+Route::match(['get', 'post'], 'activity/list', [\App\Http\Controllers\Api\ActivityLogController::class, 'list']);
+Route::get('activity/{id}', [\App\Http\Controllers\Api\ActivityLogController::class, 'show']);
+Route::delete('activity/{id}', [\App\Http\Controllers\Api\ActivityLogController::class, 'destroy']);
+
+// Settings
+Route::match(['get', 'post'], 'settings/list', [SettingController::class, 'list']);
+Route::match(['get', 'post'], 'settings/save', [SettingController::class, 'save']);
+Route::post('settings', [SettingController::class, 'save']);
+Route::apiResource('settings', SettingController::class)->except(['store']);
+

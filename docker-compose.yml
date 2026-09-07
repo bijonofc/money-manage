@@ -1,0 +1,50 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: money-manage-app
+    restart: unless-stopped
+    ports:
+      - "8080:80"
+    environment:
+      APP_NAME: "Money Manage"
+      APP_ENV: local
+      APP_DEBUG: "true"
+      APP_KEY: base64:rZ3n9U4y6d9fG7jKlM1nOpQrStUvWxYzAbCdEfGhIjK=
+      APP_URL: http://localhost:8080
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: moneymanage
+      DB_USERNAME: moneymanage
+      DB_PASSWORD: secret_password
+      SESSION_DRIVER: database
+      CACHE_STORE: database
+      QUEUE_CONNECTION: database
+      RUN_MIGRATIONS: "true"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    container_name: money-manage-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: moneymanage
+      MYSQL_USER: moneymanage
+      MYSQL_PASSWORD: secret_password
+      MYSQL_ROOT_PASSWORD: root_password
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+
+volumes:
+  db_data:
+    driver: local
