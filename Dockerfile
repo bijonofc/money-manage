@@ -1,13 +1,17 @@
 # ==========================================
 # Stage 1: Build Frontend Assets (Vite / Vue 3)
 # ==========================================
-FROM node:20-alpine AS node_builder
+FROM node:20-slim AS node_builder
 
 WORKDIR /app
 
-# Copy package files and install dependencies
+# Ensure devDependencies are installed and memory ceiling is sufficient for large bundle builds
+ENV NODE_ENV=development
+ENV NODE_OPTIONS="--max-old-space-size=4096"
+
+# Copy package files and install all dependencies (including devDependencies)
 COPY package*.json ./
-RUN npm ci || npm install
+RUN npm install --include=dev
 
 # Copy application files and build frontend
 COPY . .
