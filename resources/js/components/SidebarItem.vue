@@ -4,13 +4,13 @@
             <div v-if="menu.children" class="ab-menu-a d-flex justify-between align-items-center w-100" :class="{'ab-active':is_active(menu)}">
                 <menu-title  :is-open="isOpen" :sidebar-closed="sidebarClosed" :menu="menu"/>
             </div>
-            <router-link v-else :to="menu.route||''" class="ab-menu-a d-flex justify-between align-items-center w-100">
+            <router-link v-else :to="menu.route||''" class="ab-menu-a d-flex justify-between align-items-center w-100" @click="handleNavClick">
                 <menu-title  :is-open="isOpen" :sidebar-closed="sidebarClosed" :menu="menu"/>
             </router-link>
             <div v-if="menu.children?.length && props.sidebarClosed" class="hover-sub-menu">
                 <ul>
                     <li v-for="child in filteredChildren" :key="child.id">
-                        <router-link :to="child.route || '#'" class="d-flex align-items-center">
+                        <router-link :to="child.route || '#'" class="d-flex align-items-center" @click="handleNavClick">
                             <span class="icon-wrapper">
                               <template v-if="child.has_icon && child.menu_icon">
                                 <i :class="['sidebar-icon', child.menu_icon]"></i>
@@ -38,7 +38,9 @@
                 :key="child.id"
                 :menu="child"
                 :is-open="false"
+                :sidebar-closed="sidebarClosed"
                 @toggle="$emit('toggle', $event)"
+                @navigate="$emit('navigate', $event)"
             />
         </ul>
     </li>
@@ -65,7 +67,7 @@ const hasPermission = computed(() => {
     return true;
 });
 
-const emit = defineEmits(['toggle'])
+const emit = defineEmits(['toggle', 'navigate']);
 const filteredChildren = computed(() => {
     if (!props.menu.children) return [];
     return props.menu.children.filter(child => {
@@ -85,16 +87,15 @@ const isOpen=computed(()=>{
     return isToggled.value;
 });
 
-
-onMounted(()=>{
-
-
-})
-
-
-
 function handleToggle() {
     isToggled.value=!isOpen.value;
+}
+
+function handleNavClick() {
+    emit('navigate');
+    if (window.innerWidth < 992) {
+        dashboardStore.closeMenu();
+    }
 }
 
 function isImage(icon) {

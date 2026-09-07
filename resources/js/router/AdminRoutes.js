@@ -119,7 +119,7 @@ const routes = [
         path: "/design-showcase",
         name: "designShowcase",
         component: DesignShowcase,
-        meta: { requiresAuth: false, title: 'UX Redesign Showcase' },
+        meta: { requiresAuth: false, devOnly: true, title: 'UX Redesign Showcase' },
     },
     {
         path: "/users",
@@ -256,8 +256,18 @@ const adminRoutes = createRouter({
 });
 
 adminRoutes.beforeEach((to, from, next) => {
+    const isProduction = Boolean(
+        import.meta.env.PROD ||
+        window.app_settings?.is_prod ||
+        window.app_settings?.app_env === 'production'
+    );
+
     const store = useLoginStore();
     const isLoggedIn = store.isLoggedIn;
+
+    if (to.meta.devOnly && isProduction) {
+        return next({ name: isLoggedIn ? 'dashboard' : 'login' });
+    }
 
     if (store.isLoggedIn && store.needPassChange) {
         if (to.name !== 'login' && to.name !== 'logout') {

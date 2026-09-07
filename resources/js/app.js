@@ -46,6 +46,8 @@ window.app_settings = window.app_settings || {
     locale: 'en',
     site_key: '',
     gl_client_id: '',
+    is_prod: Boolean(import.meta.env.PROD),
+    app_env: import.meta.env.MODE || 'development',
 };
 
 createAppsbdURL({api_url:app_settings.api_url});

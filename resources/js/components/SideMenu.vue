@@ -1,13 +1,33 @@
 <template>
     <div :class="['sidemenu', { close: dashboardStore.isMini }]">
         <div class="brand-container">
-            <router-link class="brand-logo" to="/dashboard">
-                <img :src="appLogo" class="fade-in-element app-logo" />
+            <router-link class="brand-logo" to="/dashboard" @click="handleNavClick">
+                <div class="brand-logo-content">
+                    <img
+                        :src="logoIconUrl"
+                        class="brand-icon-img"
+                        alt="Money Manage Logo"
+                    />
+                    <transition name="brand-fade">
+                        <img
+                            v-if="!dashboardStore.isMini"
+                            :src="logoTitleUrl"
+                            class="brand-title-img"
+                            alt="Money Manage"
+                        />
+                    </transition>
+                </div>
             </router-link>
-            <div class="d-flex align-items-center gap-2">
-                <span class="toogle_icon" @click="dashboardStore.toggleMenu">
-                    <i class="apb pointer toggle-menu" :class="dashboardStore.isMini ? 'apb-arrow-right' : 'apb-arrow-left'"></i>
-                </span>
+            <!-- Show close button ONLY on small/mini screens (< 992px), hidden on large screen -->
+            <div class="brand-actions d-lg-none">
+                <button
+                    type="button"
+                    class="btn btn-icon btn-light rounded-circle sidebar-toggle-btn d-flex align-items-center justify-content-center"
+                    @click="dashboardStore.closeMenu"
+                    title="Close Sidebar"
+                >
+                    <ChevronsLeft class="text-secondary" :size="18" />
+                </button>
             </div>
         </div>
 
@@ -19,6 +39,7 @@
                     :menu="menu"
                     :sidebar-closed="dashboardStore.isMini"
                     @toggle="handleToggle(menu.route)"
+                    @navigate="handleNavClick"
                 />
             </perfect-scrollbar>
         </ul>
@@ -30,7 +51,6 @@ import { ref, computed, getCurrentInstance, markRaw } from 'vue';
 import { useDashboardStore } from "@/modules/AdminPanel/Dashboard/DashboardStore.js";
 import { useSettingStore } from '@/modules/AdminPanel/Settings/SettingStore.js';
 import SidebarItem from './SidebarItem.vue';
-import defaultLogo from '@/assets/red_logo.png';
 
 // Lucide Icons
 import {
@@ -47,6 +67,10 @@ import {
     Settings,
     Activity,
     Sparkles,
+    ChevronsLeft,
+    ChevronsRight,
+    ChevronLeft,
+    ChevronRight,
 } from '@lucide/vue';
 
 const { proxy } = getCurrentInstance();
@@ -54,12 +78,34 @@ const dashboardStore = useDashboardStore();
 const settingStore = useSettingStore();
 const currentMenu = ref('');
 
-const appLogo = computed(() => {
-    return settingStore.settingsList?.basic_settings?.app_logo || defaultLogo;
-});
+const getAssetUrl = (path) => {
+    const rawBase = window.app_settings?.base_url || '';
+    let base = '';
+    if (rawBase) {
+        try {
+            const urlObj = new URL(rawBase, window.location.origin);
+            if (urlObj.hostname === window.location.hostname || !rawBase.startsWith('http')) {
+                base = rawBase.replace(/\/+$/, '');
+            }
+        } catch (e) {
+            base = rawBase.replace(/\/+$/, '');
+        }
+    }
+    const cleanPath = path.replace(/^\/+/, '');
+    return base ? `${base}/${cleanPath}` : `/${cleanPath}`;
+};
+
+const logoIconUrl = computed(() => getAssetUrl('logo/logo.png'));
+const logoTitleUrl = computed(() => getAssetUrl('logo/moneymanage.png'));
 
 function handleToggle(menuName) {
     currentMenu.value = currentMenu.value === menuName ? '' : menuName;
+}
+
+function handleNavClick() {
+    if (window.innerWidth < 992) {
+        dashboardStore.closeMenu();
+    }
 }
 
 const menus = [
@@ -77,7 +123,8 @@ const menus = [
         title: 'UX Showcase',
         route: '/design-showcase',
         has_icon: true,
-        iconComponent: markRaw(Sparkles)
+        iconComponent: markRaw(Sparkles),
+        devOnly: true
     },
     {
         id: 'accounts',
@@ -180,8 +227,19 @@ const menus = [
     },
 ];
 
+const isProduction = computed(() => {
+    return Boolean(
+        import.meta.env.PROD ||
+        window.app_settings?.is_prod ||
+        window.app_settings?.app_env === 'production'
+    );
+});
+
 const filteredMenus = computed(() => {
     return menus.filter(menu => {
+        if (menu.devOnly && isProduction.value) {
+            return false;
+        }
         return !menu.acl || proxy.$CheckACL(menu.acl);
     });
 });
@@ -191,7 +249,13 @@ const filteredMenus = computed(() => {
 .ps {
     max-height: calc(100dvh - var(--ab-header-h) - 5px);
 }
-[data-bs-theme="dark"] .app-logo {
-    filter: invert(100%) brightness(1000%);
+.brand-fade-enter-active,
+.brand-fade-leave-active {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.brand-fade-enter-from,
+.brand-fade-leave-to {
+    opacity: 0;
+    transform: translateX(-6px);
 }
 </style>

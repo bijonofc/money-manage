@@ -1,30 +1,36 @@
 <template>
   <div class="reports-page pb-5">
-    <!-- Top Header & Filter Controls -->
-    <div class="card border-0 shadow-sm rounded-4 mb-4 bg-white">
+    <!-- Top Header & Filter Controls Card -->
+    <div class="card border-0 shadow-sm rounded-4 mb-4 reports-header-card overflow-hidden">
       <div class="card-body p-4">
-        <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3">
+        <!-- Title & Action Bar -->
+        <div class="d-flex flex-column flex-lg-row align-items-lg-center justify-content-between gap-3 mb-4">
           <div>
-            <div class="d-flex align-items-center gap-2 mb-1">
-              <span class="badge bg-primary-subtle text-primary rounded-pill px-2.5 py-1 text-xs fw-bold">
-                Analytics
+            <div class="d-flex align-items-center gap-2 mb-1.5 flex-wrap">
+              <span class="badge bg-primary-subtle text-primary rounded-pill px-3 py-1 text-xs fw-semibold">
+                Analytics & Insights
               </span>
-              <h4 class="fw-bold mb-0 text-dark d-flex align-items-center gap-2">
-                <BarChart3 :size="24" class="text-primary" />
-                Financial Reports
-              </h4>
+              <span class="text-muted small d-inline-flex align-items-center gap-1">
+                <Calendar :size="13" class="text-muted opacity-75" />
+                <span>{{ formattedDateRange }}</span>
+              </span>
             </div>
+            <h4 class="fw-bold mb-1 text-dark d-flex align-items-center gap-2">
+              <BarChart3 :size="24" class="text-primary" />
+              Financial Reports
+            </h4>
             <p class="text-muted small mb-0">
-              Track cash flow, category breakdowns, savings rate, and financial trends
+              Track cash flow, category breakdowns, savings rate, and account liquidity trends.
             </p>
           </div>
 
-          <!-- Actions: Export CSV / Print -->
+          <!-- Action Buttons -->
           <div class="d-flex align-items-center gap-2 flex-wrap">
             <button
               type="button"
-              class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-1.5 shadow-sm"
+              class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white"
               @click="loadReportData"
+              title="Refresh Data"
             >
               <RefreshCw :size="14" :class="{ 'spin-anim': loading }" />
               <span>Refresh</span>
@@ -32,7 +38,7 @@
 
             <button
               type="button"
-              class="btn btn-outline-primary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-1.5 shadow-sm"
+              class="btn btn-primary btn-sm rounded-pill px-3.5 py-2 d-flex align-items-center gap-2 shadow-sm text-white"
               :disabled="exporting"
               @click="exportCsv"
             >
@@ -42,8 +48,9 @@
 
             <button
               type="button"
-              class="btn btn-light btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-1.5 shadow-sm text-secondary"
+              class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white"
               @click="printReport"
+              title="Print Report"
             >
               <Printer :size="14" />
               <span>Print</span>
@@ -51,36 +58,35 @@
           </div>
         </div>
 
-        <hr class="my-3 opacity-10" />
-
-        <!-- FILTERS: Preset Pills + Account Selector + Custom Date Range -->
-        <div class="row g-3 align-items-center">
-          <!-- Preset Pills -->
-          <div class="col-12 col-xl-7">
-            <div class="d-flex align-items-center gap-1.5 flex-wrap">
-              <span class="text-xs text-muted fw-bold me-1 text-uppercase tracking-wider">Period:</span>
-              <button
-                v-for="p in presets"
-                :key="p.id"
-                type="button"
-                class="btn btn-sm rounded-pill px-3 py-1 text-xs fw-semibold transition-all"
-                :class="selectedPreset === p.id ? 'btn-primary text-white shadow-sm' : 'btn-light text-secondary'"
-                @click="selectPreset(p.id)"
-              >
-                {{ p.label }}
-              </button>
-            </div>
+        <!-- Filter Toolbar -->
+        <div class="filter-toolbar p-2 rounded-4 bg-light border d-flex flex-column flex-xl-row align-items-xl-center justify-content-between gap-3">
+          <!-- Preset Filter Pills -->
+          <div class="d-flex align-items-center gap-1.5 flex-wrap">
+            <span class="text-xxs text-muted fw-bold px-2 text-uppercase tracking-wider">
+              Period:
+            </span>
+            <button
+              v-for="p in presets"
+              :key="p.id"
+              type="button"
+              class="btn btn-sm rounded-pill px-3 py-1.5 text-xs fw-semibold filter-pill transition-all"
+              :class="selectedPreset === p.id ? 'btn-primary text-white shadow-sm' : 'btn-ghost-pill text-secondary'"
+              @click="selectPreset(p.id)"
+            >
+              {{ p.label }}
+            </button>
           </div>
 
-          <!-- Account Filter -->
-          <div class="col-12 col-sm-6 col-xl-3">
-            <div class="input-group input-group-sm rounded-pill overflow-hidden border">
-              <span class="input-group-text bg-light border-0 text-muted ps-3">
-                <Wallet :size="14" />
+          <!-- Account Filter & Date Range Display -->
+          <div class="d-flex align-items-center gap-2 flex-wrap flex-sm-nowrap">
+            <!-- Account Filter -->
+            <div class="input-group input-group-sm rounded-pill overflow-hidden border bg-white shadow-sm" style="min-width: 200px;">
+              <span class="input-group-text bg-white border-0 text-muted ps-3 pe-1">
+                <Wallet :size="14" class="text-primary" />
               </span>
               <select
                 v-model="selectedAccountId"
-                class="form-select form-select-sm border-0 bg-light text-xs ps-1"
+                class="form-select form-select-sm border-0 bg-white text-xs ps-2 fw-medium"
                 @change="loadReportData"
               >
                 <option value="">All Accounts</option>
@@ -89,34 +95,37 @@
                 </option>
               </select>
             </div>
-          </div>
 
-          <!-- Custom Date Toggle / Info Badge -->
-          <div class="col-12 col-sm-6 col-xl-2 text-xl-end">
-            <span class="badge bg-light text-dark border px-3 py-2 text-xxs fw-medium rounded-pill">
-              📅 {{ formattedDateRange }}
-            </span>
+            <!-- Date range badge -->
+            <div class="badge-date-range text-nowrap">
+              <span class="badge bg-white text-dark border px-3 py-2 text-xs fw-medium rounded-pill shadow-sm d-inline-flex align-items-center gap-1.5">
+                <Calendar :size="13" class="text-primary" />
+                <span>{{ formattedDateRange }}</span>
+              </span>
+            </div>
           </div>
         </div>
 
         <!-- Custom Date Range Row (Shown when 'custom' is active) -->
-        <div v-if="selectedPreset === 'custom'" class="row g-2 mt-2 pt-2 border-top animate-fade-in">
-          <div class="col-6 col-md-3">
-            <label class="form-label text-xxs text-muted mb-1">Start Date</label>
-            <input v-model="customStartDate" type="date" class="form-control form-control-sm text-xs" />
-          </div>
-          <div class="col-6 col-md-3">
-            <label class="form-label text-xxs text-muted mb-1">End Date</label>
-            <input v-model="customEndDate" type="date" class="form-control form-control-sm text-xs" />
-          </div>
-          <div class="col-12 col-md-2 d-flex align-items-end">
-            <button
-              type="button"
-              class="btn btn-primary btn-sm w-100 rounded-pill text-xs fw-semibold"
-              @click="loadReportData"
-            >
-              Apply Filter
-            </button>
+        <div v-if="selectedPreset === 'custom'" class="custom-date-box mt-3 p-3 rounded-4 bg-light border animate-fade-in">
+          <div class="row g-3 align-items-end">
+            <div class="col-12 col-sm-4 col-md-3">
+              <label class="form-label text-xxs fw-semibold text-muted mb-1 text-uppercase">Start Date</label>
+              <input v-model="customStartDate" type="date" class="form-control form-control-sm text-xs rounded-3" />
+            </div>
+            <div class="col-12 col-sm-4 col-md-3">
+              <label class="form-label text-xxs fw-semibold text-muted mb-1 text-uppercase">End Date</label>
+              <input v-model="customEndDate" type="date" class="form-control form-control-sm text-xs rounded-3" />
+            </div>
+            <div class="col-12 col-sm-4 col-md-2">
+              <button
+                type="button"
+                class="btn btn-primary btn-sm w-100 rounded-pill text-xs fw-semibold py-1.5 shadow-sm"
+                @click="loadReportData"
+              >
+                Apply Filter
+              </button>
+            </div>
           </div>
         </div>
 
@@ -126,7 +135,7 @@
     <!-- Loading State -->
     <div v-if="loading && !reportData" class="text-center py-5">
       <div class="spinner-border text-primary" role="status"></div>
-      <p class="text-muted text-xs mt-2">Crunching financial numbers...</p>
+      <p class="text-muted text-xs mt-2">Crunching financial analytics...</p>
     </div>
 
     <!-- Main Report Content -->
@@ -136,85 +145,111 @@
       <div class="row g-3 mb-4">
         <!-- Total Income -->
         <div class="col-12 col-sm-6 col-xl-3">
-          <div class="card border-0 shadow-sm rounded-4 p-3.5 bg-white h-100 kpi-card kpi-income">
-            <div class="d-flex align-items-center justify-content-between mb-2">
-              <span class="text-xs fw-bold text-uppercase tracking-wider text-muted">Total Income</span>
-              <div class="p-2 rounded-3 bg-success-subtle text-success">
-                <ArrowDownLeft :size="18" />
+          <div class="card border-0 shadow-sm rounded-4 h-100 kpi-card kpi-card-income">
+            <div class="card-body p-4 d-flex flex-column justify-content-between">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <span class="text-xs fw-bold text-uppercase tracking-wider text-muted">Total Income</span>
+                <div class="kpi-icon-pill bg-success-subtle text-success rounded-3 p-2 d-flex align-items-center justify-content-center">
+                  <ArrowDownLeft :size="18" />
+                </div>
               </div>
-            </div>
-            <h3 class="fw-bold mb-1 text-dark">৳ {{ formatNumber(summary.total_income) }}</h3>
-            <div class="d-flex align-items-center gap-1 text-success text-xxs fw-semibold">
-              <Sparkles :size="12" />
-              <span>Inflow across {{ summary.transactions_count }} entries</span>
+              <div>
+                <h3 class="fw-bold mb-1 text-dark">
+                  {{ currencySymbol }}{{ formatNumber(summary.total_income) }}
+                </h3>
+                <div class="d-flex align-items-center gap-1.5 text-success text-xxs fw-semibold">
+                  <Sparkles :size="13" />
+                  <span>Inflow across {{ summary.transactions_count }} transactions</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Total Expenses -->
         <div class="col-12 col-sm-6 col-xl-3">
-          <div class="card border-0 shadow-sm rounded-4 p-3.5 bg-white h-100 kpi-card kpi-expense">
-            <div class="d-flex align-items-center justify-content-between mb-2">
-              <span class="text-xs fw-bold text-uppercase tracking-wider text-muted">Total Expenses</span>
-              <div class="p-2 rounded-3 bg-danger-subtle text-danger">
-                <ArrowUpRight :size="18" />
+          <div class="card border-0 shadow-sm rounded-4 h-100 kpi-card kpi-card-expense">
+            <div class="card-body p-4 d-flex flex-column justify-content-between">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <span class="text-xs fw-bold text-uppercase tracking-wider text-muted">Total Expenses</span>
+                <div class="kpi-icon-pill bg-danger-subtle text-danger rounded-3 p-2 d-flex align-items-center justify-content-center">
+                  <ArrowUpRight :size="18" />
+                </div>
               </div>
-            </div>
-            <h3 class="fw-bold mb-1 text-dark">৳ {{ formatNumber(summary.total_expense) }}</h3>
-            <div class="d-flex align-items-center gap-1 text-muted text-xxs">
-              <span>Avg. ৳{{ formatNumber(summary.daily_average_expense) }} / day</span>
+              <div>
+                <h3 class="fw-bold mb-1 text-dark">
+                  {{ currencySymbol }}{{ formatNumber(summary.total_expense) }}
+                </h3>
+                <div class="d-flex align-items-center gap-1.5 text-muted text-xxs">
+                  <span>Avg. {{ currencySymbol }}{{ formatNumber(summary.daily_average_expense) }} / day</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <!-- Net Savings / Cash Flow -->
+        <!-- Net Cash Flow -->
         <div class="col-12 col-sm-6 col-xl-3">
-          <div class="card border-0 shadow-sm rounded-4 p-3.5 bg-white h-100 kpi-card kpi-savings">
-            <div class="d-flex align-items-center justify-content-between mb-2">
-              <span class="text-xs fw-bold text-uppercase tracking-wider text-muted">Net Cash Flow</span>
-              <div
-                class="p-2 rounded-3"
-                :class="summary.net_savings >= 0 ? 'bg-primary-subtle text-primary' : 'bg-danger-subtle text-danger'"
-              >
-                <TrendingUp v-if="summary.net_savings >= 0" :size="18" />
-                <TrendingDown v-else :size="18" />
+          <div class="card border-0 shadow-sm rounded-4 h-100 kpi-card kpi-card-savings">
+            <div class="card-body p-4 d-flex flex-column justify-content-between">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <span class="text-xs fw-bold text-uppercase tracking-wider text-muted">Net Cash Flow</span>
+                <div
+                  class="kpi-icon-pill rounded-3 p-2 d-flex align-items-center justify-content-center"
+                  :class="summary.net_savings >= 0 ? 'bg-primary-subtle text-primary' : 'bg-danger-subtle text-danger'"
+                >
+                  <TrendingUp v-if="summary.net_savings >= 0" :size="18" />
+                  <TrendingDown v-else :size="18" />
+                </div>
               </div>
-            </div>
-            <h3
-              class="fw-bold mb-1"
-              :class="summary.net_savings >= 0 ? 'text-primary' : 'text-danger'"
-            >
-              {{ summary.net_savings >= 0 ? '+' : '-' }}৳ {{ formatNumber(Math.abs(summary.net_savings)) }}
-            </h3>
-            <div class="d-flex align-items-center gap-1 text-xxs fw-semibold" :class="summary.net_savings >= 0 ? 'text-primary' : 'text-danger'">
-              <span>{{ summary.net_savings >= 0 ? 'Surplus retained' : 'Deficit overspend' }}</span>
+              <div>
+                <h3
+                  class="fw-bold mb-1"
+                  :class="summary.net_savings >= 0 ? 'text-primary' : 'text-danger'"
+                >
+                  {{ summary.net_savings >= 0 ? '+' : '-' }}{{ currencySymbol }}{{ formatNumber(Math.abs(summary.net_savings)) }}
+                </h3>
+                <div class="d-flex align-items-center gap-1 text-xxs">
+                  <span
+                    class="badge rounded-pill px-2.5 py-1 fw-semibold"
+                    :class="summary.net_savings >= 0 ? 'bg-primary-subtle text-primary' : 'bg-danger-subtle text-danger'"
+                  >
+                    {{ summary.net_savings >= 0 ? '✓ Surplus Retained' : '⚠ Deficit Overspend' }}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Savings Rate % -->
         <div class="col-12 col-sm-6 col-xl-3">
-          <div class="card border-0 shadow-sm rounded-4 p-3.5 bg-white h-100 kpi-card kpi-rate">
-            <div class="d-flex align-items-center justify-content-between mb-2">
-              <span class="text-xs fw-bold text-uppercase tracking-wider text-muted">Savings Rate</span>
-              <div class="p-2 rounded-3 bg-info-subtle text-info">
-                <Percent :size="18" />
+          <div class="card border-0 shadow-sm rounded-4 h-100 kpi-card kpi-card-rate">
+            <div class="card-body p-4 d-flex flex-column justify-content-between">
+              <div class="d-flex align-items-center justify-content-between mb-3">
+                <span class="text-xs fw-bold text-uppercase tracking-wider text-muted">Savings Rate</span>
+                <div class="kpi-icon-pill bg-info-subtle text-info rounded-3 p-2 d-flex align-items-center justify-content-center">
+                  <Percent :size="18" />
+                </div>
               </div>
-            </div>
-            <div class="d-flex align-items-baseline gap-2 mb-1">
-              <h3 class="fw-bold mb-0 text-dark">{{ summary.savings_rate }}%</h3>
-              <span
-                class="badge rounded-pill text-xxs"
-                :class="summary.savings_rate >= 30 ? 'bg-success-subtle text-success' : summary.savings_rate >= 10 ? 'bg-info-subtle text-info' : 'bg-warning-subtle text-warning'"
-              >
-                {{ summary.savings_rate >= 30 ? 'High' : summary.savings_rate >= 10 ? 'Moderate' : 'Low' }}
-              </span>
-            </div>
-            <div class="progress progress-modern rounded-pill" style="height: 6px;">
-              <div
-                class="progress-bar bg-success rounded-pill transition-all"
-                :style="{ width: Math.max(0, Math.min(100, summary.savings_rate)) + '%' }"
-              ></div>
+              <div>
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                  <h3 class="fw-bold mb-0 text-dark">{{ summary.savings_rate }}%</h3>
+                  <span
+                    class="badge rounded-pill text-xxs px-2.5 py-1 fw-bold"
+                    :class="summary.savings_rate >= 30 ? 'bg-success-subtle text-success' : summary.savings_rate >= 10 ? 'bg-info-subtle text-info' : 'bg-warning-subtle text-warning'"
+                  >
+                    {{ summary.savings_rate >= 30 ? 'High' : summary.savings_rate >= 10 ? 'Moderate' : 'Low' }}
+                  </span>
+                </div>
+                <div class="progress rounded-pill bg-light border overflow-hidden" style="height: 7px;">
+                  <div
+                    class="progress-bar rounded-pill transition-all"
+                    :class="summary.savings_rate >= 30 ? 'bg-success' : summary.savings_rate >= 10 ? 'bg-info' : 'bg-warning'"
+                    :style="{ width: Math.max(0, Math.min(100, summary.savings_rate)) + '%' }"
+                  ></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -222,22 +257,22 @@
 
       <!-- 2. MONTHLY CASH FLOW TREND (Visual Bar Chart) -->
       <div class="card border-0 shadow-sm rounded-4 mb-4 bg-white p-4">
-        <div class="d-flex align-items-center justify-content-between mb-4">
+        <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2 mb-4">
           <div>
             <h5 class="fw-bold mb-1 text-dark d-flex align-items-center gap-2">
               <Layers :size="18" class="text-primary" />
               Monthly Income vs Expense Trend
             </h5>
-            <small class="text-muted">6-month cashflow comparison</small>
+            <small class="text-muted">6-month comparative cashflow trajectory</small>
           </div>
           <div class="d-flex align-items-center gap-3 text-xs">
             <div class="d-flex align-items-center gap-1.5">
-              <span class="legend-indicator bg-success"></span>
-              <span class="text-muted">Income</span>
+              <span class="legend-dot bg-emerald"></span>
+              <span class="text-secondary fw-medium">Income</span>
             </div>
             <div class="d-flex align-items-center gap-1.5">
-              <span class="legend-indicator bg-danger"></span>
-              <span class="text-muted">Expense</span>
+              <span class="legend-dot bg-rose"></span>
+              <span class="text-secondary fw-medium">Expense</span>
             </div>
           </div>
         </div>
@@ -250,31 +285,31 @@
               :key="m.month_key"
               class="col"
             >
-              <div class="trend-column d-flex flex-column align-items-center justify-content-end h-100">
+              <div class="trend-column d-flex flex-column align-items-center justify-content-end h-100 p-2 rounded-3">
                 <!-- Bar Pair Container -->
-                <div class="bars-container d-flex align-items-end justify-content-center gap-1 mb-2">
+                <div class="bars-container d-flex align-items-end justify-content-center gap-2 mb-2">
                   <!-- Income Bar -->
                   <div
-                    class="trend-bar bar-income rounded-top-2"
+                    class="trend-bar bar-income rounded-top-2 shadow-xs"
                     :style="{ height: getBarHeight(m.income) }"
-                    :title="`Income: ৳${formatNumber(m.income)}`"
+                    :title="`Income: ${currencySymbol}${formatNumber(m.income)}`"
                   ></div>
                   <!-- Expense Bar -->
                   <div
-                    class="trend-bar bar-expense rounded-top-2"
+                    class="trend-bar bar-expense rounded-top-2 shadow-xs"
                     :style="{ height: getBarHeight(m.expense) }"
-                    :title="`Expense: ৳${formatNumber(m.expense)}`"
+                    :title="`Expense: ${currencySymbol}${formatNumber(m.expense)}`"
                   ></div>
                 </div>
 
                 <!-- Label & Net -->
-                <span class="fw-bold text-xs text-dark d-block">{{ m.short }}</span>
-                <small
-                  class="text-xxs fw-semibold d-block"
-                  :class="m.savings >= 0 ? 'text-success' : 'text-danger'"
+                <span class="fw-bold text-xs text-dark d-block mb-0.5">{{ m.short }}</span>
+                <span
+                  class="badge text-xxs rounded-pill px-2 py-0.5"
+                  :class="m.savings >= 0 ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger'"
                 >
-                  {{ m.savings >= 0 ? '+' : '-' }}৳{{ formatCompact(Math.abs(m.savings)) }}
-                </small>
+                  {{ m.savings >= 0 ? '+' : '-' }}{{ currencySymbol }}{{ formatCompact(Math.abs(m.savings)) }}
+                </span>
               </div>
             </div>
           </div>
@@ -311,12 +346,12 @@
               <div
                 v-for="cat in expenseCategories"
                 :key="cat.id"
-                class="category-stat-item"
+                class="category-stat-item p-2 rounded-3"
               >
-                <div class="d-flex align-items-center justify-content-between mb-1">
+                <div class="d-flex align-items-center justify-content-between mb-1.5">
                   <div class="d-flex align-items-center gap-2">
                     <div
-                      class="cat-color-dot rounded-circle p-1.5 d-flex align-items-center justify-content-center text-white"
+                      class="cat-color-dot rounded-circle p-1.5 d-flex align-items-center justify-content-center text-white shadow-xs"
                       :style="{ backgroundColor: cat.color || '#ef4444' }"
                     >
                       <Tag :size="12" />
@@ -325,12 +360,12 @@
                     <span class="badge bg-light text-muted text-xxs border">{{ cat.tx_count }} txns</span>
                   </div>
                   <div class="text-end">
-                    <span class="fw-bold text-xs text-dark d-block">৳ {{ formatNumber(cat.total_amount) }}</span>
+                    <span class="fw-bold text-xs text-dark d-block">{{ currencySymbol }}{{ formatNumber(cat.total_amount) }}</span>
                     <small class="text-muted text-xxs">{{ cat.percentage }}%</small>
                   </div>
                 </div>
 
-                <div class="progress progress-modern rounded-pill" style="height: 6px;">
+                <div class="progress rounded-pill bg-light" style="height: 6px;">
                   <div
                     class="progress-bar rounded-pill transition-all"
                     :style="{ width: cat.percentage + '%', backgroundColor: cat.color || '#ef4444' }"
@@ -368,12 +403,12 @@
               <div
                 v-for="cat in incomeCategories"
                 :key="cat.id"
-                class="category-stat-item"
+                class="category-stat-item p-2 rounded-3"
               >
-                <div class="d-flex align-items-center justify-content-between mb-1">
+                <div class="d-flex align-items-center justify-content-between mb-1.5">
                   <div class="d-flex align-items-center gap-2">
                     <div
-                      class="cat-color-dot rounded-circle p-1.5 d-flex align-items-center justify-content-center text-white"
+                      class="cat-color-dot rounded-circle p-1.5 d-flex align-items-center justify-content-center text-white shadow-xs"
                       :style="{ backgroundColor: cat.color || '#10b981' }"
                     >
                       <Tag :size="12" />
@@ -382,12 +417,12 @@
                     <span class="badge bg-light text-muted text-xxs border">{{ cat.tx_count }} txns</span>
                   </div>
                   <div class="text-end">
-                    <span class="fw-bold text-xs text-dark d-block">৳ {{ formatNumber(cat.total_amount) }}</span>
+                    <span class="fw-bold text-xs text-dark d-block">{{ currencySymbol }}{{ formatNumber(cat.total_amount) }}</span>
                     <small class="text-muted text-xxs">{{ cat.percentage }}%</small>
                   </div>
                 </div>
 
-                <div class="progress progress-modern rounded-pill" style="height: 6px;">
+                <div class="progress rounded-pill bg-light" style="height: 6px;">
                   <div
                     class="progress-bar rounded-pill transition-all"
                     :style="{ width: cat.percentage + '%', backgroundColor: cat.color || '#10b981' }"
@@ -425,17 +460,29 @@
               </tr>
             </thead>
             <tbody class="text-xs">
+              <tr v-if="accountFlows.length === 0">
+                <td colspan="6" class="text-center py-4 text-muted">
+                  No accounts found in this period.
+                </td>
+              </tr>
               <tr v-for="acc in accountFlows" :key="acc.id">
-                <td class="ps-3 fw-bold text-dark">{{ acc.name }}</td>
+                <td class="ps-3 fw-bold text-dark">
+                  <div class="d-flex align-items-center gap-2">
+                    <div class="rounded-circle bg-light p-1.5 d-flex align-items-center justify-content-center text-primary">
+                      <Wallet :size="14" />
+                    </div>
+                    <span>{{ acc.name }}</span>
+                  </div>
+                </td>
                 <td>
                   <span class="badge bg-light text-secondary text-capitalize border">{{ acc.account_type.replace('_', ' ') }}</span>
                 </td>
-                <td class="text-end text-success fw-semibold">+৳ {{ formatNumber(acc.inflows) }}</td>
-                <td class="text-end text-danger fw-semibold">-৳ {{ formatNumber(acc.outflows) }}</td>
+                <td class="text-end text-success fw-semibold">+{{ currencySymbol }}{{ formatNumber(acc.inflows) }}</td>
+                <td class="text-end text-danger fw-semibold">-{{ currencySymbol }}{{ formatNumber(acc.outflows) }}</td>
                 <td class="text-end fw-bold" :class="acc.net_flow >= 0 ? 'text-primary' : 'text-danger'">
-                  {{ acc.net_flow >= 0 ? '+' : '-' }}৳ {{ formatNumber(Math.abs(acc.net_flow)) }}
+                  {{ acc.net_flow >= 0 ? '+' : '-' }}{{ currencySymbol }}{{ formatNumber(Math.abs(acc.net_flow)) }}
                 </td>
-                <td class="text-end pe-3 fw-bolder text-dark">৳ {{ formatNumber(acc.current_balance) }}</td>
+                <td class="text-end pe-3 fw-bolder text-dark">{{ currencySymbol }}{{ formatNumber(acc.current_balance) }}</td>
               </tr>
             </tbody>
           </table>
@@ -481,6 +528,8 @@ const selectedAccountId = ref('');
 const selectedPreset = ref('this_month');
 const customStartDate = ref('');
 const customEndDate = ref('');
+
+const currencySymbol = computed(() => window.app_settings?.currencySymbol || '৳');
 
 const presets = [
   { id: 'this_month', label: 'This Month' },
@@ -630,23 +679,48 @@ onMounted(async () => {
 </script>
 
 <style scoped lang="scss">
-.kpi-card {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  border-left: 4px solid transparent !important;
+.reports-header-card {
+  background: var(--ab-card-bg, #ffffff);
+  border: 1px solid rgba(99, 102, 241, 0.08) !important;
+}
+
+.btn-ghost-pill {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--bs-secondary-color, #64748b);
 
   &:hover {
-    transform: translateY(-2px);
+    background: rgba(0, 0, 0, 0.04);
+    color: var(--bs-dark, #1e293b);
+  }
+}
+
+.kpi-card {
+  background: var(--ab-card-bg, #ffffff);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-3px);
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08) !important;
   }
+}
 
-  &.kpi-income { border-left-color: #10b981 !important; }
-  &.kpi-expense { border-left-color: #ef4444 !important; }
-  &.kpi-savings { border-left-color: #137035 !important; }
-  &.kpi-rate { border-left-color: #06b6d4 !important; }
+.kpi-icon-pill {
+  width: 38px;
+  height: 38px;
 }
 
 .trend-chart-wrapper {
-  height: 220px;
+  height: 230px;
+}
+
+.trend-column {
+  transition: background-color 0.2s ease;
+  &:hover {
+    background-color: rgba(99, 102, 241, 0.04);
+  }
 }
 
 .bars-container {
@@ -655,7 +729,7 @@ onMounted(async () => {
 }
 
 .trend-bar {
-  width: 16px;
+  width: 18px;
   min-height: 6px;
   transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
@@ -666,21 +740,35 @@ onMounted(async () => {
   }
 
   &.bar-expense {
-    background: linear-gradient(180deg, #f87171 0%, #ef4444 100%);
+    background: linear-gradient(180deg, #fb7185 0%, #e11d48 100%);
     &:hover { opacity: 0.85; }
   }
 }
 
-.legend-indicator {
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
+.legend-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
   display: inline-block;
+
+  &.bg-emerald {
+    background-color: #10b981;
+  }
+  &.bg-rose {
+    background-color: #e11d48;
+  }
+}
+
+.category-stat-item {
+  transition: background-color 0.15s ease;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
 }
 
 .cat-color-dot {
-  width: 24px;
-  height: 24px;
+  width: 26px;
+  height: 26px;
   flex-shrink: 0;
 }
 
@@ -710,3 +798,4 @@ onMounted(async () => {
   to { opacity: 1; transform: translateY(0); }
 }
 </style>
+

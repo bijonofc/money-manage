@@ -11,55 +11,89 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        height: var(--ab-header-h);
-        padding-left: 1rem;
+        height: var(--ab-header-h, 60px);
+        padding: 0 1rem;
         border-bottom: 1px solid var(--ab-divider, rgba(207, 207, 215, 0.14));
         background-color: var(--ab-header-bg);
-        .collapse-icon {
-            display: none;
-            width: 45px;
-            height: 45px;
-            margin-right: 15px;
-            border-radius: 5px;
-            background: var(--ab-link-bg);
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-
-            &:hover {
-                background: var(--ab-link-hover-bg);
-                box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            }
-
-            &.ab-active {
-                background: var(--ab-link-active-bg);
-            }
-        }
 
         .brand-logo {
             display: flex;
             align-items: center;
-            justify-content: center;
-            max-width: 100%;
-            height: var(--ab-header-h);
+            height: 100%;
             overflow: hidden;
+            text-decoration: none;
+
+            .brand-logo-content {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                min-width: 0;
+            }
+
+            .brand-icon-img {
+                width: 38px;
+                height: 38px;
+                object-fit: contain;
+                flex-shrink: 0;
+                transition: transform 0.25s ease;
+            }
+
+            .brand-title-img {
+                height: 22px;
+                width: auto;
+                max-width: 155px;
+                object-fit: contain;
+                display: block;
+            }
+
+            &:hover .brand-icon-img {
+                transform: scale(1.06);
+            }
 
             .apd-small {
                 display: none;
             }
 
-            > img {
-                max-width: 100%;
-                max-height: 70px;
+            > img, .app-logo {
+                max-width: 36px;
+                max-height: 36px;
                 object-fit: contain;
-                border-radius: 10%;
-
+                border-radius: 8px;
             }
 
-        }
-        .toggle-menu{
-            display: none;
+            .brand-badge-icon {
+                width: 34px;
+                height: 34px;
+                border-radius: 10px;
+                background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+                box-shadow: 0 2px 8px rgba(79, 70, 229, 0.35);
+                flex-shrink: 0;
+            }
 
+            .brand-title {
+                font-size: 1.05rem;
+                font-weight: 700;
+                color: var(--ab-body-color, #1f2937);
+                white-space: nowrap;
+                letter-spacing: -0.01em;
+            }
+        }
+
+        .brand-actions {
+            display: flex;
+            align-items: center;
+
+            .sidebar-toggle-btn {
+                width: 32px;
+                height: 32px;
+                padding: 0;
+                border: 1px solid var(--ab-border-color, #e5e7eb);
+                transition: all 0.2s ease;
+
+                &:hover {
+                    background-color: var(--ab-border-color, #e5e7eb);
+                }
+            }
         }
     }
 
@@ -154,16 +188,35 @@
 
         .brand-container {
             justify-content: center;
-            padding: 0;
+            padding: 0 0.5rem;
 
             .brand-logo {
                 padding: 0;
                 justify-content: center;
+                margin: 0 auto;
+
+                .brand-logo-content {
+                    justify-content: center;
+                    gap: 0;
+                }
+            }
+
+            .brand-icon-img {
+                width: 38px;
+                height: 38px;
+            }
+
+            .brand-title-img, .brand-title, .brand-name {
+                display: none !important;
             }
 
             .app-logo {
-                max-width: 36px;
-                max-height: 36px;
+                max-width: 32px;
+                max-height: 32px;
+            }
+
+            .brand-actions {
+                display: none !important;
             }
 
             .apd-small {
@@ -227,66 +280,118 @@
     }
 }
 
-/* Mobile View */
-@media (max-width: 768px) {
+/* Mobile & Tablet Drawer (Small Devices < 992px) */
+@media (max-width: 991.98px) {
     .sidemenu {
-        position: absolute;
-        width: 200px;
-        z-index: 1030;
-        transition: width 0.5s ease;
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 280px !important;
+        max-width: 85vw;
+        height: 100dvh !important;
+        z-index: 1050 !important;
+        transform: translateX(0);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+        box-shadow: 4px 0 24px rgba(0, 0, 0, 0.18);
+        border-right: 1px solid var(--ab-divider, rgba(207, 207, 215, 0.14));
 
-        .ul-links li a {
-            padding: 1rem;
+        .brand-container {
+            display: flex !important;
+            justify-content: space-between !important;
+            padding: 0 1rem !important;
 
-            .link_name {
-                font-size: 11px;
+            .brand-logo {
+                justify-content: flex-start !important;
+                margin: 0 !important;
+
+                .brand-logo-content {
+                    justify-content: flex-start !important;
+                    gap: 10px !important;
+                }
+            }
+
+            .brand-title-img, .brand-title, .brand-name {
+                display: block !important;
+            }
+
+            .brand-actions {
+                display: flex !important;
             }
         }
 
-        &:not(.close) {
-            box-shadow: 0 62px 129px 37px #ccc;
+        .ul-links {
+            li {
+                .ab-menu-a {
+                    padding: 0.85rem 1.25rem !important;
+                    justify-content: flex-start !important;
+                }
+
+                .link_name {
+                    display: block !important;
+                    font-size: 13px !important;
+                }
+
+                .chevron-icon {
+                    display: flex !important;
+                }
+
+                .icon-wrapper {
+                    margin: 0;
+                }
+            }
         }
 
         &.close {
-            width: 0;
-            //z-index: -90;
-            position: absolute;
-            left: -100px;
-            transition: all .5s ease-out;
-
-            .ul-links li .sub-menu {
-                //display: none;
-            }
-        }
-
-        .brand-container {
-            justify-content: center;
-            position: relative;
-
-            .brand-logo {
-                padding-right: 48px;
-            }
-            .toggle-menu{
-                display: block;
-
-            }
-
-            .collapse-icon {
-                display: flex;
-                position: absolute;
-                right: 10px;
-                width: 35px;
-                height: 35px;
-                transition: all 0.3s ease;
-            }
+            width: 280px !important;
+            transform: translateX(-100%) !important;
+            box-shadow: none !important;
+            pointer-events: none !important;
+            visibility: hidden;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
         }
     }
 
     .app-body {
-        //position: absolute;
+        width: 100% !important;
+        margin-left: 0 !important;
     }
 
-    .sidemenu.close ~ .app-body {
-        width: 100%;
+    .sidebar-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        height: 100dvh;
+        background-color: rgba(15, 23, 42, 0.55);
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+        z-index: 1040;
+        cursor: pointer;
+        animation: sidebarBackdropFade 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+}
+
+[data-bs-theme="dark"] {
+    .sidemenu {
+        .brand-container {
+            .brand-logo {
+                .brand-title-img {
+                    filter: brightness(0) invert(1);
+                }
+            }
+        }
+    }
+}
+
+@keyframes sidebarBackdropFade {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }

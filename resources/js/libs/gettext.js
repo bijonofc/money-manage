@@ -2,6 +2,9 @@
 import { computed, defineComponent, getCurrentInstance, h, onMounted, ref } from "vue";
 import { createGettext,useGettext } from "vue3-gettext";
 
+const safeLang = (typeof lang !== 'undefined' && lang) ? lang : (typeof window !== 'undefined' && window.lang ? window.lang : {});
+const defaultLocale = (typeof app_settings !== 'undefined' && app_settings?.locale) ? app_settings.locale : 'en';
+
 const config = {
     provideComponent:false,
     provideDirective:false,
@@ -9,12 +12,12 @@ const config = {
     availableLanguages: {
         bn_BD: "Bengali Bangladesh"
     },
-    defaultLanguage: app_settings.locale,
-    translations:lang
+    defaultLanguage: defaultLocale,
+    translations: safeLang
 };
-const gettext =createGettext(config);
+const gettext = createGettext(config);
 
-const digits=lang?.digits;
+const digits = safeLang?.digits;
 function translate_digits(input) {
     if(!digits) {
         return String(input);

@@ -10,7 +10,7 @@ const settings={
 const app_data=reactive({
     darkMode:false
 });
-const darkMode=reactive(false);
+const darkMode=ref(false);
 
 const setBrowserDarkStatus=()=>{
     let isDark=sessionStorage.getItem('apbd_dark');

@@ -6,15 +6,20 @@ import {useLoginStore} from '@/modules/AdminPanel/User/loginStore.js';
 
 export const useDashboardStore = defineStore("dashboard", {
     state: () => ({
-        isMini: false,
+        isMini: typeof window !== 'undefined' ? window.innerWidth < 992 : false,
         isLoaded:false,
         initialData:{},
 
     }),
     actions: {
         toggleMenu() {
-            console.log('called from store');
             this.isMini = !this.isMini;
+        },
+        closeMenu() {
+            this.isMini = true;
+        },
+        openMenu() {
+            this.isMini = false;
         },
         getLoginStore() {
             return useLoginStore();

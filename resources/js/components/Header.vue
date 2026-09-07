@@ -1,30 +1,30 @@
 <template>
   <nav class="navbar custom-navbar shadow-sm">
-    <div class="container-fluid d-flex align-items-center justify-content-between px-3">
+    <div class="container-fluid d-flex align-items-center justify-content-between px-2 px-sm-3 flex-nowrap w-100">
       <!-- Left side: Toggle button & Page Title / Breadcrumb -->
-      <div class="d-flex align-items-center gap-3">
+      <div class="header-left d-flex align-items-center gap-2 gap-sm-3 min-w-0 flex-grow-1 flex-shrink-1">
         <button
           type="button"
-          class="btn btn-icon btn-light rounded-circle d-flex align-items-center justify-content-center p-2"
+          class="btn btn-icon btn-light rounded-circle d-flex align-items-center justify-content-center p-2 flex-shrink-0"
           @click="toggleSidebar"
           :title="dashboardStore.isMini ? 'Expand Sidebar' : 'Collapse Sidebar'"
         >
           <Menu class="w-5 h-5 text-secondary" :size="20" />
         </button>
 
-        <div class="d-flex flex-column">
-          <h6 class="mb-0 fw-bold text-dark d-flex align-items-center gap-2">
+        <div class="header-title-wrapper d-flex flex-column min-w-0">
+          <h6 class="mb-0 fw-bold text-dark text-truncate page-header-title">
             {{ appsbdUtls.translateGettext(pageTitle) }}
           </h6>
         </div>
       </div>
 
       <!-- Right side: Quick stats/actions, Dark mode, Fullscreen, User dropdown -->
-      <div class="d-flex align-items-center gap-2">
+      <div class="header-right d-flex align-items-center gap-1 gap-sm-2 flex-shrink-0 ms-2">
         <!-- Dark Mode Toggle -->
         <button
           type="button"
-          class="btn btn-icon btn-light rounded-circle p-2 d-flex align-items-center justify-content-center"
+          class="btn btn-icon btn-light rounded-circle p-2 d-flex align-items-center justify-content-center flex-shrink-0"
           @click="AppsbdCore.utls.toggleDarkMode()"
           :title="AppsbdCore.AppData.darkMode ? 'Light Mode' : 'Dark Mode'"
         >
@@ -32,10 +32,10 @@
           <Moon v-else class="text-secondary" :size="18" />
         </button>
 
-        <!-- Fullscreen Toggle -->
+        <!-- Fullscreen Toggle (Visible on tablet & desktop) -->
         <button
           type="button"
-          class="btn btn-icon btn-light rounded-circle p-2 d-flex align-items-center justify-content-center"
+          class="btn btn-icon btn-light rounded-circle p-2 d-none d-md-flex align-items-center justify-content-center flex-shrink-0"
           @click="toggleFullScreen"
           :title="isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'"
         >
@@ -44,17 +44,17 @@
         </button>
 
         <!-- User Profile Dropdown -->
-        <div class="ms-2">
+        <div class="ms-1 ms-sm-2 flex-shrink-0">
           <VDropdown placement="bottom-end" :distance="8" :arrow-padding="12">
             <button
               type="button"
-              class="btn btn-light d-flex align-items-center gap-2 py-1 px-2 rounded-pill border shadow-none"
+              class="btn btn-light d-flex align-items-center gap-1.5 py-1 px-1.5 px-sm-2 rounded-pill border shadow-none"
             >
-              <div class="user-avatar-circle bg-primary text-white fw-bold d-flex align-items-center justify-content-center rounded-circle">
+              <div class="user-avatar-circle bg-primary text-white fw-bold d-flex align-items-center justify-content-center rounded-circle flex-shrink-0">
                 {{ userInitials }}
               </div>
               <div class="d-none d-md-flex flex-column text-start me-1">
-                <span class="user-name fw-semibold text-dark lh-sm">{{ loggedUser.name || 'User' }}</span>
+                <span class="user-name fw-semibold text-dark lh-sm text-truncate" style="max-width: 120px;">{{ loggedUser.name || 'User' }}</span>
                 <span class="user-role text-muted small lh-sm">{{ loggedUser.role_title || 'Super Admin' }}</span>
               </div>
               <ChevronDown class="text-muted" :size="14" />
@@ -158,9 +158,52 @@ function toggleFullScreen() {
 <style lang="scss" scoped>
 .custom-navbar {
   height: var(--ab-header-h, 60px);
+  min-height: var(--ab-header-h, 60px);
+  max-height: var(--ab-header-h, 60px);
   background: var(--ab-card-bg, #ffffff);
   border-bottom: 1px solid var(--ab-border-color, #e5e7eb);
   z-index: 99;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  align-items: center;
+
+  :deep(.container-fluid),
+  .container-fluid {
+    height: 100%;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 100% !important;
+  }
+}
+
+.min-w-0 {
+  min-width: 0 !important;
+}
+
+.header-left {
+  min-width: 0 !important;
+  overflow: hidden;
+}
+
+.header-title-wrapper {
+  min-width: 0 !important;
+  overflow: hidden;
+}
+
+.page-header-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ab-body-color, #1f2937);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+
+  @media (max-width: 576px) {
+    font-size: 0.95rem;
+  }
 }
 
 .btn-icon {

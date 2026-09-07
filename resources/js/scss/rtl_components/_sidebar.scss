@@ -141,29 +141,39 @@
   width: calc(100% - 15rem);
   transition: all 0.5s ease;
 }
-@media (max-width: 576px) {
-  .sidemenu {
+@media (max-width: 991.98px) {
+  html[dir=rtl] .sidemenu {
+    position: fixed !important;
+    top: 0;
+    right: 0 !important;
+    left: auto !important;
+    bottom: 0;
+    width: 280px !important;
+    max-width: 85vw;
+    height: 100dvh !important;
+    z-index: 1050 !important;
+    transform: translateX(0);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.18);
+    border-left: 1px solid var(--ab-divider, rgba(207, 207, 215, 0.14));
+    border-right: none;
+
     &.close {
-      width: 0;
-      z-index: -90;
-      .ul-links {
-        li {
-          .sub-menu {
-            display: none;
-          }
-        }
-      }
+      width: 280px !important;
+      transform: translateX(100%) !important;
+      box-shadow: none !important;
+      pointer-events: none !important;
+      visibility: hidden;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
     }
-    width: var(--ab-sidebar-width);
-    z-index: 1000;
   }
-  .home-section {
-    width: 100%;
-    right: 0; /* changed from left */
-    z-index: 100;
+
+  html[dir=rtl] .home-section {
+    width: 100% !important;
+    right: 0 !important;
   }
-  .sidemenu.close ~ .home-section {
-    width: 100%;
-    right: 0; /* changed from left */
+  html[dir=rtl] .sidemenu.close ~ .home-section {
+    width: 100% !important;
+    right: 0 !important;
   }
 }
