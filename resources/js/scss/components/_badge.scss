@@ -12,6 +12,28 @@
     text-align: center;
     white-space: nowrap;
     vertical-align: middle;
+
+    &.d-flex,
+    &.d-inline-flex {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+
+        > span,
+        span {
+            line-height: 1;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        > svg,
+        svg {
+            flex-shrink: 0;
+            display: inline-block;
+        }
+    }
+
     &.rounded-pill {
         --bs-border-radius-pill: var(--ab-border-radius-pill);
     }

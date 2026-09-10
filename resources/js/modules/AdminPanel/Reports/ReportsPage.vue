@@ -32,17 +32,17 @@
               @click="loadReportData"
               title="Refresh Data"
             >
-              <RefreshCw :size="14" :class="{ 'spin-anim': loading }" />
+              <RefreshCw :size="15" :class="{ 'spin-anim': loading }" />
               <span>Refresh</span>
             </button>
 
             <button
               type="button"
-              class="btn btn-primary btn-sm rounded-pill px-3.5 py-2 d-flex align-items-center gap-2 shadow-sm text-white"
+              class="btn btn-primary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm text-white"
               :disabled="exporting"
               @click="exportCsv"
             >
-              <Download :size="14" />
+              <Download :size="15" />
               <span>{{ exporting ? 'Exporting...' : 'Export CSV' }}</span>
             </button>
 
@@ -52,7 +52,7 @@
               @click="printReport"
               title="Print Report"
             >
-              <Printer :size="14" />
+              <Printer :size="15" />
               <span>Print</span>
             </button>
           </div>
@@ -82,7 +82,7 @@
             <!-- Account Filter -->
             <div class="input-group input-group-sm rounded-pill overflow-hidden border bg-white shadow-sm" style="min-width: 200px;">
               <span class="input-group-text bg-white border-0 text-muted ps-3 pe-1">
-                <Wallet :size="14" class="text-primary" />
+                <Wallet :size="15" class="text-primary" />
               </span>
               <select
                 v-model="selectedAccountId"
@@ -99,7 +99,7 @@
             <!-- Date range badge -->
             <div class="badge-date-range text-nowrap">
               <span class="badge bg-white text-dark border px-3 py-2 text-xs fw-medium rounded-pill shadow-sm d-inline-flex align-items-center gap-1.5">
-                <Calendar :size="13" class="text-primary" />
+                <Calendar :size="14" class="text-primary" />
                 <span>{{ formattedDateRange }}</span>
               </span>
             </div>

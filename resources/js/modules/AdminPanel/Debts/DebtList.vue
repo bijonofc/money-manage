@@ -13,14 +13,14 @@
           </div>
           <div class="col-12 col-lg-4 d-flex align-items-center justify-content-lg-end gap-2 flex-wrap">
             <button
-              class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-1.5 d-flex align-items-center gap-1.5 shadow-sm"
+              class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white"
               @click="refreshGrid"
             >
-              <RefreshCw :size="14" :class="{ 'spin-anim': isShowLoader }" />
+              <RefreshCw :size="15" :class="{ 'spin-anim': isShowLoader }" />
               <span>Reload</span>
             </button>
             <button
-              class="btn btn-danger btn-sm rounded-pill px-3.5 py-1.5 d-flex align-items-center gap-1.5 shadow-sm text-white fw-semibold"
+              class="btn btn-danger btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm text-white"
               @click="openCreateModal"
             >
               <Plus :size="15" />

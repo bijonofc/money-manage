@@ -177,7 +177,7 @@
             :disabled="saving"
           >
             <span v-if="saving" class="spinner-border spinner-border-sm" role="status"></span>
-            <Check v-else :size="16" />
+            <Check v-else :size="15" />
             <span>{{ saving ? 'Saving...' : (editData ? 'Save Changes' : 'Save Account') }}</span>
           </button>
         </div>

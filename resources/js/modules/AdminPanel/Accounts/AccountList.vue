@@ -11,12 +11,12 @@
           <p class="text-muted small mb-0">Manage bank accounts, cash in hand, mobile money, and credit cards</p>
         </div>
         <div class="d-flex align-items-center gap-2">
-          <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2" @click="loadAccounts">
+          <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white" @click="loadAccounts">
             <RefreshCw :size="15" :class="{ 'spin-anim': loading }" />
             <span>Refresh</span>
           </button>
           <button class="btn btn-primary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm" @click="openCreateModal">
-            <Plus :size="16" />
+            <Plus :size="15" />
             <span>New Account</span>
           </button>
         </div>

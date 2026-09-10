@@ -16,12 +16,12 @@
           <p class="text-muted small mb-0">Track your progress towards emergencies, vacations, and future investments</p>
         </div>
         <div class="d-flex align-items-center gap-2">
-          <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2" @click="loadGoals">
+          <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white" @click="loadGoals">
             <RefreshCw :size="15" :class="{ 'spin-anim': loading }" />
             <span>Refresh</span>
           </button>
           <button class="btn btn-success btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm text-white" @click="openCreateModal">
-            <Plus :size="16" />
+            <Plus :size="15" />
             <span>New Goal</span>
           </button>
         </div>
