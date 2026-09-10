@@ -38,12 +38,12 @@
         </template>
 
         <template #footer>
-            <button v-if="!props.is_force" class="btn btn-sm btn-danger" @click="emitClose" v-translate>
+            <ab-button v-if="!props.is_force" color="danger" @click="emitClose" v-translate>
                 gbl.close
-            </button>
-            <button type="submit" class="btn btn-sm btn-primary" v-translate>
+            </ab-button>
+            <ab-button type="submit" color="primary" v-translate>
                 gbl.update
-            </button>
+            </ab-button>
         </template>
     </Modal>
 </template>

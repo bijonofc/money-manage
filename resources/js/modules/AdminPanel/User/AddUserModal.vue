@@ -25,15 +25,15 @@
         </template>
 
         <template #footer>
-            <button class="btn btn-sm btn-danger" @click="emitClose" v-translate>
+            <ab-button color="danger" @click="emitClose" v-translate>
                 gbl.close
-            </button>
-            <button v-if="props.user_id" type="submit" class="btn btn-sm btn-primary" v-translate>
+            </ab-button>
+            <ab-button v-if="props.user_id" type="submit" color="primary" v-translate>
                 gbl.save.changes
-            </button>
-            <button v-else type="submit" class="btn btn-sm btn-primary" v-translate>
+            </ab-button>
+            <ab-button v-else type="submit" color="primary" v-translate>
                 gbl.save
-            </button>
+            </ab-button>
         </template>
     </Modal>
 </template>

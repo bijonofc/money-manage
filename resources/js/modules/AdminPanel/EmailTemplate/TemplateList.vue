@@ -9,12 +9,10 @@
                         <div class="col-sm-8">
                             <apbd-filter-panel :is-single="true" @searchFilter="searchData" @reset="clearSearch" />
                         </div>
-                        <div class="col-sm-4  d-flex align-items-center justify-content-end gap-2">
-                            <button v-if="$CheckACL('np.template-list')" class="btn btn-sm btn-primary" @click="refreshGrid">
-                                <i class="apb apb-refresh-ccw-alt"> </i>
-                                <span class="ms-2" v-translate>gbl.reload</span>
-                            </button>
-
+                        <div class="col-sm-4 d-flex align-items-center justify-content-end gap-2">
+                            <ab-button v-if="$CheckACL('np.template-list')" color="secondary" is-outline :is-animated="isShowLoader" :disabled="isShowLoader" @click="refreshGrid">
+                                <translate>gbl.reload</translate>
+                            </ab-button>
                         </div>
                     </div>
                 </div>

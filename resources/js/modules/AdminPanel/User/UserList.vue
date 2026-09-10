@@ -9,14 +9,12 @@
                             <apbd-filter-panel :is-single="true" @searchFilter="searchData" @reset="clearSearch" />
                         </div>
                         <div class="col-sm-4 d-flex align-items-center justify-content-end gap-2">
-                            <button class="btn btn-sm btn-outline-secondary" @click="refreshGrid">
-                                <i class="apb apb-refresh-ccw-alt"> </i>
-                                <span class="ms-2" v-translate>gbl.reload</span>
-                            </button>
-                            <button v-if="$CheckACL('user-add') || $CheckACL('np.user-add')" class="btn btn-sm btn-primary" @click="openModal">
-                                <i class="apb apb-circle-plus"> </i>
-                                <span class="ms-2" v-translate>gbl.add.new</span>
-                            </button>
+                            <ab-button color="secondary" is-outline :is-animated="isShowLoader" :disabled="isShowLoader" @click="refreshGrid">
+                                <translate>gbl.reload</translate>
+                            </ab-button>
+                            <ab-button v-if="$CheckACL('user-add') || $CheckACL('np.user-add')" color="primary" @click="openModal">
+                                <translate>gbl.add.new</translate>
+                            </ab-button>
                         </div>
                     </div>
                 </div>
@@ -52,14 +50,12 @@
                     </template>
                     <template v-slot:actionProperty="slotProps">
                         <div class="d-flex gap-2 justify-content-center">
-                            <button v-if="$CheckACL('user-edit') || $CheckACL('np.user-update')" class="btn btn-primary btn-sm d-flex align-items-center gap-1" @click="showModal(slotProps.rowitem.id)">
-                                <i class="apb apb-edit-01"></i>
-                                <span v-translate>gbl.edit.now</span>
-                            </button>
-                            <button v-if="$CheckACL('user-delete') || $CheckACL('np.user-delete')" class="btn btn-sm btn-danger d-flex align-items-center gap-1" @click="deleteUser(slotProps.rowitem.id)">
-                                <i class="apb apb-trash-3"></i>
-                                <span v-translate>gbl.delete</span>
-                            </button>
+                            <ab-button v-if="$CheckACL('user-edit') || $CheckACL('np.user-update')" color="primary" @click="showModal(slotProps.rowitem.id)" v-translate>
+                                gbl.edit.now
+                            </ab-button>
+                            <ab-button v-if="$CheckACL('user-delete') || $CheckACL('np.user-delete')" color="danger" @click="deleteUser(slotProps.rowitem.id)" v-translate>
+                                gbl.delete
+                            </ab-button>
                         </div>
                     </template>
                 </elite-grid>

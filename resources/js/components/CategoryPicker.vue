@@ -20,34 +20,34 @@
         </button>
 
         <!-- Inline Add Category Button -->
-        <button
+        <ab-button
           type="button"
-          class="btn btn-xs btn-light-primary px-2.5 py-0.5 text-xxs fw-semibold d-flex align-items-center gap-1"
+          color="primary"
+          is-outline
+          size="xs"
           @click="showInlineCreate = !showInlineCreate"
         >
-          <Plus :size="11" />
-          <span>{{ showInlineCreate ? 'Cancel' : 'New Category' }}</span>
-        </button>
+          {{ showInlineCreate ? 'Cancel' : 'New Category' }}
+        </ab-button>
       </div>
     </div>
 
     <!-- Quick Search Input Bar -->
     <div v-if="showSearch" class="mb-2.5 animate-fade-in">
       <div class="input-group input-group-sm rounded-pill overflow-hidden border bg-light">
-        <span class="input-group-text bg-transparent border-0 text-muted ps-2.5">
+        <span class="input-group-text bg-transparent border-0 text-muted ps-3">
           <Search :size="13" />
         </span>
         <input
-          ref="searchInputRef"
           v-model="searchQuery"
           type="text"
-          class="form-control form-control-sm bg-transparent border-0 ps-1 text-xs"
-          placeholder="Type to filter categories..."
+          class="form-control bg-transparent border-0 ps-1 text-xs"
+          placeholder="Search categories..."
         />
         <button
           v-if="searchQuery"
           type="button"
-          class="btn btn-sm btn-link text-muted p-1 pe-2"
+          class="btn btn-link btn-sm text-muted pe-3 text-decoration-none"
           @click="searchQuery = ''"
         >
           <X :size="12" />
@@ -55,19 +55,9 @@
       </div>
     </div>
 
-    <!-- INLINE NEW CATEGORY CREATOR (Expandable) -->
-    <div v-if="showInlineCreate" class="inline-creator-card p-3 rounded-3 bg-light border border-dashed mb-3 animate-fade-in">
-      <div class="d-flex align-items-center justify-content-between mb-2">
-        <span class="text-xs fw-bold text-dark d-flex align-items-center gap-1">
-          <Sparkles :size="13" class="text-warning" />
-          <span>Create New {{ type === 'income' ? 'Income' : 'Expense' }} Category</span>
-        </span>
-        <button type="button" class="btn-close-sm btn p-0 text-muted" @click="showInlineCreate = false">
-          <X :size="14" />
-        </button>
-      </div>
-
-      <div class="row g-2 mb-2">
+    <!-- Inline Quick Add Input Bar -->
+    <div v-if="showInlineCreate" class="inline-add-box p-2.5 mb-2.5 bg-primary-subtle rounded-3 border border-primary-subtle animate-fade-in">
+      <div class="row g-2 align-items-center mb-2">
         <div class="col-8">
           <input
             v-model="newCatName"
@@ -79,16 +69,16 @@
           />
         </div>
         <div class="col-4">
-          <button
+          <ab-button
             type="button"
-            class="btn btn-primary btn-sm w-100 fw-semibold text-xs rounded-3 d-flex align-items-center justify-content-center gap-1"
+            color="primary"
+            class="w-100"
+            :is-animated="creating"
             :disabled="creating || !newCatName.trim()"
             @click="createCategory"
           >
-            <span v-if="creating" class="spinner-border spinner-border-sm" role="status"></span>
-            <Check v-else :size="13" />
-            <span>{{ creating ? 'Saving...' : 'Add' }}</span>
-          </button>
+            Add
+          </ab-button>
         </div>
       </div>
 
@@ -141,13 +131,14 @@
       <p class="text-xs mb-1">
         {{ searchQuery ? `No categories matching "${searchQuery}"` : `No ${type} categories found` }}
       </p>
-      <button
+      <ab-button
         type="button"
-        class="btn btn-sm btn-outline-primary px-3 py-1 text-xxs fw-semibold mt-1"
+        color="primary"
+        is-outline
         @click="openInlineWithSearch"
       >
-        + Add "{{ searchQuery || 'Category' }}"
-      </button>
+        Add "{{ searchQuery || 'Category' }}"
+      </ab-button>
     </div>
 
     <!-- Hidden validation anchor for required forms -->
@@ -166,7 +157,6 @@ import { ref, computed, nextTick } from 'vue';
 import {
   Tag,
   Search,
-  Plus,
   X,
   Check,
   Sparkles,

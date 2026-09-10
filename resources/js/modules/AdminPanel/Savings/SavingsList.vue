@@ -16,14 +16,12 @@
           <p class="text-muted small mb-0">Track your progress towards emergencies, vacations, and future investments</p>
         </div>
         <div class="d-flex align-items-center gap-2">
-          <button class="btn btn-outline-secondary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white" @click="loadGoals">
-            <RefreshCw :size="15" :class="{ 'spin-anim': loading }" />
-            <span>Refresh</span>
-          </button>
-          <button class="btn btn-success btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm text-white" @click="openCreateModal">
-            <Plus :size="15" />
-            <span>New Goal</span>
-          </button>
+          <ab-button color="secondary" is-outline :is-animated="loading" :disabled="loading" @click="loadGoals">
+            Refresh
+          </ab-button>
+          <ab-button color="success" @click="openCreateModal">
+            New Goal
+          </ab-button>
         </div>
       </div>
     </div>
@@ -40,9 +38,9 @@
       <h5>No savings goals created yet</h5>
       <p class="small mb-4">Create your first goal to save towards your dreams.</p>
       <div>
-        <button class="btn btn-success text-white px-4 py-2" @click="openCreateModal">
+        <ab-button color="success" @click="openCreateModal">
           Create Goal
-        </button>
+        </ab-button>
       </div>
     </div>
 
@@ -52,9 +50,9 @@
           <div class="d-flex align-items-center justify-content-between mb-3">
             <h6 class="fw-bold mb-0 text-dark">{{ g.name }}</h6>
             <div class="d-flex align-items-center gap-1">
-              <button class="btn btn-sm btn-outline-success px-2.5 py-1 text-xs fw-semibold" @click="openContributeModal(g)">
-                + Deposit
-              </button>
+              <ab-button color="success" is-outline size="xs" @click="openContributeModal(g)">
+                Deposit
+              </ab-button>
               <button class="btn btn-icon btn-light btn-sm rounded-circle text-danger" @click="deleteGoal(g.id)">
                 <Trash2 :size="14" />
               </button>
@@ -116,10 +114,10 @@
           </div>
 
           <div class="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" class="btn btn-light px-4 text-xs fw-semibold" @click="showModal = false">Cancel</button>
-            <button type="submit" class="btn btn-success text-white px-4 text-xs fw-semibold" :disabled="saving">
-              {{ saving ? 'Saving...' : 'Create Goal' }}
-            </button>
+            <ab-button type="button" color="light" @click="showModal = false">Cancel</ab-button>
+            <ab-button type="submit" color="success" :is-animated="saving" :disabled="saving">
+              Create Goal
+            </ab-button>
           </div>
         </form>
       </div>
@@ -178,10 +176,10 @@
           </div>
 
           <div class="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" class="btn btn-light px-4 text-xs fw-semibold" @click="showDepositModal = false">Cancel</button>
-            <button type="submit" class="btn btn-success text-white px-4 text-xs fw-semibold" :disabled="saving">
-              {{ saving ? 'Saving...' : 'Record Deposit' }}
-            </button>
+            <ab-button type="button" color="light" @click="showDepositModal = false">Cancel</ab-button>
+            <ab-button type="submit" color="success" :is-animated="saving" :disabled="saving">
+              Record Deposit
+            </ab-button>
           </div>
         </form>
       </div>
@@ -197,9 +195,7 @@ import AppsbdUtls from '@/libs/AppsbdUtls.js';
 
 import {
   Target,
-  Plus,
   Trash2,
-  RefreshCw,
   Wallet,
 } from '@lucide/vue';
 

@@ -12,11 +12,9 @@
     <p class="text-muted small">{{ user.email }}</p>
     <input ref="fileInput" type="file" class="d-none" accept="image/*" @change="handleFileChange"/>
 
-    <button  class="btn btn-outline-primary btn-sm mt-2 mx-auto d-flex align-items-center gap-2" :disabled="!selectedFile || loading" @click="submit">
-        <i class="apb apb-upload"></i>
-        <translate>upload.image</translate>
-        <SmallLoader v-if="loading" :show="loading" color="#0d6efd" size="5" />
-    </button>
+    <ab-button is-outline color="primary" class="mt-2 mx-auto" :disabled="!selectedFile || loading" :is-animated="loading" @click="submit" v-translate>
+        upload.image
+    </ab-button>
 </template>
 
 

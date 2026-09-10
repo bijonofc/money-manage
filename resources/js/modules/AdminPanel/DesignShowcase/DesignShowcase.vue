@@ -20,14 +20,12 @@
           </div>
 
           <div class="d-flex flex-wrap gap-2">
-            <button class="btn btn-light px-4 py-2.5 fw-bold text-dark shadow-sm d-flex align-items-center gap-2" @click="showAccountModal = true">
-              <Plus :size="18" class="text-success" />
-              <span>Test "Add Account" Modal</span>
-            </button>
-            <button class="btn btn-warning px-4 py-2.5 fw-bold text-dark shadow-sm d-flex align-items-center gap-2" @click="showTransactionModal = true">
-              <Zap :size="18" class="text-dark" />
-              <span>Test "Record Transaction" Modal</span>
-            </button>
+            <ab-button color="light" @click="showAccountModal = true">
+              Test "Add Account" Modal
+            </ab-button>
+            <ab-button color="warning" @click="showTransactionModal = true">
+              Test "Record Transaction" Modal
+            </ab-button>
           </div>
         </div>
       </div>
@@ -234,17 +232,16 @@
 
             <!-- Action Buttons -->
             <div class="d-flex align-items-center justify-content-end gap-2.5 mt-4 pt-3 border-top">
-              <button type="button" class="btn btn-light px-4 py-2 text-sm fw-semibold text-secondary">
+              <ab-button type="button" color="light">
                 Cancel
-              </button>
-              <button
+              </ab-button>
+              <ab-button
                 type="button"
-                class="btn btn-primary px-4 py-2 text-sm fw-semibold shadow-sm d-flex align-items-center gap-2"
+                color="primary"
                 @click="simulateSave('Account saved successfully!')"
               >
-                <Check :size="16" />
-                <span>Save Account</span>
-              </button>
+                Save Account
+              </ab-button>
             </div>
 
           </div>
@@ -456,20 +453,16 @@
 
             <!-- Action Buttons -->
             <div class="d-flex align-items-center justify-content-end gap-2.5 mt-4 pt-3 border-top">
-              <button type="button" class="btn btn-light px-4 py-2 text-sm fw-semibold text-secondary">
+              <ab-button type="button" color="light">
                 Cancel
-              </button>
-              <button
+              </ab-button>
+              <ab-button
                 type="button"
-                class="btn px-4 py-2 text-sm fw-semibold shadow-sm d-flex align-items-center gap-2"
-                :class="inlineTx.transaction_type === 'expense' ? 'btn-danger text-white' : 'btn-primary text-white'"
+                :color="inlineTx.transaction_type === 'expense' ? 'danger' : 'primary'"
                 @click="simulateSave('Transaction recorded successfully!')"
               >
-                <Check :size="16" />
-                <span>
-                  {{ inlineTx.transaction_type === 'expense' ? 'Save Expense' : inlineTx.transaction_type === 'income' ? 'Save Income' : 'Save Transfer' }}
-                </span>
-              </button>
+                {{ inlineTx.transaction_type === 'expense' ? 'Save Expense' : inlineTx.transaction_type === 'income' ? 'Save Income' : 'Save Transfer' }}
+              </ab-button>
             </div>
 
           </div>

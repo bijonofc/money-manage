@@ -7,14 +7,14 @@
 
         <div class="row mt-4 g-3" v-if="canShowActions">
             <div class="col-md-6">
-                <button class="btn btn-theme w-100" v-if="canUpdate" @click="openProfileModal(user.id)" v-translate>
+                <ab-button class="w-100" color="primary" v-if="canUpdate" @click="openProfileModal(user.id)" v-translate>
                     update.profile
-                </button>
+                </ab-button>
             </div>
             <div class="col-md-6">
-                <button class="btn btn-primary w-100" v-if="canChangePassword" @click="openPasswordModal(user.id)" v-translate>
+                <ab-button class="w-100" color="primary" v-if="canChangePassword" @click="openPasswordModal(user.id)" v-translate>
                     change.password
-                </button>
+                </ab-button>
             </div>
         </div>
     </div>

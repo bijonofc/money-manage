@@ -137,22 +137,27 @@
         <!-- ACTIONS -->
         <div class="row mt-4 g-2">
             <div class="col-12 col-md-6" v-if="!isEdit">
-                <button class="btn btn-theme w-100" @click="startEdit" v-translate>update.profile</button>
+                <ab-button color="primary" class="w-100" @click="startEdit">
+                    <translate>update.profile</translate>
+                </ab-button>
             </div>
 
             <div class="col-12 col-md-6" v-if="isEdit">
-                <button type="button" class="btn btn-primary w-100 d-flex align-items-center justify-content-center gap-2" @click="updateProfile">
+                <ab-button type="button" color="primary" class="w-100" :is-animated="isLoading" :disabled="isLoading" @click="updateProfile">
                     <translate>gbl.save</translate>
-                    <small-loader v-if="isLoading" :show="isLoading" color="#FFF"/>
-                </button>
+                </ab-button>
             </div>
 
             <div class="col-12 col-md-6" v-if="isEdit">
-                <button class="btn btn-outline-secondary w-100" @click="cancelEdit" v-translate>gbl.cancel</button>
+                <ab-button color="secondary" is-outline class="w-100" @click="cancelEdit">
+                    <translate>gbl.cancel</translate>
+                </ab-button>
             </div>
 
             <div class="col-12 col-md-6" v-if="!isEdit">
-                <button class="btn btn-primary w-100" type="button" @click="openPasswordModal(props.user.id)" v-translate>change.password</button>
+                <ab-button color="primary" class="w-100" type="button" @click="openPasswordModal(props.user.id)">
+                    <translate>change.password</translate>
+                </ab-button>
             </div>
         </div>
     </div>

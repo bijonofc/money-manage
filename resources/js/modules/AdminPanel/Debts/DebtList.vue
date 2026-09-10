@@ -12,20 +12,21 @@
             />
           </div>
           <div class="col-12 col-lg-4 d-flex align-items-center justify-content-lg-end gap-2 flex-wrap">
-            <button
-              class="btn btn-outline-secondary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white"
+            <ab-button
+              color="secondary"
+              is-outline
+              :is-animated="isShowLoader"
+              :disabled="isShowLoader"
               @click="refreshGrid"
             >
-              <RefreshCw :size="15" :class="{ 'spin-anim': isShowLoader }" />
-              <span>Reload</span>
-            </button>
-            <button
-              class="btn btn-danger btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm text-white"
+              Reload
+            </ab-button>
+            <ab-button
+              color="danger"
               @click="openCreateModal"
             >
-              <Plus :size="15" />
-              <span>New Debt Record</span>
-            </button>
+              New Debt Record
+            </ab-button>
           </div>
         </div>
       </div>
@@ -265,10 +266,10 @@
           </div>
 
           <div class="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" class="btn btn-light px-4 text-xs fw-semibold" @click="showModal = false">Cancel</button>
-            <button type="submit" class="btn btn-danger text-white px-4 text-xs fw-semibold" :disabled="saving">
-              {{ saving ? 'Saving...' : 'Save Debt Record' }}
-            </button>
+            <ab-button type="button" color="light" @click="showModal = false">Cancel</ab-button>
+            <ab-button type="submit" color="danger" :is-animated="saving" :disabled="saving">
+              Save Debt Record
+            </ab-button>
           </div>
         </form>
       </div>
@@ -359,15 +360,15 @@
           </div>
 
           <div class="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" class="btn btn-light px-4 text-xs fw-semibold" @click="showPayModal = false">Cancel</button>
-            <button
+            <ab-button type="button" color="light" @click="showPayModal = false">Cancel</ab-button>
+            <ab-button
               type="submit"
-              class="btn text-white px-4 text-xs fw-semibold"
-              :class="selectedDebt?.type === 'owed_to' ? 'btn-danger' : 'btn-success'"
+              :color="selectedDebt?.type === 'owed_to' ? 'danger' : 'success'"
+              :is-animated="saving"
               :disabled="saving"
             >
-              {{ saving ? 'Saving...' : (selectedDebt?.type === 'owed_to' ? 'Record Repayment' : 'Record Collection') }}
-            </button>
+              {{ selectedDebt?.type === 'owed_to' ? 'Record Repayment' : 'Record Collection' }}
+            </ab-button>
           </div>
         </form>
       </div>
@@ -523,9 +524,7 @@ import { AbFilterPanel as ApbdFilterPanel } from '@appsbd/vue3-appsbd-ui';
 
 import {
   CreditCard,
-  Plus,
   Trash2,
-  RefreshCw,
   Wallet,
   History,
   Receipt,

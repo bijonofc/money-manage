@@ -11,14 +11,12 @@
           <p class="text-muted small mb-0">Record and track income, expenses, and account transfers</p>
         </div>
         <div class="d-flex align-items-center gap-2">
-          <button class="btn btn-outline-secondary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white" @click="loadTransactions">
-            <RefreshCw :size="15" :class="{ 'spin-anim': loading }" />
-            <span>Refresh</span>
-          </button>
-          <button class="btn btn-primary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm" @click="openCreateModal">
-            <Plus :size="15" />
-            <span>Add Transaction</span>
-          </button>
+          <ab-button color="secondary" is-outline :is-animated="loading" :disabled="loading" @click="loadTransactions">
+            Refresh
+          </ab-button>
+          <ab-button color="primary" @click="openCreateModal">
+            Add Transaction
+          </ab-button>
         </div>
       </div>
     </div>
@@ -55,9 +53,9 @@
         <ArrowLeftRight :size="48" class="mx-auto mb-3 opacity-50" />
         <h5>No transactions found</h5>
         <p class="small mb-4">Record your first transaction to keep your finances accurate.</p>
-        <button class="btn btn-primary px-4 py-2" @click="openCreateModal">
+        <ab-button color="primary" @click="openCreateModal">
           Add Transaction
-        </button>
+        </ab-button>
       </div>
 
       <div v-else class="table-responsive">
@@ -157,9 +155,7 @@ import {
   ArrowLeftRight,
   ArrowUpRight,
   ArrowDownLeft,
-  Plus,
   Trash2,
-  RefreshCw,
 } from '@lucide/vue';
 
 const transactions = ref([]);

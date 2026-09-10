@@ -11,9 +11,8 @@
             <a
                 href="https://nogorpos.com/"
                 target="_blank"
-                class="btn btn-danger px-4 py-2 fw-semibold"
+                class="apbd-btn btn btn-danger fw-semibold"
             >
-                <i class="apb apb-Home-01 me-2"></i>
                 <translate>choose.pkg</translate>
             </a>
         </div>

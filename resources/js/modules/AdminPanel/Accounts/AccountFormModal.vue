@@ -164,22 +164,21 @@
 
         <!-- Modal Footer Actions -->
         <div class="d-flex align-items-center justify-content-end gap-2.5 mt-4 pt-3 border-top">
-          <button
+          <ab-button
             type="button"
-            class="btn btn-light px-4 py-2 text-sm fw-semibold text-secondary"
+            color="light"
             @click="close"
           >
             Cancel
-          </button>
-          <button
+          </ab-button>
+          <ab-button
             type="submit"
-            class="btn btn-primary px-4 py-2 text-sm fw-semibold shadow-sm d-flex align-items-center gap-2"
+            color="primary"
+            :is-animated="saving"
             :disabled="saving"
           >
-            <span v-if="saving" class="spinner-border spinner-border-sm" role="status"></span>
-            <Check v-else :size="15" />
-            <span>{{ saving ? 'Saving...' : (editData ? 'Save Changes' : 'Save Account') }}</span>
-          </button>
+            {{ editData ? 'Save Changes' : 'Save Account' }}
+          </ab-button>
         </div>
 
       </form>
@@ -196,7 +195,6 @@ import {
   CreditCard,
   Layers,
   X,
-  Check,
   ChevronDown,
   PencilLine,
   Hash,

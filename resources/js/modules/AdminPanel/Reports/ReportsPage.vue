@@ -26,35 +26,37 @@
 
           <!-- Action Buttons -->
           <div class="d-flex align-items-center gap-2 flex-wrap">
-            <button
+            <ab-button
               type="button"
-              class="btn btn-outline-secondary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white"
+              color="secondary"
+              is-outline
+              :is-animated="loading"
+              :disabled="loading"
               @click="loadReportData"
               title="Refresh Data"
             >
-              <RefreshCw :size="15" :class="{ 'spin-anim': loading }" />
-              <span>Refresh</span>
-            </button>
+              Refresh
+            </ab-button>
 
-            <button
+            <ab-button
               type="button"
-              class="btn btn-primary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm text-white"
+              color="primary"
+              :is-animated="exporting"
               :disabled="exporting"
               @click="exportCsv"
             >
-              <Download :size="15" />
-              <span>{{ exporting ? 'Exporting...' : 'Export CSV' }}</span>
-            </button>
+              Export CSV
+            </ab-button>
 
-            <button
+            <ab-button
               type="button"
-              class="btn btn-outline-secondary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white"
+              color="secondary"
+              is-outline
               @click="printReport"
               title="Print Report"
             >
-              <Printer :size="15" />
-              <span>Print</span>
-            </button>
+              Print
+            </ab-button>
           </div>
         </div>
 
@@ -509,9 +511,6 @@ import {
   Calendar,
   Wallet,
   Tag,
-  Download,
-  Printer,
-  RefreshCw,
   Coins,
   Percent,
   Sparkles,

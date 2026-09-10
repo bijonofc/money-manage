@@ -66,7 +66,7 @@
                     </div>
 
                     <div class="card-footer d-flex justify-content-end">
-                        <button class="btn btn-sm btn-theme" type="submit" v-translate>gbl.save</button>
+                        <ab-button type="submit" color="primary" v-translate>gbl.save</ab-button>
                     </div>
                 </div>
             </SettingsForm>

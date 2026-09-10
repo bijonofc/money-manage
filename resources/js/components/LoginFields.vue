@@ -4,10 +4,9 @@
         <InputField name="password" rules="required" label="password" placeholder="⚬⚬⚬⚬⚬⚬⚬" type="password" v-model="password"/>
 
         <div class="d-grid mb-3">
-            <button type="submit" class="btn btn-primary d-flex align-items-center justify-content-center gap-2">
+            <ab-button type="submit" color="primary" class="w-100" :is-animated="props.loading" :disabled="props.loading">
                 <translate>login.signin</translate>
-                <small-loader :show="props.loading" color="#FFF"/>
-            </button>
+            </ab-button>
         </div>
     </Form>
 

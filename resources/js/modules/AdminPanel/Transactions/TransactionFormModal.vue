@@ -271,23 +271,21 @@
 
         <!-- Modal Footer Actions -->
         <div class="d-flex align-items-center justify-content-end gap-2.5 mt-4 pt-3 border-top">
-          <button
+          <ab-button
             type="button"
-            class="btn btn-light px-4 py-2 text-sm fw-semibold text-secondary"
+            color="light"
             @click="close"
           >
             Cancel
-          </button>
-          <button
+          </ab-button>
+          <ab-button
             type="submit"
-            class="btn px-4 py-2 text-sm fw-semibold shadow-sm d-flex align-items-center gap-2"
-            :class="submitButtonClass"
+            :color="submitButtonColor"
+            :is-animated="saving"
             :disabled="saving || !isFormValid"
           >
-            <span v-if="saving" class="spinner-border spinner-border-sm" role="status"></span>
-            <Check v-else :size="15" />
-            <span>{{ saving ? 'Saving...' : submitButtonText }}</span>
-          </button>
+            {{ submitButtonText }}
+          </ab-button>
         </div>
 
       </form>
@@ -310,7 +308,6 @@ import {
   Calendar,
   Clock,
   FileText,
-  Check,
   X,
   AlertCircle,
 } from '@lucide/vue';
@@ -477,12 +474,12 @@ const submitButtonText = computed(() => {
   }
 });
 
-const submitButtonClass = computed(() => {
+const submitButtonColor = computed(() => {
   switch (form.value.transaction_type) {
-    case 'expense': return 'btn-danger text-white';
-    case 'income': return 'btn-primary text-white';
-    case 'transfer': return 'btn-primary text-white';
-    default: return 'btn-primary text-white';
+    case 'expense': return 'danger';
+    case 'income': return 'primary';
+    case 'transfer': return 'primary';
+    default: return 'primary';
   }
 });
 

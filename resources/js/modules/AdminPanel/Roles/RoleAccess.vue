@@ -7,8 +7,8 @@
             <apbd-filter-panel :is-single="true" @searchFilter="this.searchData" @reset="this.clearSearch" />
           </div>
           <div class="col-sm-4 text-end">
-            <button type="button" @click="isShowModal = !isShowModal" class="btn btn-sm btn-theme me-2"> <i class="apb vps-des-repeat me-2"></i> <translate>reset.role</translate></button>
-            <button type="button" @click="showModal" class="btn btn-sm btn-theme"> <i class="apb vps-copy1 me-2"></i> <translate>copy.role.permission</translate></button>
+            <ab-button type="button" @click="isShowModal = !isShowModal" color="primary" class="me-2"><translate>reset.role</translate></ab-button>
+            <ab-button type="button" @click="showModal" color="primary"><translate>copy.role.permission</translate></ab-button>
           </div>
         </div>
       </div>
@@ -66,12 +66,12 @@
       </div>
     </template>
     <template v-slot:footer>
-      <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" @click="closeModal" v-translate>
+      <ab-button type="button" color="secondary" data-dismiss="modal" @click="closeModal" v-translate>
         gbl.cancel
-      </button>
-      <button type="submit" :disabled="add_props?.selected_role==null" class="btn btn-sm btn-theme" data-dismiss="modal">
+      </ab-button>
+      <ab-button type="submit" :disabled="add_props?.selected_role==null" color="primary" data-dismiss="modal">
         {{ this.$gettext('Reset') }}
-      </button>
+      </ab-button>
     </template>
   </modal>
   <modal v-show="isShowCopyModal" modal-size="modal-md"  :modal-msg="msg" ref="copy_modal" @onSubmit="copyRolePermission($event)"
@@ -100,12 +100,12 @@
       </div>
     </template>
     <template v-slot:footer>
-      <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" @click="closeCopyModal" v-translate>
+      <ab-button type="button" color="secondary" data-dismiss="modal" @click="closeCopyModal" v-translate>
         gbl.cancel
-      </button>
-      <button type="submit" :disabled="add_props?.from==null || add_props?.to==null || add_props?.from==add_props?.to" class="btn btn-sm btn-theme" data-dismiss="modal">
+      </ab-button>
+      <ab-button type="submit" :disabled="add_props?.from==null || add_props?.to==null || add_props?.from==add_props?.to" color="primary" data-dismiss="modal">
         {{ this.$gettext('copy.role') }}
-      </button>
+      </ab-button>
     </template>
   </modal>
 

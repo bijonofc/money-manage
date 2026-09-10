@@ -12,10 +12,9 @@
         </div>
 
         <div class="mt-3 w-100 text-center">
-            <button type="button" class="btn btn-primary" @click="triggerFileInput" :disabled="loading">
-                <span v-if="loading">Uploading...</span>
-                <span v-else>Upload Image</span>
-            </button>
+            <ab-button type="button" color="primary" @click="triggerFileInput" :disabled="loading" :is-animated="loading">
+                Upload Image
+            </ab-button>
             <input
                 ref="fileInput"
                 type="file"

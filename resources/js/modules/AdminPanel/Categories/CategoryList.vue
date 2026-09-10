@@ -11,14 +11,12 @@
           <p class="text-muted small mb-0">Organize your income and expenses into meaningful categories</p>
         </div>
         <div class="d-flex align-items-center gap-2">
-          <button class="btn btn-outline-secondary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white" @click="loadCategories">
-            <RefreshCw :size="15" :class="{ 'spin-anim': loading }" />
-            <span>Refresh</span>
-          </button>
-          <button class="btn btn-primary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm" @click="openCreateModal">
-            <Plus :size="15" />
-            <span>New Category</span>
-          </button>
+          <ab-button color="secondary" is-outline :is-animated="loading" :disabled="loading" @click="loadCategories">
+            Refresh
+          </ab-button>
+          <ab-button color="primary" @click="openCreateModal">
+            New Category
+          </ab-button>
         </div>
       </div>
     </div>
@@ -26,27 +24,24 @@
     <!-- Category Tabs / Filter -->
     <div class="card border-0 shadow-sm rounded-4 mb-3 p-2">
       <div class="d-flex gap-2">
-        <button
-          class="btn btn-sm px-4"
-          :class="activeType === 'all' ? 'btn-primary' : 'btn-light'"
+        <ab-button
+          :color="activeType === 'all' ? 'primary' : 'light'"
           @click="activeType = 'all'"
         >
           All
-        </button>
-        <button
-          class="btn btn-sm px-4"
-          :class="activeType === 'expense' ? 'btn-danger text-white' : 'btn-light'"
+        </ab-button>
+        <ab-button
+          :color="activeType === 'expense' ? 'danger' : 'light'"
           @click="activeType = 'expense'"
         >
           Expenses
-        </button>
-        <button
-          class="btn btn-sm px-4"
-          :class="activeType === 'income' ? 'btn-success text-white' : 'btn-light'"
+        </ab-button>
+        <ab-button
+          :color="activeType === 'income' ? 'success' : 'light'"
           @click="activeType = 'income'"
         >
           Income
-        </button>
+        </ab-button>
       </div>
     </div>
 
@@ -62,9 +57,9 @@
       <h5>No categories found</h5>
       <p class="small mb-4">Create your first category to organize transactions.</p>
       <div>
-        <button class="btn btn-primary px-4 py-2" @click="openCreateModal">
+        <ab-button color="primary" @click="openCreateModal">
           Create Category
-        </button>
+        </ab-button>
       </div>
     </div>
 
@@ -123,10 +118,10 @@
           </div>
 
           <div class="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" class="btn btn-light px-4" @click="showModal = false">Cancel</button>
-            <button type="submit" class="btn btn-primary px-4" :disabled="saving">
-              {{ saving ? 'Saving...' : 'Save Category' }}
-            </button>
+            <ab-button type="button" color="light" @click="showModal = false">Cancel</ab-button>
+            <ab-button type="submit" color="primary" :is-animated="saving" :disabled="saving">
+              Save Category
+            </ab-button>
           </div>
         </form>
       </div>
@@ -142,9 +137,7 @@ import AppsbdUtls from '@/libs/AppsbdUtls.js';
 
 import {
   Tag,
-  Plus,
   Trash2,
-  RefreshCw,
 } from '@lucide/vue';
 
 const categories = ref([]);

@@ -8,10 +8,9 @@
                             <ApbdFilterPanel :is-single="false" :filter-options="filterProps" @searchFilter="searchData" @reset="clearSearch" />
                         </div>
                         <div class="col-sm-2 d-flex align-items-center justify-content-end gap-2">
-                            <button v-if="$CheckACL('activity-list') || $CheckACL('np.activity-list')" class="btn btn-sm btn-primary" @click="refreshGrid">
-                                <i class="apb apb-refresh-ccw-alt"></i>
-                                <span class="ms-2" v-translate>gbl.reload</span>
-                            </button>
+                            <ab-button v-if="$CheckACL('activity-list') || $CheckACL('np.activity-list')" color="secondary" is-outline :is-animated="isShowLoader" :disabled="isShowLoader" @click="refreshGrid">
+                                <translate>gbl.reload</translate>
+                            </ab-button>
                         </div>
                     </div>
                 </div>

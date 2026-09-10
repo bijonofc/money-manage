@@ -8,15 +8,12 @@
                             <apbd-filter-panel :filter-options="filterProps" @searchFilter="searchData" @reset="clearSearch" />
                         </div>
                         <div class="col-sm-4  d-flex align-items-center justify-content-end gap-2">
-                            <button v-if="$CheckACL('np.contact-list')" class="btn btn-sm btn-primary" @click="refreshGrid">
-                                <i class="apb apb-refresh-ccw-alt"> </i>
-                                <span class="ms-2" v-translate>gbl.reload</span>
-                            </button>
-                            <button v-if="$CheckACL('np.contact-add')" class="btn btn-sm btn-primary" @click="openModal">
-                                <i class="apb apb-circle-plus"> </i>
-                                <span class="ms-2" v-translate>gbl.add.new</span>
-                            </button>
-
+                            <ab-button v-if="$CheckACL('np.contact-list')" color="secondary" is-outline :is-animated="isShowLoader" :disabled="isShowLoader" @click="refreshGrid">
+                                <translate>gbl.reload</translate>
+                            </ab-button>
+                            <ab-button v-if="$CheckACL('np.contact-add')" color="primary" @click="openModal">
+                                <translate>gbl.add.new</translate>
+                            </ab-button>
                         </div>
                     </div>
                 </div>

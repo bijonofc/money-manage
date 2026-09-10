@@ -12,7 +12,7 @@ import { computed } from "vue"
 
 const props = defineProps({
     show: { type: Boolean, default: false },
-    color: { type: String, default: "#0d6efd" },
+    color: { type: String, default: "currentColor" },
     size: { type: Number, default: 4 }
 })
 
@@ -23,9 +23,11 @@ const isLoading = computed(() => {
 
 <style scoped lang="scss">
 .dot-loader {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 3px;
+    margin-left: 5px;
+    vertical-align: middle;
 
     span {
         width: var(--dot-size);

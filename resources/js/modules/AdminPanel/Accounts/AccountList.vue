@@ -11,14 +11,12 @@
           <p class="text-muted small mb-0">Manage bank accounts, cash in hand, mobile money, and credit cards</p>
         </div>
         <div class="d-flex align-items-center gap-2">
-          <button class="btn btn-outline-secondary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white" @click="loadAccounts">
-            <RefreshCw :size="15" :class="{ 'spin-anim': loading }" />
-            <span>Refresh</span>
-          </button>
-          <button class="btn btn-primary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm" @click="openCreateModal">
-            <Plus :size="15" />
-            <span>New Account</span>
-          </button>
+          <ab-button color="secondary" is-outline :is-animated="loading" :disabled="loading" @click="loadAccounts">
+            Refresh
+          </ab-button>
+          <ab-button color="primary" @click="openCreateModal">
+            New Account
+          </ab-button>
         </div>
       </div>
     </div>
@@ -35,9 +33,9 @@
       <h5>No accounts found</h5>
       <p class="small mb-4">Add your first bank account, credit card, or cash wallet to begin tracking.</p>
       <div>
-        <button class="btn btn-primary px-4 py-2" @click="openCreateModal">
+        <ab-button color="primary" @click="openCreateModal">
           Create Account
-        </button>
+        </ab-button>
       </div>
     </div>
 
@@ -84,12 +82,7 @@
     </div>
 
     <!-- Redesigned Account Modal -->
-    <AccountFormModal
-      v-model="showModal"
-      :edit-data="selectedAccount"
-      :saving="saving"
-      @save="saveAccount"
-    />
+    <AccountFormModal v-model="showModal" :edit-data="selectedAccount" :saving="saving" @save="saveAccount" />
   </div>
 </template>
 
@@ -106,10 +99,8 @@ import {
   Smartphone,
   CreditCard,
   Layers,
-  Plus,
   Pencil,
   Trash2,
-  RefreshCw,
 } from '@lucide/vue';
 
 const accounts = ref([]);
@@ -215,7 +206,12 @@ onMounted(loadAccounts);
 }
 
 @keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 </style>

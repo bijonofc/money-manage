@@ -35,6 +35,7 @@ import appGettextComponent from '@/libs/AppGettextComponent.js';
 import { createAppsbdCore } from '@/libs/AppsbdCore.js'
 import attrOption from "@/libs/attrOption.js";
 import vue3GoogleLogin from 'vue3-google-login';
+import SmallLoader from '@/components/SmallLoader.vue';
 
 import AppsbdUI, {
     AppsbdUIConfigure,
@@ -80,6 +81,7 @@ window.app_settings = window.app_settings || {
 };
 
 AppsbdUIConfigure({
+    size: 'md',
     currency: window.app_settings?.currencySymbol || '৳',
     currencyPosition: 'left_space',
     is24Hour: false,
@@ -127,6 +129,8 @@ app.provide('appType', 'admin');
     .component('VTooltip', Tooltip)
     .component('Menu', Menu)
     // Additional AppsbdUI components
+    .component('AbButton', AbButton)
+    .component('ab-button', AbButton)
     .component('AbAvatar', AbAvatar)
     .component('AbBadge', AbBadge)
     .component('AbScrollbar', AbScrollbar)
@@ -153,6 +157,8 @@ app.provide('appType', 'admin');
     .component('ApbdConfirmPopover', AbConfirmPopover)
     .component('AnimatedButton', AbButton)
     .component('ApbdDropdown', AbMultiSelect)
+    .component('SmallLoader', SmallLoader)
+    .component('small-loader', SmallLoader)
     if(app_settings) {
         app.use(vue3GoogleLogin, {
             scope: 'profile email country',

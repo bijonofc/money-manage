@@ -52,9 +52,9 @@
               </div>
             </div>
             <div class="card-footer bg-transparent border-0 d-flex justify-content-end pb-4 px-4 pt-0">
-              <button class="btn btn-primary px-4" type="submit" :disabled="savingGeneral">
-                {{ savingGeneral ? 'Saving...' : 'Save Settings' }}
-              </button>
+              <ab-button type="submit" color="primary" :is-animated="savingGeneral" :disabled="savingGeneral">
+                Save Settings
+              </ab-button>
             </div>
           </div>
         </form>
@@ -117,9 +117,9 @@
               </div>
             </div>
             <div class="card-footer bg-transparent border-0 d-flex justify-content-end pb-4 px-4 pt-0">
-              <button class="btn btn-primary px-4" type="submit" :disabled="savingNoti">
-                {{ savingNoti ? 'Saving...' : 'Save Preferences' }}
-              </button>
+              <ab-button type="submit" color="primary" :is-animated="savingNoti" :disabled="savingNoti">
+                Save Preferences
+              </ab-button>
             </div>
           </div>
         </form>

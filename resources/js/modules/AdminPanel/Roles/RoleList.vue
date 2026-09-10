@@ -7,7 +7,7 @@
             <apbd-filter-panel :is-single="true" @searchFilter="this.searchData" @reset="this.clearSearch" />
           </div>
           <div class="col-sm-4 text-end">
-          <button v-if="$CheckACL('np.role-add')" class="btn btn-sm btn-theme" @click="showModal()" v-translate>add.role</button>
+          <ab-button v-if="$CheckACL('np.role-add')" color="primary" @click="showModal()" v-translate>add.role</ab-button>
           </div>
         </div>
       </div>
@@ -41,13 +41,13 @@
               <APBDGridLoader msg="gbl.loading" :msg-params="{name:'roles'}"/>
           </template>
           <template v-slot:actionProperty="slotProps">
-            <div v-if="slotProps.rowitem.slug!='super-admin'">
-              <a v-if="$CheckACL('np.role-update')" class="btn btn-sm btn-primary me-2" @click="showModal(slotProps.rowitem.id)">
-                <i class="apb apb-edit-01"></i> <span v-translate>gbl.edit.now</span>
-              </a>
-              <a v-if="$CheckACL('np.role-delete')" class="btn  btn-sm btn-danger" @click="deleteRoleModal(slotProps.rowitem)">
-                <i class="apb apb-trash-3 "></i> <span v-translate>gbl.delete</span>
-              </a>
+            <div v-if="slotProps.rowitem.slug!='super-admin'" class="d-flex justify-content-center gap-2">
+              <ab-button v-if="$CheckACL('np.role-update')" color="primary" @click="showModal(slotProps.rowitem.id)" v-translate>
+                gbl.edit.now
+              </ab-button>
+              <ab-button v-if="$CheckACL('np.role-delete')" color="danger" @click="deleteRoleModal(slotProps.rowitem)" v-translate>
+                gbl.delete
+              </ab-button>
             </div>
             <div v-else>-</div>
           </template>
@@ -65,12 +65,12 @@
        <role-add-form :form-props="add_props" />
     </template>
     <template v-slot:footer>
-      <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" @click="closeModal" v-translate>
+      <ab-button type="button" color="secondary" data-dismiss="modal" @click="closeModal" v-translate>
        gbl.cancel
-      </button>
-      <button type="submit" class="btn btn-sm btn-primary" data-dismiss="modal">
+      </ab-button>
+      <ab-button type="submit" color="primary" data-dismiss="modal">
         {{ add_props.id ? this.$gettext('gbl.update') : this.$gettext('gbl.add.now') }}
-      </button>
+      </ab-button>
     </template>
   </modal>
   <modal v-show="isShowDeleteModal" :modal-msg="msg" modal-size="modal-md" ref="delete_role_modal" @onSubmit="deleteRole($event)"
@@ -92,12 +92,12 @@
       </div>
     </template>
     <template v-slot:footer="{close}">
-      <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal" @click="close" v-translate>
+      <ab-button type="button" color="secondary" data-dismiss="modal" @click="close" v-translate>
         gbl.cancel
-      </button>
-      <button :disabled="getDeletePermission" type="submit" class="btn btn-sm btn-theme" data-dismiss="modal">
+      </ab-button>
+      <ab-button :disabled="getDeletePermission" type="submit" color="danger" data-dismiss="modal">
         {{ appsbdUtls.translateGettext('gbl.delete') }}
-      </button>
+      </ab-button>
     </template>
   </modal>
 

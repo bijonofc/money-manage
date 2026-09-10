@@ -33,10 +33,9 @@
 
             <!-- Confirm Button -->
             <div class="d-flex justify-content-center mb-3">
-                <button type="submit" :disabled="loading || !isOtpComplete" class="btn btn-primary d-flex align-items-center gap-2">
-                    <span v-translate>gbl.confirm</span>
-                    <SmallLoader :show="loading" color="#fff" />
-                </button>
+                <ab-button type="submit" :disabled="loading || !isOtpComplete" color="primary" :is-animated="loading" v-translate>
+                    gbl.confirm
+                </ab-button>
             </div>
 
             <!-- Resend Section -->
@@ -50,10 +49,9 @@
                         <option value="s" v-translate>gbl.sms</option>
                     </select>
 
-                    <button type="button" @click="resendOtp" class="btn btn-primary d-flex align-items-center gap-2" :disabled="otpOption === '' || (countdown > 0 && maxResendCount >= 2)">
-                        <span v-translate>gbl.resend</span>
-                        <SmallLoader :show="resending" color="#fff" />
-                    </button>
+                    <ab-button type="button" @click="resendOtp" color="primary" :is-animated="resending" :disabled="otpOption === '' || (countdown > 0 && maxResendCount >= 2)" v-translate>
+                        gbl.resend
+                    </ab-button>
 
                     <!-- Countdown -->
                     <small v-if="countdown > 0 && maxResendCount >= 2" class="text-danger mt-2">

@@ -21,14 +21,15 @@
         />
 
         <div class="d-grid mb-3">
-            <button
+            <ab-button
                 type="submit"
-                class="btn btn-primary d-flex align-items-center gap-2 justify-content-center"
+                color="primary"
+                :is-animated="loading"
                 :disabled="loading"
+                v-translate
             >
-                <translate>gbl.submit</translate>
-                <SmallLoader :show="loading" color="#FFF" />
-            </button>
+                gbl.submit
+            </ab-button>
         </div>
 
         <div class="text-center">
