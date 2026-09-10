@@ -23,7 +23,7 @@
 <script setup>
 import { ref } from 'vue'
 import SmallLoader from '@/components/SmallLoader.vue'
-import { ResponseMsg } from '@appsbd/vue3-appsbd-libs'
+import { AbResponseMsg as ResponseMsg } from '@appsbd/vue3-appsbd-ui'
 
 const props = defineProps({
     user: { type: Object, required: true },

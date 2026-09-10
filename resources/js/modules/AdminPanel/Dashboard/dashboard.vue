@@ -23,7 +23,7 @@
           </div>
 
           <div class="d-flex align-items-center gap-2">
-            <button class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2 rounded-pill px-3 py-2 shadow-sm bg-white" @click="load">
+            <button class="btn btn-outline-secondary btn-sm d-flex align-items-center gap-2 px-3 py-2 shadow-sm bg-white" @click="load">
               <RefreshCw :size="15" :class="{ 'spin-anim': isShowLoader }" />
               <span>Refresh</span>
             </button>
@@ -332,7 +332,7 @@
 
 <script setup>
 import { ref, computed, onMounted } from "vue";
-import { AppLoader } from "@appsbd/vue3-appsbd-libs";
+import { AbLoader as AppLoader } from "@appsbd/vue3-appsbd-ui";
 import { useDashboardStore } from "@/modules/AdminPanel/Dashboard/DashboardStore.js";
 import { useLoginStore } from "@/modules/AdminPanel/User/loginStore.js";
 

@@ -52,7 +52,7 @@
               </div>
             </div>
             <div class="card-footer bg-transparent border-0 d-flex justify-content-end pb-4 px-4 pt-0">
-              <button class="btn btn-primary rounded-pill px-4" type="submit" :disabled="savingGeneral">
+              <button class="btn btn-primary px-4" type="submit" :disabled="savingGeneral">
                 {{ savingGeneral ? 'Saving...' : 'Save Settings' }}
               </button>
             </div>
@@ -117,7 +117,7 @@
               </div>
             </div>
             <div class="card-footer bg-transparent border-0 d-flex justify-content-end pb-4 px-4 pt-0">
-              <button class="btn btn-primary rounded-pill px-4" type="submit" :disabled="savingNoti">
+              <button class="btn btn-primary px-4" type="submit" :disabled="savingNoti">
                 {{ savingNoti ? 'Saving...' : 'Save Preferences' }}
               </button>
             </div>
@@ -133,7 +133,7 @@ import { ref, reactive, onMounted } from 'vue';
 import { useSettingStore } from '@/modules/AdminPanel/Settings/SettingStore.js';
 import TabComponent from '@/modules/AdminPanel/Settings/TabComponent.vue';
 import AppsbdUtls from '@/libs/AppsbdUtls.js';
-import { AppLoader } from '@appsbd/vue3-appsbd-libs';
+import { AbLoader as AppLoader } from '@appsbd/vue3-appsbd-ui';
 import { Wallet, Bell } from '@lucide/vue';
 
 const isLoaded = ref(false);

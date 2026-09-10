@@ -40,7 +40,7 @@
 import {inject, onMounted, ref,computed,nextTick} from 'vue'
 import { useRouter } from 'vue-router'
 import { useLoginStore } from './loginStore'
-import { ResponseMsg } from '@appsbd/vue3-appsbd-libs'
+import { AbResponseMsg as ResponseMsg } from '@appsbd/vue3-appsbd-ui'
 
 const rootData = inject('rootData');
 

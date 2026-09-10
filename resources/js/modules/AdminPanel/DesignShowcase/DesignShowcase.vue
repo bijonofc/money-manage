@@ -20,11 +20,11 @@
           </div>
 
           <div class="d-flex flex-wrap gap-2">
-            <button class="btn btn-light rounded-pill px-4 py-2.5 fw-bold text-dark shadow-sm d-flex align-items-center gap-2" @click="showAccountModal = true">
+            <button class="btn btn-light px-4 py-2.5 fw-bold text-dark shadow-sm d-flex align-items-center gap-2" @click="showAccountModal = true">
               <Plus :size="18" class="text-success" />
               <span>Test "Add Account" Modal</span>
             </button>
-            <button class="btn btn-warning rounded-pill px-4 py-2.5 fw-bold text-dark shadow-sm d-flex align-items-center gap-2" @click="showTransactionModal = true">
+            <button class="btn btn-warning px-4 py-2.5 fw-bold text-dark shadow-sm d-flex align-items-center gap-2" @click="showTransactionModal = true">
               <Zap :size="18" class="text-dark" />
               <span>Test "Record Transaction" Modal</span>
             </button>
@@ -234,12 +234,12 @@
 
             <!-- Action Buttons -->
             <div class="d-flex align-items-center justify-content-end gap-2.5 mt-4 pt-3 border-top">
-              <button type="button" class="btn btn-light rounded-pill px-4 py-2 text-sm fw-semibold text-secondary">
+              <button type="button" class="btn btn-light px-4 py-2 text-sm fw-semibold text-secondary">
                 Cancel
               </button>
               <button
                 type="button"
-                class="btn btn-primary rounded-pill px-4 py-2 text-sm fw-semibold shadow-sm d-flex align-items-center gap-2"
+                class="btn btn-primary px-4 py-2 text-sm fw-semibold shadow-sm d-flex align-items-center gap-2"
                 @click="simulateSave('Account saved successfully!')"
               >
                 <Check :size="16" />
@@ -320,7 +320,7 @@
                   v-for="chip in [100, 500, 1000, 2000, 5000]"
                   :key="chip"
                   type="button"
-                  class="btn btn-sm btn-quick-chip rounded-pill px-2.5 py-1 text-xxs fw-semibold transition-all"
+                  class="btn btn-sm btn-quick-chip px-2.5 py-1 text-xxs fw-semibold transition-all"
                   @click="addInlineTxAmount(chip)"
                 >
                   +৳{{ chip.toLocaleString() }}
@@ -328,7 +328,7 @@
                 <button
                   v-if="parseFloat(inlineTx.amount) > 0"
                   type="button"
-                  class="btn btn-sm btn-outline-secondary rounded-pill px-2 py-0.5 text-xxs fw-normal"
+                  class="btn btn-sm btn-outline-secondary px-2 py-0.5 text-xxs fw-normal"
                   @click="inlineTx.amount = ''"
                 >
                   Clear
@@ -456,12 +456,12 @@
 
             <!-- Action Buttons -->
             <div class="d-flex align-items-center justify-content-end gap-2.5 mt-4 pt-3 border-top">
-              <button type="button" class="btn btn-light rounded-pill px-4 py-2 text-sm fw-semibold text-secondary">
+              <button type="button" class="btn btn-light px-4 py-2 text-sm fw-semibold text-secondary">
                 Cancel
               </button>
               <button
                 type="button"
-                class="btn rounded-pill px-4 py-2 text-sm fw-semibold shadow-sm d-flex align-items-center gap-2"
+                class="btn px-4 py-2 text-sm fw-semibold shadow-sm d-flex align-items-center gap-2"
                 :class="inlineTx.transaction_type === 'expense' ? 'btn-danger text-white' : 'btn-primary text-white'"
                 @click="simulateSave('Transaction recorded successfully!')"
               >

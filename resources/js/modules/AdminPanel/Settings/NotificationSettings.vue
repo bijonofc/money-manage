@@ -79,7 +79,7 @@ import { reactive, onMounted } from 'vue'
 import { Field, ErrorMessage } from 'vee-validate'
 import { useSettingStore } from '@/modules/AdminPanel/Settings/SettingStore.js'
 import TabComponent from '@/modules/AdminPanel/Settings/TabComponent.vue'
-import { SettingsForm,InputField,ApbdDatePicker, } from '@appsbd/vue3-appsbd-libs'
+import { AbSettingsForm as SettingsForm, AbInputField as InputField, AbDateTimePicker as ApbdDatePicker } from '@appsbd/vue3-appsbd-ui'
 import AppsbdUtls from '@/libs/AppsbdUtls.js'
 
 const settingStore = useSettingStore()

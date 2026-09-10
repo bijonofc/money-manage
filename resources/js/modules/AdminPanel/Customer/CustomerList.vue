@@ -118,7 +118,7 @@ import appsbdUtls from "@/libs/AppsbdUtls.js";
 import EliteGrid from '@appsbd/vue3-elite-grid'
 import { EliteColumnModel } from '@appsbd/vue3-elite-grid'
 import APBDRequestParam from '@/libs/APBDRequestParam'
-import { ApbdFilterPanel,AnimatedButton } from '@appsbd/vue3-appsbd-libs'
+import { AbFilterPanel as ApbdFilterPanel, AbButton as AnimatedButton } from '@appsbd/vue3-appsbd-ui'
 
 import DetailModal from "@/modules/AdminPanel/Customer/DetailModal.vue";
 import LedgerModal from "@/modules/AdminPanel/Customer/LedgerModal.vue";

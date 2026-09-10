@@ -83,7 +83,7 @@ import appsbdUtls from "@/libs/AppsbdUtls.js";
 import EliteGrid from '@appsbd/vue3-elite-grid'
 import { EliteColumnModel } from '@appsbd/vue3-elite-grid'
 import APBDRequestParam from '@/libs/APBDRequestParam'
-import { ApbdFilterPanel } from '@appsbd/vue3-appsbd-libs'
+import { AbFilterPanel as ApbdFilterPanel } from '@appsbd/vue3-appsbd-ui'
 import appHelper from "../../../libs/AppHelper.js";
 import AddContactModal from "@/modules/AdminPanel/Contact/AddContactModal.vue";
 import APBDGridLoader from "@/components/APBDGridLoader.vue";

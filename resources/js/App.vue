@@ -19,8 +19,8 @@ import DashboardLayout from '@/layouts/DashboardLayout.vue'
 import {useLoginStore} from "@/modules/AdminPanel/User/loginStore.js";
 import { ref } from 'vue'
 import PasswordChange from "@/modules/AdminPanel/User/PasswordChange.vue";
-import {useRouter} from "vue-router";
-import {AppLoader} from "@appsbd/vue3-appsbd-libs";
+import { useRouter } from "vue-router";
+import { AbLoader } from "@appsbd/vue3-appsbd-ui";
 
 const store = useLoginStore()
 const darkMode = ref(false)

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { AppLoader } from '@appsbd/vue3-appsbd-libs'
+import { AbLoader as AppLoader } from '@appsbd/vue3-appsbd-ui'
 export default {
     name: "APBDGridLoader",
     components: { AppLoader },

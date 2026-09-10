@@ -28,7 +28,7 @@
           <div class="d-flex align-items-center gap-2 flex-wrap">
             <button
               type="button"
-              class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white"
+              class="btn btn-outline-secondary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white"
               @click="loadReportData"
               title="Refresh Data"
             >
@@ -38,7 +38,7 @@
 
             <button
               type="button"
-              class="btn btn-primary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm text-white"
+              class="btn btn-primary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm text-white"
               :disabled="exporting"
               @click="exportCsv"
             >
@@ -48,7 +48,7 @@
 
             <button
               type="button"
-              class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white"
+              class="btn btn-outline-secondary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white"
               @click="printReport"
               title="Print Report"
             >
@@ -69,7 +69,7 @@
               v-for="p in presets"
               :key="p.id"
               type="button"
-              class="btn btn-sm rounded-pill px-3 py-1.5 text-xs fw-semibold filter-pill transition-all"
+              class="btn btn-sm px-3 py-1.5 text-xs fw-semibold transition-all"
               :class="selectedPreset === p.id ? 'btn-primary text-white shadow-sm' : 'btn-ghost-pill text-secondary'"
               @click="selectPreset(p.id)"
             >
@@ -120,7 +120,7 @@
             <div class="col-12 col-sm-4 col-md-2">
               <button
                 type="button"
-                class="btn btn-primary btn-sm w-100 rounded-pill text-xs fw-semibold py-1.5 shadow-sm"
+                class="btn btn-primary btn-sm w-100 text-xs fw-semibold py-1.5 shadow-sm"
                 @click="loadReportData"
               >
                 Apply Filter

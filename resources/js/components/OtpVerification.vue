@@ -72,7 +72,7 @@ import { ref, watch, nextTick, onUnmounted,computed } from 'vue'
 import { Form } from 'vee-validate'
 import SmallLoader from '@/components/SmallLoader.vue'
 import AppsbdCore from '@/libs/AppsbdCore.js'
-import { ResponseMsg } from '@appsbd/vue3-appsbd-libs'
+import { AbResponseMsg as ResponseMsg } from '@appsbd/vue3-appsbd-ui'
 
 // Props from parent
 const props = defineProps({

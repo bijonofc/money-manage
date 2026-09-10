@@ -67,7 +67,7 @@
 
 <script setup>
 import { ref,computed, onMounted,watch } from 'vue';
-import {ApbdRadioButton, InputField} from "@appsbd/vue3-appsbd-libs";
+import { AbRadioInput as ApbdRadioButton, AbInputField as InputField } from "@appsbd/vue3-appsbd-ui";
 import {Field,ErrorMessage} from "vee-validate";
 import Multiselect from "@vueform/multiselect";
 import Countries from '@/libs/countries.json';

@@ -166,7 +166,7 @@ import GoogleAuthChange from "@/modules/AdminPanel/User/GoogleAuthChange.vue";
 import { reactive, ref, computed, onMounted, nextTick } from 'vue'
 import Countries from '@/libs/countries.json'
 import Multiselect from '@vueform/multiselect'
-import { InputField, ApbdSwitchButton, ResponseMsg } from '@appsbd/vue3-appsbd-libs'
+import { AbInputField as InputField, AbToggle as ApbdSwitchButton, AbResponseMsg as ResponseMsg } from '@appsbd/vue3-appsbd-ui'
 import ContactNumberInput from '@/components/ContactNumberInput.vue'
 import { Field } from 'vee-validate'
 import SmallLoader from '@/components/SmallLoader.vue'

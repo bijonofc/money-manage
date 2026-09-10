@@ -110,7 +110,7 @@ import AppsbdUtls from "@/libs/AppsbdUtls.js"
 import SmallLoader from '@/components/SmallLoader.vue'
 import ImageUploader from "@/components/ImageUploader.vue"
 import FilePreview from "@/components/FilePreview.vue"
-import { ResponseMsg, InputField } from '@appsbd/vue3-appsbd-libs'
+import { AbResponseMsg as ResponseMsg, AbInputField as InputField } from '@appsbd/vue3-appsbd-ui'
 import {useCompanyStore} from "@/modules/AdminPanel/Company/CompanyStore.js";
 const companyStore=useCompanyStore();
 const uploadedImages = ref([])

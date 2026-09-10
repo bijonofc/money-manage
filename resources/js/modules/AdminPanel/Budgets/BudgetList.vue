@@ -11,11 +11,11 @@
           <p class="text-muted small mb-0">Set spending limits by category and stay within your financial targets</p>
         </div>
         <div class="d-flex align-items-center gap-2">
-          <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white" @click="loadBudgets">
+          <button class="btn btn-outline-secondary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white" @click="loadBudgets">
             <RefreshCw :size="15" :class="{ 'spin-anim': loading }" />
             <span>Refresh</span>
           </button>
-          <button class="btn btn-primary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm" @click="openCreateModal">
+          <button class="btn btn-primary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm" @click="openCreateModal">
             <Plus :size="15" />
             <span>New Budget</span>
           </button>
@@ -35,7 +35,7 @@
       <h5>No budgets created yet</h5>
       <p class="small mb-4">Create your first budget to set spending limits and receive overbudget alerts.</p>
       <div>
-        <button class="btn btn-primary rounded-pill px-4 py-2" @click="openCreateModal">
+        <button class="btn btn-primary px-4 py-2" @click="openCreateModal">
           Create Budget
         </button>
       </div>
@@ -114,8 +114,8 @@
           </div>
 
           <div class="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" class="btn btn-light rounded-pill px-4" @click="showModal = false">Cancel</button>
-            <button type="submit" class="btn btn-primary rounded-pill px-4" :disabled="saving">
+            <button type="button" class="btn btn-light px-4" @click="showModal = false">Cancel</button>
+            <button type="submit" class="btn btn-primary px-4" :disabled="saving">
               {{ saving ? 'Saving...' : 'Save Budget' }}
             </button>
           </div>

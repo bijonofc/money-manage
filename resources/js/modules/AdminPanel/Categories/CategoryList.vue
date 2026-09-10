@@ -11,11 +11,11 @@
           <p class="text-muted small mb-0">Organize your income and expenses into meaningful categories</p>
         </div>
         <div class="d-flex align-items-center gap-2">
-          <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white" @click="loadCategories">
+          <button class="btn btn-outline-secondary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white" @click="loadCategories">
             <RefreshCw :size="15" :class="{ 'spin-anim': loading }" />
             <span>Refresh</span>
           </button>
-          <button class="btn btn-primary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm" @click="openCreateModal">
+          <button class="btn btn-primary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm" @click="openCreateModal">
             <Plus :size="15" />
             <span>New Category</span>
           </button>
@@ -27,21 +27,21 @@
     <div class="card border-0 shadow-sm rounded-4 mb-3 p-2">
       <div class="d-flex gap-2">
         <button
-          class="btn btn-sm rounded-pill px-4"
+          class="btn btn-sm px-4"
           :class="activeType === 'all' ? 'btn-primary' : 'btn-light'"
           @click="activeType = 'all'"
         >
           All
         </button>
         <button
-          class="btn btn-sm rounded-pill px-4"
+          class="btn btn-sm px-4"
           :class="activeType === 'expense' ? 'btn-danger text-white' : 'btn-light'"
           @click="activeType = 'expense'"
         >
           Expenses
         </button>
         <button
-          class="btn btn-sm rounded-pill px-4"
+          class="btn btn-sm px-4"
           :class="activeType === 'income' ? 'btn-success text-white' : 'btn-light'"
           @click="activeType = 'income'"
         >
@@ -62,7 +62,7 @@
       <h5>No categories found</h5>
       <p class="small mb-4">Create your first category to organize transactions.</p>
       <div>
-        <button class="btn btn-primary rounded-pill px-4 py-2" @click="openCreateModal">
+        <button class="btn btn-primary px-4 py-2" @click="openCreateModal">
           Create Category
         </button>
       </div>
@@ -123,8 +123,8 @@
           </div>
 
           <div class="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" class="btn btn-light rounded-pill px-4" @click="showModal = false">Cancel</button>
-            <button type="submit" class="btn btn-primary rounded-pill px-4" :disabled="saving">
+            <button type="button" class="btn btn-light px-4" @click="showModal = false">Cancel</button>
+            <button type="submit" class="btn btn-primary px-4" :disabled="saving">
               {{ saving ? 'Saving...' : 'Save Category' }}
             </button>
           </div>

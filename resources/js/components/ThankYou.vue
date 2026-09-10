@@ -155,7 +155,7 @@
 
 <script setup>
 import { reactive,onMounted,ref } from 'vue';
-import {AppLoader} from "@appsbd/vue3-appsbd-libs";
+import { AbLoader as AppLoader } from "@appsbd/vue3-appsbd-ui";
 import {useRouter,useRoute} from "vue-router";
 const router=useRouter();
 import Header from "@/modules/ClientRegistration/Header.vue";

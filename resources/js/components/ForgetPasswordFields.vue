@@ -41,7 +41,7 @@
 </template>
 <script setup>
 import { Form } from 'vee-validate'
-import { InputField, ResponseMsg } from '@appsbd/vue3-appsbd-libs'
+import { AbInputField as InputField, AbResponseMsg as ResponseMsg } from '@appsbd/vue3-appsbd-ui'
 import SmallLoader from '@/components/SmallLoader.vue'
 import AppsbdCore from '@/libs/AppsbdCore.js'
 

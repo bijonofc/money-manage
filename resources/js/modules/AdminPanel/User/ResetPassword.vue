@@ -18,7 +18,7 @@ import { ref,inject } from 'vue'
 const adminLoginKey = import.meta.env.VITE_ADMIN_LOGIN_KEY || "upslogin";
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/modules/AdminPanel/User/UserStore.js'
-import {  ResponseMsg } from '@appsbd/vue3-appsbd-libs'
+import { AbResponseMsg as ResponseMsg } from '@appsbd/vue3-appsbd-ui'
 
 
 import ResetPasswordFields from "@/components/ResetPasswordFields.vue";

@@ -16,11 +16,11 @@
           <p class="text-muted small mb-0">Track your progress towards emergencies, vacations, and future investments</p>
         </div>
         <div class="d-flex align-items-center gap-2">
-          <button class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white" @click="loadGoals">
+          <button class="btn btn-outline-secondary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white" @click="loadGoals">
             <RefreshCw :size="15" :class="{ 'spin-anim': loading }" />
             <span>Refresh</span>
           </button>
-          <button class="btn btn-success btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm text-white" @click="openCreateModal">
+          <button class="btn btn-success btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm text-white" @click="openCreateModal">
             <Plus :size="15" />
             <span>New Goal</span>
           </button>
@@ -40,7 +40,7 @@
       <h5>No savings goals created yet</h5>
       <p class="small mb-4">Create your first goal to save towards your dreams.</p>
       <div>
-        <button class="btn btn-success text-white rounded-pill px-4 py-2" @click="openCreateModal">
+        <button class="btn btn-success text-white px-4 py-2" @click="openCreateModal">
           Create Goal
         </button>
       </div>
@@ -52,7 +52,7 @@
           <div class="d-flex align-items-center justify-content-between mb-3">
             <h6 class="fw-bold mb-0 text-dark">{{ g.name }}</h6>
             <div class="d-flex align-items-center gap-1">
-              <button class="btn btn-sm btn-outline-success rounded-pill px-2.5 py-1 text-xs fw-semibold" @click="openContributeModal(g)">
+              <button class="btn btn-sm btn-outline-success px-2.5 py-1 text-xs fw-semibold" @click="openContributeModal(g)">
                 + Deposit
               </button>
               <button class="btn btn-icon btn-light btn-sm rounded-circle text-danger" @click="deleteGoal(g.id)">
@@ -116,8 +116,8 @@
           </div>
 
           <div class="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" class="btn btn-light rounded-pill px-4 text-xs fw-semibold" @click="showModal = false">Cancel</button>
-            <button type="submit" class="btn btn-success text-white rounded-pill px-4 text-xs fw-semibold" :disabled="saving">
+            <button type="button" class="btn btn-light px-4 text-xs fw-semibold" @click="showModal = false">Cancel</button>
+            <button type="submit" class="btn btn-success text-white px-4 text-xs fw-semibold" :disabled="saving">
               {{ saving ? 'Saving...' : 'Create Goal' }}
             </button>
           </div>
@@ -178,8 +178,8 @@
           </div>
 
           <div class="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" class="btn btn-light rounded-pill px-4 text-xs fw-semibold" @click="showDepositModal = false">Cancel</button>
-            <button type="submit" class="btn btn-success text-white rounded-pill px-4 text-xs fw-semibold" :disabled="saving">
+            <button type="button" class="btn btn-light px-4 text-xs fw-semibold" @click="showDepositModal = false">Cancel</button>
+            <button type="submit" class="btn btn-success text-white px-4 text-xs fw-semibold" :disabled="saving">
               {{ saving ? 'Saving...' : 'Record Deposit' }}
             </button>
           </div>

@@ -113,7 +113,7 @@ import APBDGridLoader from "@/components/APBDGridLoader.vue";
 import RoleAddForm from "@/modules/AdminPanel/Roles/RoleAddForm.vue";
 import RoleDeleteForm from "@/modules/AdminPanel/Roles/RoleDeleteForm.vue";
 import APBDRequestParam from "@/libs/APBDRequestParam";
-import {ApbdFilterPanel,Modal,ResponseMsg} from '@appsbd/vue3-appsbd-libs'
+import { AbFilterPanel as ApbdFilterPanel, AbModal as Modal, AbResponseMsg as ResponseMsg } from '@appsbd/vue3-appsbd-ui'
 import appsbdUtls from "../../../libs/AppsbdUtls.js";
 import app from "vue3-perfect-scrollbar/example/App.vue";
 

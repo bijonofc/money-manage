@@ -103,7 +103,7 @@
 <script setup>
 import { reactive, watch } from 'vue'
 import ContactNumberInput from '@/components/ContactNumberInput.vue'
-import {InputField, ApbdSwitchButton} from '@appsbd/vue3-appsbd-libs'
+import { AbInputField as InputField, AbToggle as ApbdSwitchButton } from '@appsbd/vue3-appsbd-ui'
 
 const props = defineProps({
     modelValue: {

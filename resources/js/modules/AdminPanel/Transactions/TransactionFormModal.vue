@@ -80,7 +80,7 @@
               v-for="chip in quickAmountChips"
               :key="chip.val"
               type="button"
-              class="btn btn-sm btn-quick-chip rounded-pill px-2.5 py-1 text-xxs fw-semibold transition-all"
+              class="btn btn-sm btn-quick-chip px-2.5 py-1 text-xxs fw-semibold transition-all"
               @click="addQuickAmount(chip.val)"
             >
               +৳{{ chip.label }}
@@ -88,7 +88,7 @@
             <button
               v-if="parseFloat(rawAmount) > 0"
               type="button"
-              class="btn btn-sm btn-outline-secondary rounded-pill px-2 py-0.5 text-xxs fw-normal"
+              class="btn btn-sm btn-outline-secondary px-2 py-0.5 text-xxs fw-normal"
               @click="rawAmount = ''"
             >
               Clear
@@ -273,14 +273,14 @@
         <div class="d-flex align-items-center justify-content-end gap-2.5 mt-4 pt-3 border-top">
           <button
             type="button"
-            class="btn btn-light rounded-pill px-4 py-2 text-sm fw-semibold text-secondary"
+            class="btn btn-light px-4 py-2 text-sm fw-semibold text-secondary"
             @click="close"
           >
             Cancel
           </button>
           <button
             type="submit"
-            class="btn rounded-pill px-4 py-2 text-sm fw-semibold shadow-sm d-flex align-items-center gap-2"
+            class="btn px-4 py-2 text-sm fw-semibold shadow-sm d-flex align-items-center gap-2"
             :class="submitButtonClass"
             :disabled="saving || !isFormValid"
           >

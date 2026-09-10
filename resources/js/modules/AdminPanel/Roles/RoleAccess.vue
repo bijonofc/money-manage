@@ -118,7 +118,7 @@ import {mapStores} from 'pinia'
 import {useRoleStore} from "./role";
 import APBDGridLoader from "@/components/APBDGridLoader.vue";
 import Multiselect from '@vueform/multiselect'
-import {ApbdFilterPanel,Modal,ResponseMsg} from '@appsbd/vue3-appsbd-libs'
+import { AbFilterPanel as ApbdFilterPanel, AbModal as Modal, AbResponseMsg as ResponseMsg } from '@appsbd/vue3-appsbd-ui'
 
 export default {
   name: "RoleAccess",

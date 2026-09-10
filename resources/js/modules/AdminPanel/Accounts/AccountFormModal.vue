@@ -166,14 +166,14 @@
         <div class="d-flex align-items-center justify-content-end gap-2.5 mt-4 pt-3 border-top">
           <button
             type="button"
-            class="btn btn-light rounded-pill px-4 py-2 text-sm fw-semibold text-secondary"
+            class="btn btn-light px-4 py-2 text-sm fw-semibold text-secondary"
             @click="close"
           >
             Cancel
           </button>
           <button
             type="submit"
-            class="btn btn-primary rounded-pill px-4 py-2 text-sm fw-semibold shadow-sm d-flex align-items-center gap-2"
+            class="btn btn-primary px-4 py-2 text-sm fw-semibold shadow-sm d-flex align-items-center gap-2"
             :disabled="saving"
           >
             <span v-if="saving" class="spinner-border spinner-border-sm" role="status"></span>

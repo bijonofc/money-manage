@@ -52,14 +52,14 @@
 import { ref, reactive, onMounted, computed } from 'vue'
 
 import {
-    ApbdFilterPanel,
-    ApbdRadioButton,
-    Modal,
-    ResponseMsg,
-    ApbdDatePicker,
-    InputField,
-    ApbdDropdown
-} from '@appsbd/vue3-appsbd-libs'
+    AbFilterPanel as ApbdFilterPanel,
+    AbRadioInput as ApbdRadioButton,
+    AbModal as Modal,
+    AbResponseMsg as ResponseMsg,
+    AbDateTimePicker as ApbdDatePicker,
+    AbInputField as InputField,
+    AbMultiSelect as ApbdDropdown
+} from '@appsbd/vue3-appsbd-ui'
 import { Field, ErrorMessage } from 'vee-validate'
 import {useUserStore} from '@/modules/AdminPanel/User/UserStore.js'
 import ChangePasswordForm from '@/components/ChangePasswordForm.vue'

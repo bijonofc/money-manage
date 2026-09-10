@@ -37,7 +37,7 @@
 
 <script setup>
 import { computed, onMounted} from 'vue'
-import { InputField, ApbdDropdown, ApbdSwitchButton} from '@appsbd/vue3-appsbd-libs'
+import { AbInputField as InputField, AbMultiSelect as ApbdDropdown, AbToggle as ApbdSwitchButton } from '@appsbd/vue3-appsbd-ui'
 import ContactNumberInput from '@/components/ContactNumberInput.vue'
 import LocationSelector from "@/components/LocationSelector.vue";
 

@@ -37,14 +37,14 @@
 import { ref, reactive, watch, onMounted,computed } from 'vue'
 
 import {
-    ApbdFilterPanel,
-    ApbdRadioButton,
-    Modal,
-    ResponseMsg,
-    InputField,
-    ApbdCheckBox,
-    ApbdSwitchButton
-} from '@appsbd/vue3-appsbd-libs'
+    AbFilterPanel as ApbdFilterPanel,
+    AbRadioInput as ApbdRadioButton,
+    AbModal as Modal,
+    AbResponseMsg as ResponseMsg,
+    AbInputField as InputField,
+    AbFormCheck as ApbdCheckBox,
+    AbToggle as ApbdSwitchButton
+} from '@appsbd/vue3-appsbd-ui'
 import {Field, ErrorMessage, Form} from 'vee-validate'
 
 import appsbdUtls from '@/libs/AppsbdUtls.js'

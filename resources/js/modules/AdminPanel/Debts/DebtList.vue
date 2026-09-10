@@ -13,14 +13,14 @@
           </div>
           <div class="col-12 col-lg-4 d-flex align-items-center justify-content-lg-end gap-2 flex-wrap">
             <button
-              class="btn btn-outline-secondary btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white"
+              class="btn btn-outline-secondary btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm bg-white"
               @click="refreshGrid"
             >
               <RefreshCw :size="15" :class="{ 'spin-anim': isShowLoader }" />
               <span>Reload</span>
             </button>
             <button
-              class="btn btn-danger btn-sm rounded-pill px-3 py-2 d-flex align-items-center gap-2 shadow-sm text-white"
+              class="btn btn-danger btn-sm px-3 py-2 d-flex align-items-center gap-2 shadow-sm text-white"
               @click="openCreateModal"
             >
               <Plus :size="15" />
@@ -57,7 +57,7 @@
               <CreditCard :size="42" class="mx-auto mb-2.5 opacity-50" />
               <h6 class="fw-bold mb-1">No debt or loan records found</h6>
               <p class="text-xs mb-3 text-muted">Track money you owe to others or money others owe to you with real-time balance sync.</p>
-              <button class="btn btn-danger text-white btn-sm rounded-pill px-3.5 py-1.5" @click="openCreateModal">
+              <button class="btn btn-danger text-white btn-sm px-3.5 py-1.5" @click="openCreateModal">
                 + Add Debt Record
               </button>
             </div>
@@ -121,7 +121,7 @@
             <div class="d-flex align-items-center justify-content-end gap-1.5 flex-nowrap">
               <!-- Logs Button -->
               <button
-                class="btn btn-sm btn-outline-primary rounded-pill px-2.5 py-0.5 text-xxs fw-semibold d-inline-flex align-items-center gap-1 shadow-sm"
+                class="btn btn-sm btn-outline-primary px-2.5 py-0.5 text-xxs fw-semibold d-inline-flex align-items-center gap-1 shadow-sm"
                 @click="openLogsModal(rowitem)"
                 title="View Payment Logs"
               >
@@ -135,7 +135,7 @@
               <!-- Pay / Collect Button -->
               <button
                 v-if="rowitem.status !== 'paid'"
-                class="btn btn-sm btn-outline-success rounded-pill px-2.5 py-0.5 text-xxs fw-semibold shadow-sm"
+                class="btn btn-sm btn-outline-success px-2.5 py-0.5 text-xxs fw-semibold shadow-sm"
                 @click="openPayModal(rowitem)"
               >
                 {{ rowitem.type === 'owed_to' ? '+ Pay' : '+ Collect' }}
@@ -265,8 +265,8 @@
           </div>
 
           <div class="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" class="btn btn-light rounded-pill px-4 text-xs fw-semibold" @click="showModal = false">Cancel</button>
-            <button type="submit" class="btn btn-danger text-white rounded-pill px-4 text-xs fw-semibold" :disabled="saving">
+            <button type="button" class="btn btn-light px-4 text-xs fw-semibold" @click="showModal = false">Cancel</button>
+            <button type="submit" class="btn btn-danger text-white px-4 text-xs fw-semibold" :disabled="saving">
               {{ saving ? 'Saving...' : 'Save Debt Record' }}
             </button>
           </div>
@@ -359,10 +359,10 @@
           </div>
 
           <div class="d-flex justify-content-end gap-2 mt-4">
-            <button type="button" class="btn btn-light rounded-pill px-4 text-xs fw-semibold" @click="showPayModal = false">Cancel</button>
+            <button type="button" class="btn btn-light px-4 text-xs fw-semibold" @click="showPayModal = false">Cancel</button>
             <button
               type="submit"
-              class="btn text-white rounded-pill px-4 text-xs fw-semibold"
+              class="btn text-white px-4 text-xs fw-semibold"
               :class="selectedDebt?.type === 'owed_to' ? 'btn-danger' : 'btn-success'"
               :disabled="saving"
             >
@@ -438,7 +438,7 @@
             <button
               v-if="selectedDebtLogs && selectedDebtLogs.status !== 'paid'"
               type="button"
-              class="btn btn-outline-success btn-sm rounded-pill px-2.5 py-0.5 text-xxs fw-semibold"
+              class="btn btn-outline-success btn-sm px-2.5 py-0.5 text-xxs fw-semibold"
               @click="switchFromLogsToPay(selectedDebtLogs)"
             >
               + Record Payment
@@ -501,7 +501,7 @@
         </div>
 
         <div class="d-flex justify-content-end mt-4">
-          <button type="button" class="btn btn-secondary rounded-pill px-4 text-xs fw-semibold" @click="showLogsModal = false">
+          <button type="button" class="btn btn-secondary px-4 text-xs fw-semibold" @click="showLogsModal = false">
             Close
           </button>
         </div>
@@ -519,7 +519,7 @@ import APBDRequestParam from '@/libs/APBDRequestParam';
 import APBDGridLoader from '@/components/APBDGridLoader.vue';
 import EliteGrid from '@appsbd/vue3-elite-grid';
 import { EliteColumnModel } from '@appsbd/vue3-elite-grid';
-import { ApbdFilterPanel } from '@appsbd/vue3-appsbd-libs';
+import { AbFilterPanel as ApbdFilterPanel } from '@appsbd/vue3-appsbd-ui';
 
 import {
   CreditCard,

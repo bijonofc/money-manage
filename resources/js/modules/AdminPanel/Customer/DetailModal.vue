@@ -317,15 +317,15 @@ const { proxy } = getCurrentInstance();
 
 const rootData = inject('rootData');
 import {
-    ApbdRadioButton,
-    InputField,
-    ResponseMsg,
-    ApbdSwitchButton,
-    AppLoader,
-    ApbdDatePicker
-} from "@appsbd/vue3-appsbd-libs";
+    AbRadioInput as ApbdRadioButton,
+    AbInputField as InputField,
+    AbResponseMsg as ResponseMsg,
+    AbToggle as ApbdSwitchButton,
+    AbLoader as AppLoader,
+    AbDateTimePicker as ApbdDatePicker,
+    AbModal as Modal
+} from "@appsbd/vue3-appsbd-ui";
 import Multiselect from "@vueform/multiselect";
-import { Modal } from '@appsbd/vue3-appsbd-libs'
 import appsbdUtls from "@/libs/AppsbdUtls.js";
 import {useCustomerStore} from "@/modules/AdminPanel/Customer/CustomerStore.js";
 import {useLoginStore} from "@/modules/AdminPanel/User/loginStore.js";

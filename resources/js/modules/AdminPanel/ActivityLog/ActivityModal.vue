@@ -97,7 +97,7 @@
 
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
-import { Modal } from '@appsbd/vue3-appsbd-libs'
+import { AbModal as Modal } from '@appsbd/vue3-appsbd-ui'
 import { useActivityStore } from '@/modules/AdminPanel/ActivityLog/ActivityStore.js'
 import AppsbdUtls from '@/libs/AppsbdUtls.js'
 import AppHelper from "@/libs/AppHelper.js"

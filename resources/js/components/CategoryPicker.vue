@@ -12,7 +12,7 @@
         <button
           v-if="filteredCategories.length > 6 || searchQuery"
           type="button"
-          class="btn btn-xs btn-light rounded-pill px-2 py-0.5 text-xxs d-flex align-items-center gap-1 text-muted"
+          class="btn btn-xs btn-light px-2 py-0.5 text-xxs d-flex align-items-center gap-1 text-muted"
           @click="toggleSearch"
         >
           <Search :size="11" />
@@ -22,7 +22,7 @@
         <!-- Inline Add Category Button -->
         <button
           type="button"
-          class="btn btn-xs btn-light-primary rounded-pill px-2.5 py-0.5 text-xxs fw-semibold d-flex align-items-center gap-1"
+          class="btn btn-xs btn-light-primary px-2.5 py-0.5 text-xxs fw-semibold d-flex align-items-center gap-1"
           @click="showInlineCreate = !showInlineCreate"
         >
           <Plus :size="11" />
@@ -143,7 +143,7 @@
       </p>
       <button
         type="button"
-        class="btn btn-sm btn-outline-primary rounded-pill px-3 py-1 text-xxs fw-semibold mt-1"
+        class="btn btn-sm btn-outline-primary px-3 py-1 text-xxs fw-semibold mt-1"
         @click="openInlineWithSearch"
       >
         + Add "{{ searchQuery || 'Category' }}"

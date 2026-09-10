@@ -112,11 +112,11 @@
 
 <script setup>
 import {computed, onMounted, reactive, ref} from 'vue';
-import { Modal } from '@appsbd/vue3-appsbd-libs'
+import { Modal } from '@appsbd/vue3-appsbd-ui'
 import EliteGrid from '@appsbd/vue3-elite-grid'
 import { EliteColumnModel } from '@appsbd/vue3-elite-grid'
 import APBDRequestParam from '@/libs/APBDRequestParam'
-import { ApbdFilterPanel } from '@appsbd/vue3-appsbd-libs'
+import { AbFilterPanel as ApbdFilterPanel } from '@appsbd/vue3-appsbd-ui'
 import appsbdUtls from "@/libs/AppsbdUtls.js";
 
 import AppsbdUtls from "@/libs/AppsbdUtls.js";

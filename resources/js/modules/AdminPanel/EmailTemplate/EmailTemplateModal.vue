@@ -64,7 +64,7 @@ import { Field, ErrorMessage, Form } from 'vee-validate'
 import { QuillEditor } from '@vueup/vue-quill'
 import '@vueup/vue-quill/dist/vue-quill.snow.css';
 import TemplateProps from '@/modules/AdminPanel/EmailTemplate/TemplateProps.vue'
-import { Modal } from '@appsbd/vue3-appsbd-libs'
+import { AbModal as Modal } from '@appsbd/vue3-appsbd-ui'
 import {useTemplateStore} from '@/modules/AdminPanel/EmailTemplate/TemplateStore.js'
 import AppsbdUtls from "@/libs/AppsbdUtls.js";
 import appsbdUtls from "@/libs/AppsbdUtls.js";

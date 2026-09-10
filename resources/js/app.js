@@ -9,13 +9,11 @@ import appsbdVeeRules from "./libs/AppsbdVeeRules.js";
 import AppsbdUtls from '@/libs/AppsbdUtls.js'
 
 
-import "bootstrap/dist/css/bootstrap.min.css";
 import Multiselect from '@vueform/multiselect';
 import '@vueform/multiselect/themes/default.css';
 import "vue-toastification/dist/index.css";
 import "v-calendar/style.css";
 import 'floating-vue/dist/style.css';
-import "@appsbd/vue3-appsbd-libs/dist/style.css";
 import {vTooltip, vClosePopper, Dropdown, Tooltip, Menu} from 'floating-vue';
 import Toast, {POSITION} from "vue-toastification";
 
@@ -38,6 +36,37 @@ import { createAppsbdCore } from '@/libs/AppsbdCore.js'
 import attrOption from "@/libs/attrOption.js";
 import vue3GoogleLogin from 'vue3-google-login';
 
+import AppsbdUI, {
+    AppsbdUIConfigure,
+    AbAvatar,
+    AbBadge,
+    AbButton,
+    AbCard,
+    AbConfirmPopover,
+    AbDateTimePicker,
+    AbFileUploader,
+    AbFilterPanel,
+    AbInputField,
+    AbInputTag,
+    AbLoader,
+    AbModal,
+    AbMultiSelect,
+    AbNumberField,
+    AbPopover,
+    AbProgressbar,
+    AbRadioInput,
+    AbResponseMsg,
+    AbScrollbar,
+    AbSettingsForm,
+    AbSkeleton,
+    AbTable,
+    AbTabs,
+    AbTab,
+    AbToggle
+} from '@appsbd/vue3-appsbd-ui';
+import "@appsbd/vue3-appsbd-ui/style.css";
+import "@appsbd/vue3-appsbd-ui/skins/default.css";
+
 // Fallback for app_settings when running outside blade template (e.g., direct Vite dev)
 window.app_settings = window.app_settings || {
     base_url: 'http://localhost:8000',
@@ -49,6 +78,18 @@ window.app_settings = window.app_settings || {
     is_prod: Boolean(import.meta.env.PROD),
     app_env: import.meta.env.MODE || 'development',
 };
+
+AppsbdUIConfigure({
+    currency: window.app_settings?.currencySymbol || '৳',
+    currencyPosition: 'left_space',
+    is24Hour: false,
+    dateDataFormat: 'YYYY-MM-DD',
+    dateDisplayFormat: 'YYYY-MM-DD',
+    datetimeDataFormat: 'YYYY-MM-DD HH:mm',
+    datetimeDisplayFormat: 'YYYY-MM-DD hh:mm a',
+    timeDataFormat: 'HH:mm',
+    timeDisplayFormat: 'hh:mm a',
+});
 
 createAppsbdURL({api_url:app_settings.api_url});
 createAppsbdCore({api_url:app_settings.api_url});
@@ -64,7 +105,8 @@ pinia.use(({ store }) => {
 const app = createApp(App)
 app.config.globalProperties.$appType = 'admin';
 app.provide('appType', 'admin');
-    app.use(gettext)
+    app.use(AppsbdUI)
+    .use(gettext)
     .use(Toast, { position:POSITION.BOTTOM_RIGHT })
     .use(adminRoutes)
     .use(pinia)
@@ -84,6 +126,33 @@ app.provide('appType', 'admin');
     .component('VDropdown', Dropdown)
     .component('VTooltip', Tooltip)
     .component('Menu', Menu)
+    // Additional AppsbdUI components
+    .component('AbAvatar', AbAvatar)
+    .component('AbBadge', AbBadge)
+    .component('AbScrollbar', AbScrollbar)
+    .component('AbTabs', AbTabs)
+    .component('AbTab', AbTab)
+    .component('AbTable', AbTable)
+    .component('AbSkeleton', AbSkeleton)
+    .component('AbConfirmPopover', AbConfirmPopover)
+    .component('AbFileUploader', AbFileUploader)
+    .component('AbFilterPanel', AbFilterPanel)
+    .component('AbSettingsForm', AbSettingsForm)
+    .component('AbLoader', AbLoader)
+    .component('AbResponseMsg', AbResponseMsg)
+    // Backward compatibility aliases
+    .component('ApbdFilterPanel', AbFilterPanel)
+    .component('Modal', AbModal)
+    .component('InputField', AbInputField)
+    .component('AppLoader', AbLoader)
+    .component('ApbdSwitchButton', AbToggle)
+    .component('ResponseMsg', AbResponseMsg)
+    .component('SettingsForm', AbSettingsForm)
+    .component('ApbdDatePicker', AbDateTimePicker)
+    .component('ApbdRadioButton', AbRadioInput)
+    .component('ApbdConfirmPopover', AbConfirmPopover)
+    .component('AnimatedButton', AbButton)
+    .component('ApbdDropdown', AbMultiSelect)
     if(app_settings) {
         app.use(vue3GoogleLogin, {
             scope: 'profile email country',

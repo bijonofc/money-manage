@@ -29,7 +29,7 @@
 
 <script setup>
 import { ref } from 'vue'
-import { ResponseMsg } from '@appsbd/vue3-appsbd-libs'
+import { AbResponseMsg as ResponseMsg } from '@appsbd/vue3-appsbd-ui'
 import { useUserStore } from '@/modules/User/UserStore.js'
 import { useLoginStore } from '@/modules/User/loginStore.js'
 

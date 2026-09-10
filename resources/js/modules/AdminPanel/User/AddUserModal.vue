@@ -41,7 +41,7 @@
 <script setup>
 import { ref, reactive, onMounted, computed } from 'vue'
 
-import {Modal,} from '@appsbd/vue3-appsbd-libs'
+import { AbModal as Modal } from '@appsbd/vue3-appsbd-ui'
 
 import {useUserStore} from '@/modules/AdminPanel/User/UserStore.js'
 

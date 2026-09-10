@@ -43,7 +43,7 @@
 
 <script setup>
 import { ref, reactive, toRefs } from 'vue'
-import {InputField} from '@appsbd/vue3-appsbd-libs'
+import { AbInputField as InputField } from '@appsbd/vue3-appsbd-ui'
 
 
 const props = defineProps({

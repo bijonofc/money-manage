@@ -48,7 +48,7 @@
           <VDropdown placement="bottom-end" :distance="8" :arrow-padding="12">
             <button
               type="button"
-              class="btn btn-light d-flex align-items-center gap-1.5 py-1 px-1.5 px-sm-2 rounded-pill border shadow-none"
+              class="btn btn-light d-flex align-items-center gap-1.5 py-1 px-1.5 px-sm-2 rounded-2 border shadow-none"
             >
               <div class="user-avatar-circle bg-primary text-white fw-bold d-flex align-items-center justify-content-center rounded-circle flex-shrink-0">
                 {{ userInitials }}

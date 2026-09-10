@@ -76,7 +76,7 @@ const { proxy } = getCurrentInstance();
 import EliteGrid from '@appsbd/vue3-elite-grid'
 import { EliteColumnModel } from '@appsbd/vue3-elite-grid'
 import APBDRequestParam from '@/libs/APBDRequestParam'
-import { ApbdFilterPanel } from '@appsbd/vue3-appsbd-libs'
+import { AbFilterPanel as ApbdFilterPanel } from '@appsbd/vue3-appsbd-ui'
 
 import {useLoginStore} from "@/modules/AdminPanel/User/loginStore.js";
 import{useUserStore} from "@/modules/AdminPanel/User/UserStore.js";
