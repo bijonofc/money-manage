@@ -63,7 +63,7 @@ const userModal = ref(null)
 const msg = ref({})
 const isShowLoader = ref(false)
 
-const user = reactive({ name: '',email:'',password:'',username:'',role_id:'1',status:'A',contact_no:'',is_whatsapp:'',country:'',state:'',zip_code:'',city:'',address:'' })
+const user = reactive({ name: '',email:'',password:'',username:'',role_id: null,status:'A',contact_no:'',is_whatsapp:'N',country:'',state:'',zip_code:'',city:'',address:'' })
 const oldData = reactive({})
 
 

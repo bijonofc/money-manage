@@ -94,6 +94,15 @@ export const useUserStore = defineStore('user',{
                     return  error.response.data;
                 }));
         },
+        approveUser: async function (id) {
+            return (await AxiosHelper.post(AppsbdURL.route('users/' + id + '/approve'))
+                .then(response => {
+                    return response.data;
+                })
+                .catch(error => {
+                    return error.response?.data;
+                }));
+        },
         updateProfile: async function (params) {
             return (await AxiosHelper.patch(AppsbdURL.route('user/update'),params)
                 .then(response => {

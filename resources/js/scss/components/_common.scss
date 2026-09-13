@@ -11,38 +11,6 @@
   aspect-ratio: 1 / 1;
 }
 
-.elite-grid .elite-grid-content {
-  background-color: var(--ab-card-bg) !important;
-    //overflow: hidden !important;
-}
-.elite-grid .elite-grid-header {
-  background: unset !important;
-  padding: unset !important;
-  border-bottom: unset !important;
-}
-.elite-grid .elite-grid-content table.eg-table thead tr th {
-  border-bottom: 1px solid var(--ab-border-color) !important;
-  padding: 0.75rem 1rem !important;
-}
-
-.elite-grid .elite-grid-content table.eg-table tbody tr td {
-  padding: 0.75rem 1rem !important;
-  border-bottom: 1px solid var(--ab-border-color) !important;
-}
-
-.elite-grid .eg-pagination .eg-pg-status .eg-row-select {
-  background-color: var(--ab-card-bg) !important;
-}
-
-
-
-.elite-grid .eg-pagination {
-  margin-bottom: 10px;
-}
-
-.eg-cell-action {
-  text-align: center;
-}
 
 
 .ab-required:after {

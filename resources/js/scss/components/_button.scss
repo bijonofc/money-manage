@@ -29,6 +29,13 @@
       vertical-align: middle;
     }
 
+    .loader-btn-svg {
+      margin-top: 0 !important;
+      margin-bottom: 0 !important;
+      vertical-align: middle;
+      display: inline-block;
+    }
+
     &.btn-lg {
       --bs-btn-padding-y:var(--ab-btn-lg-py);
       --bs-btn-padding-x:var(--ab-btn-lg-px);

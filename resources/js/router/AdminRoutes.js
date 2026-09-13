@@ -23,6 +23,7 @@ import ReportsPage from "@/modules/AdminPanel/Reports/ReportsPage.vue";
 import DesignShowcase from "@/modules/AdminPanel/DesignShowcase/DesignShowcase.vue";
 
 import ForgetPass from "@/modules/AdminPanel/User/ForgetPass.vue";
+import Register from "@/modules/AdminPanel/User/Register.vue";
 import BasicSettings from "@/modules/AdminPanel/Settings/BasicSettings.vue";
 import NotificationSettings from "@/modules/AdminPanel/Settings/NotificationSettings.vue";
 import AdminSetting from "@/modules/AdminPanel/Settings/AdminSetting.vue";
@@ -35,6 +36,12 @@ const routes = [
         name: "login",
         component: Login,
         meta: { title: 'Login' }
+    },
+    {
+        path: '/register',
+        name: "register",
+        component: Register,
+        meta: { title: 'Register' }
     },
     {
         path: '/forget-pass',

@@ -26,6 +26,8 @@ class User extends Authenticatable
         'address',
         'role_id',
         'status',
+        'is_sso',
+        'google_id',
         'password',
     ];
 
@@ -53,6 +55,21 @@ class User extends Authenticatable
     }
 
     protected $appends = ['role_name'];
+
+    public function isPending(): bool
+    {
+        return $this->status === 'P';
+    }
+
+    public function isActive(): bool
+    {
+        return $this->status === 'A';
+    }
+
+    public function isInactive(): bool
+    {
+        return $this->status === 'I';
+    }
 
     public function getRoleNameAttribute()
     {

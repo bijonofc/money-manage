@@ -5,7 +5,7 @@
                 v-model:email="email"
                 :loading="loading"
                 :message="msgs"
-                :back-route="`/${adminLoginKey}`"
+                back-route="/login"
                 @submit="handleSubmit"
             />
             <Turnstile ref="turnstile" :site-key="rootData.site_key" @verified="verifiedToken" />

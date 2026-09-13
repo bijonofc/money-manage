@@ -44,12 +44,21 @@
                         }}
                     </template>
                     <template v-slot:slotstatus="{rowitem}">
-                          <span :class="rowitem.status=='A'?'text-success fw-semibold':'text-danger fw-semibold'" style="cursor: pointer;" @click="changeStatus(rowitem)">
-                            {{ rowitem.status == 'A' ? appsbdUtls.translateGettext('Active') : appsbdUtls.translateGettext('Inactive') }}
+                          <span v-if="rowitem.status == 'A'" class="badge bg-success-subtle text-success border border-success-subtle px-2 py-1" style="cursor: pointer;" @click="changeStatus(rowitem)">
+                            {{ appsbdUtls.translateGettext('Active') }}
+                          </span>
+                          <span v-else-if="rowitem.status == 'P'" class="badge bg-warning-subtle text-warning border border-warning-subtle px-2 py-1 fw-semibold" style="cursor: pointer;" @click="confirmApprove(rowitem)">
+                            <i class="apb apb-clock-01 me-1"></i>{{ appsbdUtls.translateGettext('Pending') }}
+                          </span>
+                          <span v-else class="badge bg-danger-subtle text-danger border border-danger-subtle px-2 py-1" style="cursor: pointer;" @click="changeStatus(rowitem)">
+                            {{ appsbdUtls.translateGettext('Inactive') }}
                           </span>
                     </template>
                     <template v-slot:actionProperty="slotProps">
                         <div class="d-flex gap-2 justify-content-center">
+                            <ab-button v-if="slotProps.rowitem.status == 'P' && ($CheckACL('user-edit') || $CheckACL('np.user-update'))" color="success" size="sm" @click="confirmApprove(slotProps.rowitem)">
+                                <translate>Approve</translate>
+                            </ab-button>
                             <ab-button v-if="$CheckACL('user-edit') || $CheckACL('np.user-update')" color="primary" @click="showModal(slotProps.rowitem.id)" v-translate>
                                 gbl.edit.now
                             </ab-button>
@@ -141,6 +150,7 @@ const filterProps = [
         optionValueProp: "val",
         options: [
             {'name':appsbdUtls.translateGettext('Active'),'val':'A'},
+            {'name':appsbdUtls.translateGettext('Pending'),'val':'P'},
             {'name':appsbdUtls.translateGettext('Inactive'),'val':'I'}],
         operators: 'eq',
         value: '',
@@ -278,6 +288,35 @@ const changeStatus = async (obj) => {
             cancelButtonColor: '#dc3545',
             confirmButtonText: appsbdUtls.translateGettext('Change'),
             cancelButtonText: appsbdUtls.translateGettext('No'),
+            showLoaderOnConfirm: true
+        }
+    )
+}
+
+const confirmApprove = async (obj) => {
+    if (!obj || !proxy.$CheckACL('np.user-update')) return
+
+    const confirmMsg = AppsbdUtls.translateGettext('Approve and activate user %{name}?', { name: obj.name })
+
+    appsbdUtls.ShowConfirmRequest(
+        confirmMsg,
+        async () => {
+            try {
+                const response = await userStore.approveUser(obj.id)
+                if (response?.status) {
+                    loadGridData()
+                }
+                return response
+            } catch (error) {
+                console.error(error)
+            }
+        },
+        {
+            showCancelButton: true,
+            confirmButtonColor: '#10B981',
+            cancelButtonColor: '#6B7280',
+            confirmButtonText: appsbdUtls.translateGettext('Approve'),
+            cancelButtonText: appsbdUtls.translateGettext('Cancel'),
             showLoaderOnConfirm: true
         }
     )

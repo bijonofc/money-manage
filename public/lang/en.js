@@ -90,6 +90,9 @@ const lang = {
         "login.or": "or",
         "login.signin": "Sign in",
         "login.forget": "Forget password?",
+        "login.register": "Create an account",
+        "Approve": "Approve",
+        "Pending": "Pending",
 
 
 

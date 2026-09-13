@@ -55,9 +55,9 @@
     </script>
     <style>
         #app {
-            --bs-font-sans-serif: 'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Kalpurush', sans-serif,system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            --bs-font-sans-serif: 'Inter', 'Roboto', system-ui, -apple-system, "Segoe UI", "Helvetica Neue", "Noto Sans", Arial, 'Noto Sans Bengali', 'Hind Siliguri', 'SolaimanLipi', 'Kalpurush', sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
             font-family: var(--bs-body-font-family);
-            line-height: 1.6;
+            line-height: 1.5;
             min-height: 100vh;
             height: 100dvh;
             overflow-y: auto;
@@ -67,6 +67,6 @@
     @vite('resources/js/app.js')
 </head>
 <body>
-    <div id="app" class="ab-app"></div>
+    <div id="app" class="ab-app appsbd-app"></div>
 </body>
 </html>

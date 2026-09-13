@@ -23,11 +23,18 @@
                 <contact-number-input v-model="props.user.contact_no" label="gbl.contact.no" rules="required"/>
             </div>
             <div class="col">
-                <apbd-switch-button v-model="props.user.is_whatsapp" id="is_whatsapp" container-class="form-switch-sm">
-                    <template #topLabel>
-                        <translate>is.whatsapp</translate>
-                    </template>
-                </apbd-switch-button>
+                <label class="form-label" v-translate>gbl.whatsapp</label>
+                <div class="pt-1">
+                    <apbd-switch-button
+                        v-model="props.user.is_whatsapp"
+                        name="is_whatsapp"
+                        id="is_whatsapp"
+                        title="is.whatsapp"
+                        true-value="Y"
+                        false-value="N"
+                        container-class="mb-0"
+                    />
+                </div>
             </div>
         </div>
 
@@ -36,7 +43,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted} from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import { AbInputField as InputField, AbMultiSelect as ApbdDropdown, AbToggle as ApbdSwitchButton } from '@appsbd/vue3-appsbd-ui'
 import ContactNumberInput from '@/components/ContactNumberInput.vue'
 import LocationSelector from "@/components/LocationSelector.vue";
@@ -48,16 +55,26 @@ const props = defineProps({
     user: { type: Object, required: true }
 })
 
-
 const dropdownRoles = computed(() =>
-    loginStore.roleList.map(({ id, title }) => ({
-        val: id,
+    (loginStore.roleList || []).map(({ id, title }) => ({
+        val: Number(id),
         title
     }))
 )
 
-onMounted(()=>{
+watch(() => props.user.role_id, (newVal) => {
+    if (newVal !== null && newVal !== undefined && newVal !== '') {
+        const num = Number(newVal);
+        if (!isNaN(num) && props.user.role_id !== num) {
+            props.user.role_id = num;
+        }
+    }
+}, { immediate: true });
 
+onMounted(async () => {
+    if (!loginStore.roleList || loginStore.roleList.length === 0) {
+        await loginStore.loadRoles();
+    }
 })
 
 </script>

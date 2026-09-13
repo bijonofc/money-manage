@@ -12,9 +12,12 @@
             <login-fields v-model:email="email" v-model:password="password" :next="next" :loading="loading" @submit="handleLogin"/>
             <div class="divider" v-translate>login.or</div>
             <google-login-button :is-disabled="next=='gpt'" ref="g_login"  :client-id="rootData.gl_client_id" :callback="loginWithGoogle"/>
-            <div class="text-center mt-4">
-                <router-link to="admin/forget-pass" class="text-decoration-none" v-translate>
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <router-link to="/forget-pass" class="text-decoration-none text-muted small" v-translate>
                     login.forget
+                </router-link>
+                <router-link to="/register" class="text-decoration-none fw-semibold small text-primary" v-translate>
+                    login.register
                 </router-link>
             </div>
         </div>
@@ -149,8 +152,13 @@ const loginWithGoogle = async (response)=>
     if (response.access_token)
     {
         fingerprint.value = await get_fingerprint();
-        const res = await store.socialLogin({token_id:response.access_token,key:fingerprint.value});
+        const res = await store.socialLogin({
+            token_id: response.access_token,
+            key: fingerprint.value,
+            token: transToken.value,
+        });
         msgs.value = res.msg;
+        turnstile.value?.Reload();
 
         if (res?.status)
         {

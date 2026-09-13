@@ -5,17 +5,23 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Services\ActivityLogger;
+use App\Services\CategoryService;
 use appsbd\Libs\ApiDataResponse;
 use appsbd\Libs\ApiResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
     public function index(Request $request)
     {
         $tenantId = auth()->id() ?? 1;
+
+        // Auto-seed default starter categories if this user doesn't have any yet
+        CategoryService::seedDefaultCategoriesForUser($tenantId);
+
         $response = new ApiDataResponse;
         $response->searchFromRequest($request, Category::class, JsonResource::class, [], [], ['tenant_id' => $tenantId]);
 
@@ -27,7 +33,12 @@ class CategoryController extends Controller
         $tenantId = auth()->id() ?? 1;
 
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:100',
+            'name' => [
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('categories', 'name')->where('tenant_id', $tenantId),
+            ],
             'type' => 'required|in:income,expense',
             'icon' => 'nullable|string|max:50',
             'color' => 'nullable|string|max:20',
@@ -88,6 +99,28 @@ class CategoryController extends Controller
             $response = new ApiResponse;
 
             return $response->displayWithResponse(false, null, 404);
+        }
+
+        $validator = Validator::make($request->all(), [
+            'name' => [
+                'sometimes',
+                'required',
+                'string',
+                'max:100',
+                Rule::unique('categories', 'name')->where('tenant_id', $tenantId)->ignore($category->id),
+            ],
+            'type' => 'sometimes|required|in:income,expense',
+            'icon' => 'nullable|string|max:50',
+            'color' => 'nullable|string|max:20',
+        ]);
+
+        if ($validator->fails()) {
+            foreach ($validator->errors()->all() as $error) {
+                ApiResponse::addErrorArray($error);
+            }
+            $response = new ApiResponse;
+
+            return $response->displayWithResponse(false, null, 422);
         }
 
         $category->fill($request->only(['name', 'type', 'parent_id', 'icon', 'color', 'is_active']));

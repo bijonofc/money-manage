@@ -66,4 +66,15 @@
     color: var(--ab-body-color) !important;
     border-color: var(--ab-border-color) !important;
     z-index: 1050 !important;
+
+    .multiselect-options {
+        padding-left: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        list-style: none !important;
+    }
+
+    .multiselect-option {
+        padding-left: 0.75rem !important;
+    }
 }

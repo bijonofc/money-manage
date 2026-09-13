@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\DebtController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\SavingsGoalController;
 use App\Http\Controllers\Api\SettingController;
+use App\Http\Controllers\Api\TestMailController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UserController;
 use Illuminate\Support\Facades\Route;
@@ -19,9 +20,17 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
+// System / Utilities
+Route::get('test-email', [TestMailController::class, 'send']);
+
 // Authentication
+Route::post('user/register', [AuthController::class, 'register']);
 Route::post('user/login', [AuthController::class, 'login']);
 Route::post('user/social-login', [AuthController::class, 'socialLogin']);
+Route::post('user/forget-password', [AuthController::class, 'forgetPassword']);
+Route::post('forget-password', [AuthController::class, 'forgetPassword']);
+Route::post('user/reset-password', [AuthController::class, 'resetPassword']);
+Route::post('users/reset-password', [AuthController::class, 'resetPassword']);
 Route::post('user/verify-otp', [AuthController::class, 'verifyOtp']);
 Route::post('user/resend-otp', [AuthController::class, 'resendOtp']);
 Route::post('user/logout', [AuthController::class, 'logout']);
@@ -45,6 +54,7 @@ Route::get('roles', [RoleController::class, 'list']);
 // Users
 Route::post('users/list', [UserController::class, 'list']);
 Route::post('users/change-password', [UserController::class, 'changePassword']);
+Route::post('users/{id}/approve', [UserController::class, 'approve']);
 Route::apiResource('users', UserController::class)->except(['index']);
 Route::get('users', [UserController::class, 'list']);
 

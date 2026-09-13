@@ -53,11 +53,38 @@ export const useLoginStore = defineStore('login', {
             }
         },
 
+        async loadRoles() {
+            if (this.roleList && this.roleList.length > 0) {
+                return this.roleList;
+            }
+            try {
+                const response = await AxiosHelper.get(AppsbdURL.route('roles'));
+                const list = response.data?.rowdata || response.data?.data?.rowdata || response.data?.data || [];
+                if (Array.isArray(list) && list.length > 0) {
+                    this.roleList = list;
+                }
+                return this.roleList;
+            } catch (error) {
+                console.error(error);
+                return [];
+            }
+        },
+
         async loadCsrf() {
             try {
                 await AxiosHelper.get(AppsbdURL.route('sanctum/csrf-cookie', '', false))
             } catch (error) {
                 console.error(error)
+            }
+        },
+
+        async register(params) {
+            await this.loadCsrf()
+            try {
+                const response = await AxiosHelper.public_post(AppsbdURL.route('user/register'), params)
+                return response.data
+            } catch (error) {
+                return error.response?.data
             }
         },
 

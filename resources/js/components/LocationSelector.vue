@@ -121,5 +121,15 @@ const onCountryChange = (value) => {
 </script>
 
 <style scoped lang="scss">
-
+:deep(.multiselect-dropdown) {
+    .multiselect-options {
+        padding-left: 0 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        list-style: none !important;
+    }
+    .multiselect-option {
+        padding-left: 0.75rem !important;
+    }
+}
 </style>

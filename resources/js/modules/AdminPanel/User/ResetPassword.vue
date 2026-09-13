@@ -5,7 +5,7 @@
             <reset-password-fields v-model:password="password" v-model:password_confirmation="password_confirmation" :loading="loading" @submit="handleResetPassword"/>
             <div class="text-center mt-3">
                 <small>
-                    <router-link :to="`/${adminLoginKey}`" class="text-decoration-none" v-translate>login.signin</router-link>
+                    <router-link to="/login" class="text-decoration-none" v-translate>login.signin</router-link>
                 </small>
             </div>
             <Turnstile ref="turnstile" :site-key="rootData.site_key" @verified="verifiedToken" />
