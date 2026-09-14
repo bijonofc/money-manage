@@ -52,15 +52,17 @@ import {useLoginStore} from "@/modules/AdminPanel/User/loginStore.js";
 const loginStore = useLoginStore();
 
 const props = defineProps({
-    user: { type: Object, required: true }
+    user: { type: Object, required: true },
+    roles: { type: Array, default: () => [] }
 })
 
-const dropdownRoles = computed(() =>
-    (loginStore.roleList || []).map(({ id, title }) => ({
+const dropdownRoles = computed(() => {
+    const list = (props.roles && props.roles.length > 0) ? props.roles : (loginStore.roleList || []);
+    return list.map(({ id, title }) => ({
         val: Number(id),
         title
-    }))
-)
+    }));
+})
 
 watch(() => props.user.role_id, (newVal) => {
     if (newVal !== null && newVal !== undefined && newVal !== '') {
@@ -72,7 +74,7 @@ watch(() => props.user.role_id, (newVal) => {
 }, { immediate: true });
 
 onMounted(async () => {
-    if (!loginStore.roleList || loginStore.roleList.length === 0) {
+    if ((!props.roles || props.roles.length === 0) && (!loginStore.roleList || loginStore.roleList.length === 0)) {
         await loginStore.loadRoles();
     }
 })

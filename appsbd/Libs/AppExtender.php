@@ -1,75 +1,68 @@
 <?php
+
 namespace appsbd\Libs;
 
 class AppExtender
 {
-
     private static array $actions = [];
+
     private static array $filters = [];
 
-    function __construct()
-    {
-
-
-    }
-
+    public function __construct() {}
 
     /**
-     * @param string $action_name
-     * @param callable $func
-     * @param int $priority
-     * @param int $lengthOfParam
+     * @param  int  $priority
+     * @param  int  $lengthOfParam
      */
-    static function AddAction( string $action_name, callable $func, $priority=10, $lengthOfParam=1)
+    public static function AddAction(string $action_name, callable $func, $priority = 10, $lengthOfParam = 1)
     {
 
         if (is_callable($func)) {
-            $std=new \stdClass();
-            $std->lop=$lengthOfParam;
-            $std->callable=$func;
-            if(!isset(self::$actions[$action_name])){
-                self::$actions[$action_name]            =[];
-                self::$actions[$action_name][$priority] =[];
+            $std = new \stdClass;
+            $std->lop = $lengthOfParam;
+            $std->callable = $func;
+            if (! isset(self::$actions[$action_name])) {
+                self::$actions[$action_name] = [];
+                self::$actions[$action_name][$priority] = [];
             }
             self::$actions[$action_name][$priority][] = $std;
         }
     }
 
-
     /**
-     * @param string $filter_name
-     * @param callable $func
-     * @param int $priority
-     * @param int $lengthOfParam
+     * @param  int  $priority
+     * @param  int  $lengthOfParam
      */
-    static function AddFilter( string $filter_name, callable $func, $priority=10, $lengthOfParam=1)
+    public static function AddFilter(string $filter_name, callable $func, $priority = 10, $lengthOfParam = 1)
     {
         $filter_name = strtolower($filter_name);
         if (is_callable($func)) {
-            $std=new \stdClass();
-            $std->lop=$lengthOfParam;
-            $std->callable=$func;
-            if(!isset(self::$filters[$filter_name])){
-                self::$filters[$filter_name]=[];
-                self::$filters[$filter_name][$priority]=[];
+            $std = new \stdClass;
+            $std->lop = $lengthOfParam;
+            $std->callable = $func;
+            if (! isset(self::$filters[$filter_name])) {
+                self::$filters[$filter_name] = [];
+                self::$filters[$filter_name][$priority] = [];
             }
             self::$filters[$filter_name][$priority][] = $std;
         }
     }
-    static function DoActionsParams($hook_name, $params=[]){
+
+    public static function DoActionsParams($hook_name, $params = [])
+    {
         if (isset(self::$actions[$hook_name])) {
             ksort(self::$actions[$hook_name]);
             foreach (self::$actions[$hook_name] as $pri_array) {
                 foreach ($pri_array as $hook) {
                     if (is_callable($hook->callable)) {
-                        if($hook->lop>0){
-                            if( count($params) > $hook->lop) {
+                        if ($hook->lop > 0) {
+                            if (count($params) > $hook->lop) {
                                 $nargs = array_splice($params, 0, $hook->lop);
-                            }else{
-                                $nargs=$params;
+                            } else {
+                                $nargs = $params;
                             }
-                        }else{
-                            $nargs=[];
+                        } else {
+                            $nargs = [];
                         }
                         call_user_func_array($hook->callable, $nargs);
                     }
@@ -78,10 +71,13 @@ class AppExtender
 
         }
     }
-    static function DoActions($hook_name, ...$args){
-       self::DoActionsParams($hook_name,$args);
+
+    public static function DoActions($hook_name, ...$args)
+    {
+        self::DoActionsParams($hook_name, $args);
     }
-    static function DoActionsRef($hook_name,&...$args)
+
+    public static function DoActionsRef($hook_name, &...$args)
     {
         if (isset(self::$actions[$hook_name])) {
             ksort(self::$actions[$hook_name]);
@@ -96,12 +92,11 @@ class AppExtender
     }
 
     /**
-     * @param $name
-     * @param array $args
+     * @param  array  $args
      */
-    static function ApplyFiltersParams($name,$args=[])
+    public static function ApplyFiltersParams($name, $args = [])
     {
-        $return_value=$args[0];
+        $return_value = $args[0];
         if (isset(self::$filters[$name])) {
             ksort(self::$filters[$name]);
             foreach (self::$filters[$name] as $pri_array) {
@@ -116,7 +111,7 @@ class AppExtender
                             }
                         } else {
                             $nargs = [];
-                            $nargs[]  = $args[0];
+                            $nargs[] = $args[0];
                         }
                         $return_value = call_user_func_array($hook->callable, $nargs);
                         if (gettype($args[0]) == gettype($return_value)) {
@@ -128,12 +123,12 @@ class AppExtender
             }
 
         }
+
         return $return_value;
     }
 
-    static function ApplyFilters($name,...$args)
+    public static function ApplyFilters($name, ...$args)
     {
-        self::ApplyFiltersParams($name,$args);
+        self::ApplyFiltersParams($name, $args);
     }
-
 }

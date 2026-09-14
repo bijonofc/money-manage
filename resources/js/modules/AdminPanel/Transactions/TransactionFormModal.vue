@@ -604,6 +604,10 @@ function handleSubmit() {
 /* Segmented Control Tabs */
 .segmented-control {
   background-color: #f1f5f9;
+
+  [data-bs-theme="dark"] & {
+    background-color: #0b111e;
+  }
 }
 
 .segmented-tab {
@@ -620,18 +624,40 @@ function handleSubmit() {
     background: #ffffff;
     color: #ef4444;
     box-shadow: 0 2px 6px rgba(239, 68, 68, 0.15);
+
+    [data-bs-theme="dark"] & {
+      background: #1e293b;
+      color: #f87171;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
   }
 
   &.tab-income-active {
     background: #ffffff;
     color: #137035;
     box-shadow: 0 2px 6px rgba(19, 112, 53, 0.15);
+
+    [data-bs-theme="dark"] & {
+      background: #1e293b;
+      color: #34d399;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
   }
 
   &.tab-transfer-active {
     background: #ffffff;
     color: #2563eb;
     box-shadow: 0 2px 6px rgba(37, 99, 235, 0.15);
+
+    [data-bs-theme="dark"] & {
+      background: #1e293b;
+      color: #60a5fa;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  [data-bs-theme="dark"] &:hover {
+    color: #f8fafc;
   }
 }
 
@@ -654,6 +680,26 @@ function handleSubmit() {
     background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
     border-color: #bfdbfe !important;
   }
+
+  [data-bs-theme="dark"] & {
+    background-color: #0b111e;
+    border-color: #334155 !important;
+
+    &.hero-theme-expense {
+      background: linear-gradient(180deg, rgba(239, 68, 68, 0.12) 0%, #0b111e 100%);
+      border-color: rgba(239, 68, 68, 0.3) !important;
+    }
+
+    &.hero-theme-income {
+      background: linear-gradient(180deg, rgba(16, 185, 129, 0.12) 0%, #0b111e 100%);
+      border-color: rgba(16, 185, 129, 0.3) !important;
+    }
+
+    &.hero-theme-transfer {
+      background: linear-gradient(180deg, rgba(59, 130, 246, 0.12) 0%, #0b111e 100%);
+      border-color: rgba(59, 130, 246, 0.3) !important;
+    }
+  }
 }
 
 .hero-amount-input {
@@ -670,6 +716,14 @@ function handleSubmit() {
     color: #94a3b8;
     opacity: 0.6;
   }
+
+  [data-bs-theme="dark"] & {
+    color: #f8fafc;
+
+    &::placeholder {
+      color: #64748b;
+    }
+  }
 }
 
 .btn-quick-chip {
@@ -682,6 +736,18 @@ function handleSubmit() {
     border-color: #94a3b8;
     color: #0f172a;
     transform: translateY(-1px);
+  }
+
+  [data-bs-theme="dark"] & {
+    background: #0f172a;
+    border-color: #334155;
+    color: #94a3b8;
+
+    &:hover {
+      background: #1e293b;
+      border-color: #475569;
+      color: #f8fafc;
+    }
   }
 }
 

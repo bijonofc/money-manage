@@ -11,6 +11,11 @@ class Transaction extends AppModel
 {
     use HasFactory;
 
+    public static function getDefaultSearchProps(): array
+    {
+        return ['description', 'reference_number', 'tags'];
+    }
+
     protected $fillable = [
         'tenant_id',
         'user_id',

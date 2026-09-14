@@ -11,6 +11,11 @@ class Budget extends AppModel
 {
     use HasFactory;
 
+    public static function getDefaultSearchProps(): array
+    {
+        return ['period'];
+    }
+
     protected $fillable = [
         'tenant_id',
         'category_id',

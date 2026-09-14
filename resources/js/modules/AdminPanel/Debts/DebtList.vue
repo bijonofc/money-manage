@@ -560,13 +560,13 @@ const searchProps = ref([]);
 const sortProps = ref(null);
 
 const data_column = [
-  EliteColumnModel.getColumn({ name: 'creditor_name', title: 'Person / Creditor', width: '180px', is_sortable: true }),
-  EliteColumnModel.getColumn({ name: 'type', title: 'Type', width: '150px', is_sortable: true }),
-  EliteColumnModel.getColumn({ name: 'due_date', title: 'Due Date', width: '130px', is_sortable: true }),
-  EliteColumnModel.getColumn({ name: 'principal_amount', title: 'Principal', width: '120px', is_sortable: true }),
-  EliteColumnModel.getColumn({ name: 'paid_amount', title: 'Paid', width: '110px', is_sortable: true }),
-  EliteColumnModel.getColumn({ name: 'remaining', title: 'Remaining', width: '120px', is_sortable: false }),
-  EliteColumnModel.getColumn({ name: 'status', title: 'Status', width: '100px', is_sortable: true }),
+  EliteColumnModel.getColumn({ name: 'creditor_name', title: 'debt.creditor_name', width: '180px', is_sortable: true }),
+  EliteColumnModel.getColumn({ name: 'type', title: 'debt.type', width: '150px', is_sortable: true }),
+  EliteColumnModel.getColumn({ name: 'due_date', title: 'debt.due_date', width: '130px', is_sortable: true }),
+  EliteColumnModel.getColumn({ name: 'principal_amount', title: 'debt.principal', width: '120px', is_sortable: true }),
+  EliteColumnModel.getColumn({ name: 'paid_amount', title: 'debt.paid', width: '110px', is_sortable: true }),
+  EliteColumnModel.getColumn({ name: 'remaining', title: 'debt.remaining', width: '120px', is_sortable: false }),
+  EliteColumnModel.getColumn({ name: 'status', title: 'debt.status', width: '100px', is_sortable: true }),
 ];
 
 const filterProps = [

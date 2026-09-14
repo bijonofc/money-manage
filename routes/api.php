@@ -1,17 +1,20 @@
 <?php
 
 use App\Http\Controllers\Api\AccountController;
+use App\Http\Controllers\Api\ActivityLogController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BudgetController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\DebtController;
+use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\RoleController;
 use App\Http\Controllers\Api\SavingsGoalController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\TestMailController;
 use App\Http\Controllers\Api\TransactionController;
 use App\Http\Controllers\Api\UserController;
+use appsbd\Libs\AppRoute;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -48,54 +51,47 @@ Route::post('role-accesses/change-permission', [RoleController::class, 'changePe
 Route::post('role-accesses/reset-permission', [RoleController::class, 'resetPermission']);
 Route::post('role-accesses/copy-permission', [RoleController::class, 'copyPermission']);
 Route::post('roles/list', [RoleController::class, 'list']);
-Route::apiResource('roles', RoleController::class)->except(['index']);
 Route::get('roles', [RoleController::class, 'list']);
+Route::apiResource('roles', RoleController::class)->except(['index']);
 
 // Users
 Route::post('users/list', [UserController::class, 'list']);
 Route::post('users/change-password', [UserController::class, 'changePassword']);
 Route::post('users/{id}/approve', [UserController::class, 'approve']);
-Route::apiResource('users', UserController::class)->except(['index']);
 Route::get('users', [UserController::class, 'list']);
+Route::apiResource('users', UserController::class)->except(['index']);
 
 // Accounts
-Route::match(['get', 'post'], 'accounts/list', [AccountController::class, 'index']);
-Route::apiResource('accounts', AccountController::class);
+AppRoute::apiResource('accounts', AccountController::class);
 
 // Categories
-Route::match(['get', 'post'], 'categories/list', [CategoryController::class, 'index']);
-Route::apiResource('categories', CategoryController::class);
+AppRoute::apiResource('categories', CategoryController::class);
 
 // Transactions
-Route::match(['get', 'post'], 'transactions/list', [TransactionController::class, 'index']);
-Route::apiResource('transactions', TransactionController::class);
+AppRoute::apiResource('transactions', TransactionController::class);
 
 // Budgets
-Route::match(['get', 'post'], 'budgets/list', [BudgetController::class, 'index']);
-Route::apiResource('budgets', BudgetController::class);
+AppRoute::apiResource('budgets', BudgetController::class);
 
 // Savings Goals
-Route::match(['get', 'post'], 'savings-goals/list', [SavingsGoalController::class, 'index']);
 Route::post('savings-goals/{id}/contribute', [SavingsGoalController::class, 'contribute']);
-Route::apiResource('savings-goals', SavingsGoalController::class);
+AppRoute::apiResource('savings-goals', SavingsGoalController::class);
 
 // Debts
-Route::match(['get', 'post'], 'debts/list', [DebtController::class, 'index']);
 Route::post('debts/{id}/pay', [DebtController::class, 'pay']);
-Route::apiResource('debts', DebtController::class);
+AppRoute::apiResource('debts', DebtController::class);
 
 // Reports & Analytics
-Route::match(['get', 'post'], 'reports/overview', [\App\Http\Controllers\Api\ReportController::class, 'overview']);
-Route::match(['get', 'post'], 'reports/export', [\App\Http\Controllers\Api\ReportController::class, 'export']);
+Route::match(['get', 'post'], 'reports/overview', [ReportController::class, 'overview']);
+Route::match(['get', 'post'], 'reports/export', [ReportController::class, 'export']);
 
 // Activity Logs
-Route::match(['get', 'post'], 'activity/list', [\App\Http\Controllers\Api\ActivityLogController::class, 'list']);
-Route::get('activity/{id}', [\App\Http\Controllers\Api\ActivityLogController::class, 'show']);
-Route::delete('activity/{id}', [\App\Http\Controllers\Api\ActivityLogController::class, 'destroy']);
+Route::match(['get', 'post'], 'activity/list', [ActivityLogController::class, 'list']);
+Route::get('activity/{id}', [ActivityLogController::class, 'show']);
+Route::delete('activity/{id}', [ActivityLogController::class, 'destroy']);
 
 // Settings
 Route::match(['get', 'post'], 'settings/list', [SettingController::class, 'list']);
 Route::match(['get', 'post'], 'settings/save', [SettingController::class, 'save']);
 Route::post('settings', [SettingController::class, 'save']);
 Route::apiResource('settings', SettingController::class)->except(['store']);
-

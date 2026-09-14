@@ -1,20 +1,21 @@
 <?php
-//die("Test helper");
+
+// die("Test helper");
 // Confirm Response
 // Data Response
-use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Facades\Config;
-use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
-if (!function_exists('getRedirectUrl')) {
-    function getRedirectUrl($url,$params=[]) {
+if (! function_exists('getRedirectUrl')) {
+    function getRedirectUrl($url, $params = [])
+    {
         $query = [];
         foreach ($params as $key => $value) {
-            $query[] = $key . '=' . urlencode($value);
+            $query[] = $key.'='.urlencode($value);
         }
-        if (!empty($query)) {
-            $finalUrl = $url . '?' . implode('&', $query);
+        if (! empty($query)) {
+            $finalUrl = $url.'?'.implode('&', $query);
         } else {
             $finalUrl = $url;
         }
@@ -22,12 +23,12 @@ if (!function_exists('getRedirectUrl')) {
         return $finalUrl;
     }
 }
-if (!function_exists('log_to')) {
+if (! function_exists('log_to')) {
     function log_to(string $filename, $data, string $level = 'info'): void
     {
-        $path = storage_path('logs/' . $filename);
+        $path = storage_path('logs/'.$filename);
 
-        if (!is_string($data)) {
+        if (! is_string($data)) {
             $data = json_encode(
                 $data,
                 JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
@@ -39,8 +40,8 @@ if (!function_exists('log_to')) {
 
         $caller = collect($trace)->first(function ($t) {
             return isset($t['file'])
-                   && !str_contains($t['file'], DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR)
-                   && !str_contains($t['file'], 'log_to');
+                   && ! str_contains($t['file'], DIRECTORY_SEPARATOR.'vendor'.DIRECTORY_SEPARATOR)
+                   && ! str_contains($t['file'], 'log_to');
         });
 
         $file = $caller['file'] ?? 'unknown';
@@ -54,7 +55,7 @@ if (!function_exists('log_to')) {
         $handler->setFormatter(
             new \Monolog\Formatter\LineFormatter(
                 "({$file}:{$line}) [%datetime%] %level_name%: %message%\n",
-                "Y-m-d H:i:s"
+                'Y-m-d H:i:s'
             )
         );
 
@@ -64,32 +65,33 @@ if (!function_exists('log_to')) {
     }
 }
 if (! function_exists('getAppTimezone')) {
-    function getAppTimezone(){
-        return env('APP_TIMEZONE','UTC');
+    function getAppTimezone()
+    {
+        return env('APP_TIMEZONE', 'UTC');
     }
 }
-if (!function_exists('get_date_format')) {
+if (! function_exists('get_date_format')) {
     function get_date_format()
     {
         return Config::get('app.date_format', 'Y-m-d');
     }
 }
 
-if (!function_exists('get_time_format')) {
+if (! function_exists('get_time_format')) {
     function get_time_format()
     {
         return Config::get('app.time_format', 'H:i');
     }
 }
 
-if (!function_exists('get_date_time_format')) {
+if (! function_exists('get_date_time_format')) {
     function get_date_time_format()
     {
-        return get_date_format() . ' ' . get_time_format();
+        return get_date_format().' '.get_time_format();
     }
 }
 
-if (!function_exists('get_formatted_time')) {
+if (! function_exists('get_formatted_time')) {
     function get_formatted_time($datetime = null, $format = null, $timezone = null)
     {
         $datetime = $datetime ? \Carbon\Carbon::parse($datetime) : now();
@@ -99,106 +101,114 @@ if (!function_exists('get_formatted_time')) {
         return $datetime->setTimezone($timezone)->format($format);
     }
 }
-if (!function_exists('store_app_datetime')) {
+if (! function_exists('store_app_datetime')) {
     /**
      * Convert a datetime to DB format (UTC) for storing in database
      *
-     * @param string|\DateTime|null $datetime
+     * @param  string|\DateTime|null  $datetime
      * @return string
      */
     function store_app_datetime($datetime = null)
     {
         $datetime = $datetime ? \Carbon\Carbon::parse($datetime) : now();
         $appTimezone = getAppTimezone(); // e.g., "Asia/Dhaka"
+
         return $datetime->setTimezone('UTC')->format('Y-m-d H:i:s'); // store in UTC
     }
 }
 
-if (!function_exists('get_app_datetime')) {
+if (! function_exists('get_app_datetime')) {
     /**
      * Convert a datetime from DB (UTC) to app timezone & formatted string
      *
-     * @param string $datetime
-     * @param string|null $format
+     * @param  string  $datetime
+     * @param  string|null  $format
      * @return string
      */
     function get_app_datetime($datetime, $format = null)
     {
         $format = $format ?? get_date_time_format(); // default app format
         $appTimezone = getAppTimezone();
+
         return \Carbon\Carbon::parse($datetime)
-                             ->setTimezone($appTimezone)
-                             ->format($format);
+            ->setTimezone($appTimezone)
+            ->format($format);
     }
 }
-if ( ! function_exists( 'getAppTimeToUTC' ) ) {
+if (! function_exists('getAppTimeToUTC')) {
     /**
      * The appsbd get wptime to gmtime is generated by appsbd
      *
-     * @param string $timestr This is timestr.
-     * @param string $format  This is format.
-     *
+     * @param  string  $timestr  This is timestr.
+     * @param  string  $format  This is format.
      * @return false|int|string
      */
-    function getAppTimeToUTC( $timestr = '', $format = '' ) {
+    function getAppTimeToUTC($timestr = '', $format = '')
+    {
         $apptimezone = getAppTimezone();
         try {
             $timezone = 'UTC';
-            if ( $apptimezone == $timezone ) {
-                return gmdate( $format, strtotime( $timestr ) );
+            if ($apptimezone == $timezone) {
+                return gmdate($format, strtotime($timestr));
             }
-            if ( ! empty( $timestr ) ) {
-                $date = new DateTime( $timestr, new DateTimeZone( $apptimezone ) );
+            if (! empty($timestr)) {
+                $date = new DateTime($timestr, new DateTimeZone($apptimezone));
             } else {
-                $date = new DateTime();
+                $date = new DateTime;
             }
-            if ( ! empty( $timezone ) && strtoupper( $apptimezone ) != strtolower( $timezone ) ) {
-                $date->setTimezone( new DateTimeZone( $timezone ) );
+            if (! empty($timezone) && strtoupper($apptimezone) != strtolower($timezone)) {
+                $date->setTimezone(new DateTimeZone($timezone));
             }
 
-            if ( ! empty( $format ) ) {
-                return $date->format( $format );
+            if (! empty($format)) {
+                return $date->format($format);
             } else {
                 return $date->getTimestamp();
             }
-        } catch ( Exception $e ) {
+        } catch (Exception $e) {
             return $e->getMessage();
         }
     }
 }
 if (! function_exists('appsbdFileLog')) {
-    function appsbdFileLog($name,$str){
-       file_put_contents(__DIR__."/../logs/{$name}.txt",print_r($str,true)."\n",FILE_APPEND);
+    function appsbdFileLog($name, $str)
+    {
+        file_put_contents(__DIR__."/../logs/{$name}.txt", print_r($str, true)."\n", FILE_APPEND);
     }
 }
 
 if (! function_exists('getMsgs')) {
-    function getMsgs(){
-        return  \appsbd\Libs\BaseResponse::getMsgs();
+    function getMsgs()
+    {
+        return \appsbd\Libs\BaseResponse::getMsgs();
     }
 }
 
 if (! function_exists('addError')) {
-    function addError($msg,$params=[]){
-       \appsbd\Libs\BaseResponse::addErrorArray($msg,$params);
+    function addError($msg, $params = [])
+    {
+        \appsbd\Libs\BaseResponse::addErrorArray($msg, $params);
     }
 }
 
 if (! function_exists('addInfo')) {
-    function addInfo($msg,$params=[]){
-        \appsbd\Libs\BaseResponse::addInfoArray($msg,$params);
+    function addInfo($msg, $params = [])
+    {
+        \appsbd\Libs\BaseResponse::addInfoArray($msg, $params);
     }
 }
 
 if (! function_exists('addWarning')) {
-    function addWarning($msg,$params=[]){
-        \appsbd\Libs\BaseResponse::addWarningArray($msg,$params);
+    function addWarning($msg, $params = [])
+    {
+        \appsbd\Libs\BaseResponse::addWarningArray($msg, $params);
     }
 }
 
 if (! function_exists('addDebug')) {
-    function addDebug($msg,$params=[]){
-        \appsbd\Libs\BaseResponse::addDebugArray($msg,$params);
+    function addDebug($msg, $params = [])
+    {
+        \appsbd\Libs\BaseResponse::addDebugArray($msg, $params);
     }
 }
 
@@ -206,18 +216,18 @@ if (! function_exists('get_next_bill_date')) {
     /**
      * Calculate the next billing date based on the given interval and billing day.
      *
-     * @param string       $format         The unit of duration: 'D' = days, 'M' = months, 'Y' = years.
-     * @param int          $duration       The number of units to add to the previous billing date.
-     * @param int          $day_of_bill    The day of the month on which billing should occur (1–31).
-     * @param string|DateTime $prev_bill_date The previous billing date, either as a 'Y-m-d' string or a DateTime object.
-     *
-     * @return string      The next billing date in 'Y-m-d' format.
+     * @param  string  $format  The unit of duration: 'D' = days, 'M' = months, 'Y' = years.
+     * @param  int  $duration  The number of units to add to the previous billing date.
+     * @param  int  $day_of_bill  The day of the month on which billing should occur (1–31).
+     * @param  string|DateTime  $prev_bill_date  The previous billing date, either as a 'Y-m-d' string or a DateTime object.
+     * @return string The next billing date in 'Y-m-d' format.
      */
-    function get_next_bill_date($format, $duration, $day_of_bill, $prev_bill_date) {
+    function get_next_bill_date($format, $duration, $day_of_bill, $prev_bill_date)
+    {
         // Convert to DateTime object if input is a string
-        if (!$prev_bill_date instanceof DateTime) {
+        if (! $prev_bill_date instanceof DateTime) {
             $date = DateTime::createFromFormat('Y-m-d', $prev_bill_date);
-            if (!$date) {
+            if (! $date) {
                 throw new InvalidArgumentException("Invalid date format. Expected 'Y-m-d'.");
             }
         } else {
@@ -240,12 +250,12 @@ if (! function_exists('get_next_bill_date')) {
         }
 
         // Step 2: Adjust to correct day of the month
-        $year = (int)$date->format('Y');
-        $month = (int)$date->format('m');
+        $year = (int) $date->format('Y');
+        $month = (int) $date->format('m');
         $days_in_month = cal_days_in_month(CAL_GREGORIAN, $month, $year);
 
         // Make sure day_of_bill does not exceed the number of days in the month
-        $final_day = min((int)$day_of_bill, $days_in_month);
+        $final_day = min((int) $day_of_bill, $days_in_month);
 
         // Set the date to the desired day
         $date->setDate($year, $month, $final_day);
@@ -254,10 +264,10 @@ if (! function_exists('get_next_bill_date')) {
     }
 }
 
-
 if (! function_exists('formatCurrency')) {
 
-    function formatCurrency( $amount, $currency = null, $locale = null ) {
-        return \appsbd\Libs\LocalHelper::formatCurrency( $amount, $currency, $locale );
+    function formatCurrency($amount, $currency = null, $locale = null)
+    {
+        return \appsbd\Libs\LocalHelper::formatCurrency($amount, $currency, $locale);
     }
 }

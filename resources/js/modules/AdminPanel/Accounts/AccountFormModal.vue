@@ -350,6 +350,27 @@ function handleSubmit() {
     background: #f0fdf4;
     box-shadow: 0 0 0 1px #137035;
   }
+
+  [data-bs-theme="dark"] & {
+    background: #0b111e;
+    border-color: #334155;
+    color: #f8fafc;
+
+    &:hover {
+      border-color: #475569;
+      background: #1e293b;
+    }
+
+    &.active-type {
+      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.15);
+      box-shadow: 0 0 0 1px #10b981;
+    }
+
+    .text-dark {
+      color: #f8fafc !important;
+    }
+  }
 }
 
 .type-icon-wrapper {
@@ -367,6 +388,16 @@ function handleSubmit() {
   &:focus-within {
     border-color: #137035;
     box-shadow: 0 0 0 3px rgba(19, 112, 53, 0.12);
+  }
+
+  [data-bs-theme="dark"] & {
+    border-color: #334155;
+    background: #0b111e;
+
+    &:focus-within {
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
   }
 
   .input-group-text {

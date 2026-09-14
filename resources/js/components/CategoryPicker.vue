@@ -386,6 +386,25 @@ async function createCategory() {
     font-weight: 600;
     box-shadow: 0 0 0 1px #137035, 0 2px 4px rgba(19, 112, 53, 0.08);
   }
+
+  [data-bs-theme="dark"] & {
+    background: #0b111e;
+    border-color: #334155;
+    color: #f8fafc;
+
+    &:hover {
+      background: #1e293b;
+      border-color: #475569;
+      color: #ffffff;
+    }
+
+    &.active-chip {
+      background: rgba(16, 185, 129, 0.15);
+      border-color: #10b981;
+      color: #34d399;
+      box-shadow: 0 0 0 1px #10b981, 0 2px 4px rgba(0, 0, 0, 0.4);
+    }
+  }
 }
 
 .chip-icon-badge {

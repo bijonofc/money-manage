@@ -26,7 +26,7 @@ class ReportController extends Controller
         $endDate = $request->input('end_date');
         $accountId = $request->input('account_id');
 
-        if (!$startDate || !$endDate) {
+        if (! $startDate || ! $endDate) {
             $now = Carbon::now();
             switch ($preset) {
                 case 'last_month':
@@ -64,7 +64,7 @@ class ReportController extends Controller
         if ($accountId) {
             $baseTxQuery->where(function ($q) use ($accountId) {
                 $q->where('account_id', $accountId)
-                  ->orWhere('from_account_id', $accountId);
+                    ->orWhere('from_account_id', $accountId);
             });
         }
 
@@ -100,8 +100,9 @@ class ReportController extends Controller
             ->orderByDesc('total_amount')
             ->get()
             ->map(function ($cat) use ($totalExpense) {
-                $cat->total_amount = (float)$cat->total_amount;
+                $cat->total_amount = (float) $cat->total_amount;
                 $cat->percentage = $totalExpense > 0 ? round(($cat->total_amount / $totalExpense) * 100, 1) : 0;
+
                 return $cat;
             });
 
@@ -125,8 +126,9 @@ class ReportController extends Controller
             ->orderByDesc('total_amount')
             ->get()
             ->map(function ($cat) use ($totalIncome) {
-                $cat->total_amount = (float)$cat->total_amount;
+                $cat->total_amount = (float) $cat->total_amount;
                 $cat->percentage = $totalIncome > 0 ? round(($cat->total_amount / $totalIncome) * 100, 1) : 0;
+
                 return $cat;
             });
 
@@ -156,11 +158,11 @@ class ReportController extends Controller
 
             $monthlyTrend[] = [
                 'month_key' => Carbon::now()->subMonths($i)->format('Y-m'),
-                'label'     => $label,
-                'short'     => $shortLabel,
-                'income'    => (float)$mIncome,
-                'expense'   => (float)$mExpense,
-                'savings'   => (float)($mIncome - $mExpense),
+                'label' => $label,
+                'short' => $shortLabel,
+                'income' => (float) $mIncome,
+                'expense' => (float) $mExpense,
+                'savings' => (float) ($mIncome - $mExpense),
             ];
         }
 
@@ -177,24 +179,24 @@ class ReportController extends Controller
                 ->where(function ($q) use ($acc) {
                     $q->where(function ($sq) use ($acc) {
                         $sq->where('account_id', $acc->id)
-                           ->where('transaction_type', 'expense');
+                            ->where('transaction_type', 'expense');
                     })->orWhere(function ($sq) use ($acc) {
                         $sq->where('from_account_id', $acc->id)
-                           ->where('transaction_type', 'transfer');
+                            ->where('transaction_type', 'transfer');
                     });
                 })
                 ->whereBetween('date', [$startDate, $endDate])
                 ->sum('amount');
 
             return [
-                'id'              => $acc->id,
-                'name'            => $acc->name,
-                'account_type'    => $acc->account_type,
-                'currency'        => $acc->currency ?? 'BDT',
-                'current_balance' => (float)$acc->balance,
-                'inflows'         => (float)$inflows,
-                'outflows'        => (float)$outflows,
-                'net_flow'        => (float)($inflows - $outflows),
+                'id' => $acc->id,
+                'name' => $acc->name,
+                'account_type' => $acc->account_type,
+                'currency' => $acc->currency ?? 'BDT',
+                'current_balance' => (float) $acc->balance,
+                'inflows' => (float) $inflows,
+                'outflows' => (float) $outflows,
+                'net_flow' => (float) ($inflows - $outflows),
             ];
         });
 
@@ -212,27 +214,28 @@ class ReportController extends Controller
 
         $data = [
             'period' => [
-                'preset'     => $preset,
+                'preset' => $preset,
                 'start_date' => $startDate,
-                'end_date'   => $endDate,
+                'end_date' => $endDate,
                 'days_count' => $daysCount,
             ],
             'summary' => [
-                'total_income'          => (float)$totalIncome,
-                'total_expense'         => (float)$totalExpense,
-                'net_savings'           => (float)$netSavings,
-                'savings_rate'          => $savingsRate,
+                'total_income' => (float) $totalIncome,
+                'total_expense' => (float) $totalExpense,
+                'net_savings' => (float) $netSavings,
+                'savings_rate' => $savingsRate,
                 'daily_average_expense' => $dailyAverageExpense,
-                'transactions_count'    => $totalTransactionsCount,
+                'transactions_count' => $totalTransactionsCount,
             ],
             'expense_categories' => $expenseCategories,
-            'income_categories'  => $incomeCategories,
-            'monthly_trend'      => $monthlyTrend,
-            'account_flows'      => $accountFlows,
-            'top_expenses'       => $topExpenses,
+            'income_categories' => $incomeCategories,
+            'monthly_trend' => $monthlyTrend,
+            'account_flows' => $accountFlows,
+            'top_expenses' => $topExpenses,
         ];
 
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, $data);
     }
 
@@ -253,7 +256,7 @@ class ReportController extends Controller
         if ($accountId) {
             $query->where(function ($q) use ($accountId) {
                 $q->where('account_id', $accountId)
-                  ->orWhere('from_account_id', $accountId);
+                    ->orWhere('from_account_id', $accountId);
             });
         }
 
@@ -261,25 +264,26 @@ class ReportController extends Controller
 
         $rows = $transactions->map(function ($tx) {
             return [
-                'ID'               => $tx->id,
-                'Date'             => $tx->date,
-                'Time'             => $tx->time ?? '',
-                'Type'             => strtoupper($tx->transaction_type),
-                'Amount (BDT)'     => $tx->amount,
-                'Category'         => $tx->category ? $tx->category->name : 'N/A',
-                'Account'          => $tx->account ? $tx->account->name : 'N/A',
-                'From Account'     => $tx->fromAccount ? $tx->fromAccount->name : '',
-                'Description'      => $tx->description ?? '',
-                'Payment Method'   => $tx->payment_method ?? '',
-                'Reference'        => $tx->reference_number ?? '',
+                'ID' => $tx->id,
+                'Date' => $tx->date,
+                'Time' => $tx->time ?? '',
+                'Type' => strtoupper($tx->transaction_type),
+                'Amount (BDT)' => $tx->amount,
+                'Category' => $tx->category ? $tx->category->name : 'N/A',
+                'Account' => $tx->account ? $tx->account->name : 'N/A',
+                'From Account' => $tx->fromAccount ? $tx->fromAccount->name : '',
+                'Description' => $tx->description ?? '',
+                'Payment Method' => $tx->payment_method ?? '',
+                'Reference' => $tx->reference_number ?? '',
             ];
         });
 
-        $response = new ApiResponse();
+        $response = new ApiResponse;
+
         return $response->displayWithResponse(true, [
             'filename' => "financial_report_{$startDate}_to_{$endDate}.csv",
-            'rows'     => $rows,
-            'count'    => $rows->count(),
+            'rows' => $rows,
+            'count' => $rows->count(),
         ]);
     }
 }

@@ -193,6 +193,6 @@ return [
     |
     */
 
-    'attributes' => include "values.php",
+    'attributes' => include 'values.php',
 
 ];

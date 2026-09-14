@@ -1,12 +1,15 @@
 <?php
+
 namespace appsbd\Traits;
 
 use appsbd\Libs\Searchable;
 
-trait SearchableTrait {
+trait SearchableTrait
+{
     use Searchable;
 
-    public static function getDefaultSearchProps() {
+    public static function getDefaultSearchProps()
+    {
         return [];
     }
 }

@@ -10,6 +10,11 @@ class AppSetting extends AppModel
 {
     use HasFactory;
 
+    public static function getDefaultSearchProps(): array
+    {
+        return ['group_slug', 's_key', 's_val'];
+    }
+
     protected $table = 'app_settings';
 
     protected $fillable = [

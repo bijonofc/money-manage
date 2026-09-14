@@ -53,8 +53,8 @@ export const useLoginStore = defineStore('login', {
             }
         },
 
-        async loadRoles() {
-            if (this.roleList && this.roleList.length > 0) {
+        async loadRoles(force = false) {
+            if (!force && this.roleList && this.roleList.length > 0) {
                 return this.roleList;
             }
             try {
@@ -63,10 +63,10 @@ export const useLoginStore = defineStore('login', {
                 if (Array.isArray(list) && list.length > 0) {
                     this.roleList = list;
                 }
-                return this.roleList;
+                return this.roleList || [];
             } catch (error) {
                 console.error(error);
-                return [];
+                return this.roleList || [];
             }
         },
 

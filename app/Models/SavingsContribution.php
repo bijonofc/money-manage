@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use appsbd\Core\AppModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class SavingsContribution extends Model
+class SavingsContribution extends AppModel
 {
     use HasFactory;
 

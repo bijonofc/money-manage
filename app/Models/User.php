@@ -3,15 +3,19 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use appsbd\Traits\SearchDataTrait;
+use appsbd\Core\AppAuthModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends AppAuthModel
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, SearchDataTrait;
+    use HasFactory, Notifiable;
+
+    public static function getDefaultSearchProps(): array
+    {
+        return ['name', 'email', 'username', 'contact_no'];
+    }
 
     /**
      * The attributes that are mass assignable.

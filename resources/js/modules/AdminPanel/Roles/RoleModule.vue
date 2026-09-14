@@ -4,14 +4,14 @@
       <div class="card-body p-2">
         <div class="d-flex justify-content-end">
           <ul class="nav apbd-tab-nav w-100">
-            <li v-if="true" class="nav-item">
-              <router-link to="/roles" class="btn apbd-tab-btn ">
+            <li v-if="$CheckACL('role-list')" class="nav-item">
+              <router-link to="/role/list" class="btn apbd-tab-btn">
                   <i class="apb apb-shield-alt"></i>
                   <translate>role.list</translate>
               </router-link>
             </li>
-            <li v-if="true" class="nav-item">
-              <router-link to="/role-access" class="btn apbd-tab-btn">
+            <li v-if="$CheckACL('access-list')" class="nav-item">
+              <router-link to="/role/access" class="btn apbd-tab-btn">
                   <i class="apb apb-shield-check"></i>
                   <translate>role.access</translate>
               </router-link>

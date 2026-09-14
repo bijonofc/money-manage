@@ -2,7 +2,6 @@
 
 namespace Tests\Feature;
 
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -15,10 +14,11 @@ class AuthApiTest extends TestCase
         parent::setUp();
         $this->seed(\Database\Seeders\DatabaseSeeder::class);
     }
+
     public function test_user_can_login_via_api(): void
     {
         $response = $this->postJson('/api/v1/user/login', [
-            'email'    => 'test@example.com',
+            'email' => 'test@example.com',
             'password' => '12345',
         ]);
 
@@ -30,7 +30,7 @@ class AuthApiTest extends TestCase
     public function test_invalid_login_returns_401(): void
     {
         $response = $this->postJson('/api/v1/user/login', [
-            'email'    => 'test@example.com',
+            'email' => 'test@example.com',
             'password' => 'wrongpassword',
         ]);
 

@@ -200,10 +200,10 @@ const menus = [
     },
     {
         id: 'roles',
-        acl: 'role-list',
+        acl: ['role-list', 'access-list'],
         name: 'roles',
         title: 'Roles',
-        route: '/roles',
+        route: '/role',
         has_icon: true,
         iconComponent: markRaw(Shield)
     },
@@ -240,7 +240,11 @@ const filteredMenus = computed(() => {
         if (menu.devOnly && isProduction.value) {
             return false;
         }
-        return !menu.acl || proxy.$CheckACL(menu.acl);
+        if (!menu.acl) return true;
+        if (Array.isArray(menu.acl)) {
+            return proxy.$CheckACLS(...menu.acl);
+        }
+        return proxy.$CheckACL(menu.acl);
     });
 });
 </script>

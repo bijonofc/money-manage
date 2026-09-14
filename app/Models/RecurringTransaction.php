@@ -2,14 +2,19 @@
 
 namespace App\Models;
 
+use appsbd\Core\AppModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class RecurringTransaction extends Model
+class RecurringTransaction extends AppModel
 {
     use HasFactory;
+
+    public static function getDefaultSearchProps(): array
+    {
+        return ['name', 'description'];
+    }
 
     protected $fillable = [
         'tenant_id',

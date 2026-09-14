@@ -1,4 +1,5 @@
 <?php
+
 /*spl_autoload_register( function($class_name_space ) {
 
         $class_name_space = str_replace( '\\', '/', $class_name_space );
@@ -7,6 +8,6 @@
 
 });*/
 
-require_once "Helper/input_helper.php";
-require_once "Helper/app_helper.php";
-require_once "Helper/action_helper.php";
+require_once 'Helper/input_helper.php';
+require_once 'Helper/app_helper.php';
+require_once 'Helper/action_helper.php';

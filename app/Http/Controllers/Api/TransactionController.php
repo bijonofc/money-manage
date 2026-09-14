@@ -3,117 +3,49 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Account;
+use App\Http\Requests\TransactionRequest;
+use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
-use App\Services\ActivityLogger;
+use App\Services\TransactionService;
 use appsbd\Libs\ApiDataResponse;
 use appsbd\Libs\ApiResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
 
 class TransactionController extends Controller
 {
-    public function index(Request $request)
+    public function __construct(
+        private readonly TransactionService $transactionService
+    ) {}
+
+    public function index(Request $request): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
         $response = new ApiDataResponse;
         $response->setDefaultSortData('date', 'desc');
         $response->searchFromRequest(
             $request,
             Transaction::class,
-            JsonResource::class,
-            ['category', 'account', 'fromAccount'],
-            [],
-            ['tenant_id' => $tenantId]
+            TransactionResource::class,
+            ['category', 'account', 'fromAccount']
         );
 
         return $response->display();
     }
 
-    public function store(Request $request)
+    public function store(TransactionRequest $request): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
-        $userId = auth()->id() ?? 1;
-
-        $validator = Validator::make($request->all(), [
-            'transaction_type' => 'required|in:income,expense,transfer',
-            'amount' => 'required|numeric|min:0.01',
-            'account_id' => 'required|exists:accounts,id',
-            'category_id' => 'nullable|exists:categories,id',
-            'from_account_id' => 'nullable|exists:accounts,id',
-            'date' => 'required|date',
-            'time' => 'nullable|string',
-            'description' => 'nullable|string',
-            'payment_method' => 'nullable|in:cash,card,bank_transfer,mobile,check,other',
-        ]);
-
-        if ($validator->fails()) {
-            foreach ($validator->errors()->all() as $error) {
-                ApiResponse::addErrorArray($error);
-            }
-            $response = new ApiResponse;
-
-            return $response->displayWithResponse(false, null, 422);
-        }
-
-        $transaction = DB::transaction(function () use ($request, $tenantId, $userId) {
-            $type = $request->input('transaction_type');
-            $amount = $request->input('amount');
-            $accountId = $request->input('account_id');
-            $fromAccountId = $request->input('from_account_id');
-
-            $tx = Transaction::create([
-                'tenant_id' => $tenantId,
-                'user_id' => $userId,
-                'transaction_type' => $type,
-                'amount' => $amount,
-                'category_id' => $request->input('category_id'),
-                'account_id' => $accountId,
-                'from_account_id' => $fromAccountId,
-                'date' => $request->input('date'),
-                'time' => $request->input('time'),
-                'description' => $request->input('description'),
-                'reference_number' => $request->input('reference_number'),
-                'payment_method' => $request->input('payment_method'),
-                'tags' => $request->input('tags'),
-            ]);
-
-            // Update Account Balances
-            $account = Account::find($accountId);
-            if ($account) {
-                if ($type === 'income') {
-                    $account->increment('balance', $amount);
-                } elseif ($type === 'expense') {
-                    $account->decrement('balance', $amount);
-                } elseif ($type === 'transfer' && $fromAccountId) {
-                    $account->increment('balance', $amount);
-                    $fromAccount = Account::find($fromAccountId);
-                    if ($fromAccount) {
-                        $fromAccount->decrement('balance', $amount);
-                    }
-                }
-            }
-
-            return $tx;
-        });
-
-        $desc = ($transaction->description ? $transaction->description : ucfirst($transaction->transaction_type)).' ('.number_format($transaction->amount, 2).')';
-        ActivityLogger::logCreated($transaction, $desc);
+        $userId = (int) (auth()->id() ?? 1);
+        $transaction = $this->transactionService->create($request->validated(), $userId);
 
         ApiResponse::addInfoArray(__('Transaction recorded successfully'));
         $response = new ApiResponse;
 
-        return $response->displayWithResponse(true, $transaction);
+        return $response->displayWithResponse(true, new TransactionResource($transaction));
     }
 
-    public function show($id)
+    public function show(int $id): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
-        $transaction = Transaction::with(['category', 'account', 'fromAccount'])
-            ->where('tenant_id', $tenantId)
-            ->find($id);
+        $transaction = Transaction::with(['category', 'account', 'fromAccount'])->find($id);
 
         if (! $transaction) {
             ApiResponse::addErrorArray(__('Transaction not found'));
@@ -124,13 +56,12 @@ class TransactionController extends Controller
 
         $response = new ApiResponse;
 
-        return $response->displayWithResponse(true, $transaction);
+        return $response->displayWithResponse(true, new TransactionResource($transaction));
     }
 
-    public function update(Request $request, $id)
+    public function update(TransactionRequest $request, int $id): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
-        $transaction = Transaction::where('tenant_id', $tenantId)->find($id);
+        $transaction = Transaction::find($id);
 
         if (! $transaction) {
             ApiResponse::addErrorArray(__('Transaction not found'));
@@ -139,26 +70,17 @@ class TransactionController extends Controller
             return $response->displayWithResponse(false, null, 404);
         }
 
-        $transaction->fill($request->only([
-            'transaction_type', 'amount', 'category_id', 'account_id',
-            'from_account_id', 'date', 'time', 'description', 'reference_number',
-            'payment_method', 'tags',
-        ]));
-        $transaction->save();
-
-        $desc = ($transaction->description ? $transaction->description : ucfirst($transaction->transaction_type)).' ('.number_format($transaction->amount, 2).')';
-        ActivityLogger::logUpdated($transaction, $desc);
+        $transaction = $this->transactionService->update($transaction, $request->validated());
 
         ApiResponse::addInfoArray(__('Transaction updated successfully'));
         $response = new ApiResponse;
 
-        return $response->displayWithResponse(true, $transaction);
+        return $response->displayWithResponse(true, new TransactionResource($transaction));
     }
 
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
-        $transaction = Transaction::where('tenant_id', $tenantId)->find($id);
+        $transaction = Transaction::find($id);
 
         if (! $transaction) {
             ApiResponse::addErrorArray(__('Transaction not found'));
@@ -167,10 +89,7 @@ class TransactionController extends Controller
             return $response->displayWithResponse(false, null, 404);
         }
 
-        $desc = ($transaction->description ? $transaction->description : ucfirst($transaction->transaction_type)).' ('.number_format($transaction->amount, 2).')';
-        ActivityLogger::logDeleted($transaction, $desc);
-
-        $transaction->delete();
+        $this->transactionService->delete($transaction);
 
         ApiResponse::addInfoArray(__('Transaction deleted successfully'));
         $response = new ApiResponse;

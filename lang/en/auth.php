@@ -14,9 +14,9 @@ return [
     */
 
     'failed' => 'These credentials do not match our records.',
-    'logged_in'=>'Successfully logged in',
+    'logged_in' => 'Successfully logged in',
     'password' => 'The provided password is incorrect.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'captcha_error'=>'Invalid captcha. Please try again.',
+    'captcha_error' => 'Invalid captcha. Please try again.',
 
 ];

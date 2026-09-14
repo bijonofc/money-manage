@@ -4,7 +4,7 @@
             <div v-if="menu.children" class="ab-menu-a d-flex justify-between align-items-center w-100" :class="{'ab-active':is_active(menu)}">
                 <menu-title  :is-open="isOpen" :sidebar-closed="sidebarClosed" :menu="menu"/>
             </div>
-            <router-link v-else :to="menu.route||''" class="ab-menu-a d-flex justify-between align-items-center w-100" @click="handleNavClick">
+            <router-link v-else :to="menu.route||''" class="ab-menu-a d-flex justify-between align-items-center w-100" :class="{'ab-active': is_active(menu)}" @click="handleNavClick">
                 <menu-title  :is-open="isOpen" :sidebar-closed="sidebarClosed" :menu="menu"/>
             </router-link>
             <div v-if="menu.children?.length && props.sidebarClosed" class="hover-sub-menu">
@@ -62,6 +62,9 @@ const props = defineProps({
 
 const hasPermission = computed(() => {
     if (props.menu.acl) {
+        if (Array.isArray(props.menu.acl)) {
+            return Acl.checkACLsArray(props.menu.acl);
+        }
         return Acl.checkACL(props.menu.acl);
     }
     return true;
@@ -82,7 +85,7 @@ const isToggled=ref(null);
 const isRouter=ref(null);
 const isOpen=computed(()=>{
     if(isToggled.value==null){
-        return route.path.startsWith(props.menu.route);
+        return is_active(props.menu);
     }
     return isToggled.value;
 });
@@ -102,8 +105,14 @@ function isImage(icon) {
     return typeof icon === 'string' && (icon.startsWith('http') || icon.startsWith('/'))
 }
 function is_active(menu) {
-    const route=useRoute();
-    return route.path.startsWith(menu.route);
+    if (!menu?.route) return false;
+    if (menu.route === '/' || menu.route === '/dashboard') {
+        return route.path === menu.route;
+    }
+    if (menu.route === '/role' && (route.path.startsWith('/roles') || route.path.startsWith('/role-access'))) {
+        return true;
+    }
+    return route.path === menu.route || route.path.startsWith(menu.route + '/');
 }
 </script>
 
@@ -153,10 +162,12 @@ function is_active(menu) {
                 text-decoration: none;
                 font-size: 14px;
                 font-weight: 600;
-                transition: background-color 0.3s ease;
+                transition: background-color 0.3s ease, color 0.3s ease;
 
                 &:hover {
-                    background-color: var(--ab-hover-bg, rgba(233, 233, 233, 0.28));
+                    color: var(--ab-theme-color) !important;
+                    background-color: var(--ab-link-active-bg, var(--ab-hover-bg, rgba(233, 233, 233, 0.28))) !important;
+                    text-decoration: none !important;
                 }
 
                 .icon-wrapper {

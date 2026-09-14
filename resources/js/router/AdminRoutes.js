@@ -1,58 +1,31 @@
 import { createRouter, createWebHistory } from "vue-router";
-import NotFound from "@/layouts/NotFound.vue";
 import ACL from '@/libs/acl.js';
-
-import ActivityLog from "@/modules/AdminPanel/ActivityLog/ActivityLog.vue";
-import RoleModule from "@/modules/AdminPanel/Roles/RoleModule.vue";
-import RoleAccess from "@/modules/AdminPanel/Roles/RoleAccess.vue";
-import RoleList from "@/modules/AdminPanel/Roles/RoleList.vue";
-import UserList from "@/modules/AdminPanel/User/UserList.vue";
-import Profile from "@/modules/AdminPanel/User/Profile.vue";
-import Login from "@/modules/AdminPanel/User/Login.vue";
 import { useLoginStore } from "@/modules/AdminPanel/User/loginStore.js";
-import TemplateList from "@/modules/AdminPanel/EmailTemplate/TemplateList.vue";
-
-import Dashboard from "@/modules/AdminPanel/Dashboard/dashboard.vue";
-import AccountList from "@/modules/AdminPanel/Accounts/AccountList.vue";
-import TransactionList from "@/modules/AdminPanel/Transactions/TransactionList.vue";
-import BudgetList from "@/modules/AdminPanel/Budgets/BudgetList.vue";
-import SavingsList from "@/modules/AdminPanel/Savings/SavingsList.vue";
-import DebtList from "@/modules/AdminPanel/Debts/DebtList.vue";
-import CategoryList from "@/modules/AdminPanel/Categories/CategoryList.vue";
-import ReportsPage from "@/modules/AdminPanel/Reports/ReportsPage.vue";
-import DesignShowcase from "@/modules/AdminPanel/DesignShowcase/DesignShowcase.vue";
-
-import ForgetPass from "@/modules/AdminPanel/User/ForgetPass.vue";
-import Register from "@/modules/AdminPanel/User/Register.vue";
-import BasicSettings from "@/modules/AdminPanel/Settings/BasicSettings.vue";
-import NotificationSettings from "@/modules/AdminPanel/Settings/NotificationSettings.vue";
-import AdminSetting from "@/modules/AdminPanel/Settings/AdminSetting.vue";
-import ResetPassword from "@/modules/AdminPanel/User/ResetPassword.vue";
 
 const routes = [
     // Auth Routes
     {
         path: '/login',
         name: "login",
-        component: Login,
+        component: () => import("@/modules/AdminPanel/User/Login.vue"),
         meta: { title: 'Login' }
     },
     {
         path: '/register',
         name: "register",
-        component: Register,
+        component: () => import("@/modules/AdminPanel/User/Register.vue"),
         meta: { title: 'Register' }
     },
     {
         path: '/forget-pass',
         name: "forgetPass",
-        component: ForgetPass,
+        component: () => import("@/modules/AdminPanel/User/ForgetPass.vue"),
         meta: { title: 'Forget Password' }
     },
     {
         path: '/reset-password/:token',
         name: 'reset-password',
-        component: ResetPassword,
+        component: () => import("@/modules/AdminPanel/User/ResetPassword.vue"),
         props: route => ({
             token: route.params.token,
             email: route.query.email
@@ -77,79 +50,79 @@ const routes = [
     {
         path: "/dashboard",
         name: "dashboard",
-        component: Dashboard,
+        component: () => import("@/modules/AdminPanel/Dashboard/dashboard.vue"),
         meta: { requiresAuth: true, title: 'Dashboard' },
     },
     {
         path: "/accounts",
         name: "accounts",
-        component: AccountList,
+        component: () => import("@/modules/AdminPanel/Accounts/AccountList.vue"),
         meta: { requiresAuth: true, title: 'Accounts' },
     },
     {
         path: "/transactions",
         name: "transactions",
-        component: TransactionList,
+        component: () => import("@/modules/AdminPanel/Transactions/TransactionList.vue"),
         meta: { requiresAuth: true, title: 'Transactions' },
     },
     {
         path: "/budgets",
         name: "budgets",
-        component: BudgetList,
+        component: () => import("@/modules/AdminPanel/Budgets/BudgetList.vue"),
         meta: { requiresAuth: true, title: 'Budgets' },
     },
     {
         path: "/savings-goals",
         name: "savings-goals",
-        component: SavingsList,
+        component: () => import("@/modules/AdminPanel/Savings/SavingsList.vue"),
         meta: { requiresAuth: true, title: 'Savings Goals' },
     },
     {
         path: "/debts",
         name: "debts",
-        component: DebtList,
+        component: () => import("@/modules/AdminPanel/Debts/DebtList.vue"),
         meta: { requiresAuth: true, title: 'Debts & Loans' },
     },
     {
         path: "/categories",
         name: "categories",
-        component: CategoryList,
+        component: () => import("@/modules/AdminPanel/Categories/CategoryList.vue"),
         meta: { requiresAuth: true, title: 'Categories' },
     },
     {
         path: "/reports",
         name: "reports",
-        component: ReportsPage,
+        component: () => import("@/modules/AdminPanel/Reports/ReportsPage.vue"),
         meta: { requiresAuth: true, title: 'Financial Reports' },
     },
     {
         path: "/design-showcase",
         name: "designShowcase",
-        component: DesignShowcase,
+        component: () => import("@/modules/AdminPanel/DesignShowcase/DesignShowcase.vue"),
         meta: { requiresAuth: false, devOnly: true, title: 'UX Redesign Showcase' },
     },
     {
         path: "/users",
         name: "user",
-        component: UserList,
+        component: () => import("@/modules/AdminPanel/User/UserList.vue"),
         meta: { requiresAuth: true, title: "Users" },
     },
     {
         path: "/profile",
         name: "profile",
-        component: Profile,
+        component: () => import("@/modules/AdminPanel/User/Profile.vue"),
         meta: { requiresAuth: true, title: "Profile" },
     },
     {
         path: "/activity",
         name: "Activity",
-        component: ActivityLog,
+        component: () => import("@/modules/AdminPanel/ActivityLog/ActivityLog.vue"),
         meta: { requiresAuth: true, title: "Activity Logs" }
     },
     {
         path: "/email-template",
         name: "EmailTemplate",
-        component: TemplateList,
+        component: () => import("@/modules/AdminPanel/EmailTemplate/TemplateList.vue"),
         meta: { requiresAuth: true, title: "Email Template" }
     },
 
@@ -162,20 +135,21 @@ const routes = [
             requiresAuth: true,
             caps: ['role-list', 'access-list']
         },
-        component: RoleModule,
+        component: () => import("@/modules/AdminPanel/Roles/RoleModule.vue"),
         redirect: () => {
             if (ACL.checkACL('role-list')) {
-                return '/roles';
+                return '/role/list';
             } else if (ACL.checkACL('access-list')) {
-                return '/role-access';
+                return '/role/access';
             } else {
                 return '/dashboard';
             }
         },
         children: [
             {
-                path: '/roles',
-                component: RoleList,
+                path: 'list',
+                name: 'roles.list',
+                component: () => import("@/modules/AdminPanel/Roles/RoleList.vue"),
                 meta: {
                     title: "Roles",
                     requiresAuth: true,
@@ -183,8 +157,9 @@ const routes = [
                 },
             },
             {
-                path: '/role-access',
-                component: RoleAccess,
+                path: 'access',
+                name: 'roles.access',
+                component: () => import("@/modules/AdminPanel/Roles/RoleAccess.vue"),
                 meta: {
                     title: "Roles Access",
                     requiresAuth: true,
@@ -203,7 +178,7 @@ const routes = [
             requiresAuth: true
         },
         redirect: '/settings/app-settings',
-        component: AdminSetting,
+        component: () => import("@/modules/AdminPanel/Settings/AdminSetting.vue"),
         children: [
             {
                 path: "/settings/app-settings",
@@ -212,7 +187,7 @@ const routes = [
                     title: "Settings",
                     requiresAuth: true
                 },
-                component: BasicSettings,
+                component: () => import("@/modules/AdminPanel/Settings/BasicSettings.vue"),
             },
             {
                 path: "/settings/noti-settings",
@@ -221,7 +196,7 @@ const routes = [
                     title: "Notification Settings",
                     requiresAuth: true
                 },
-                component: NotificationSettings,
+                component: () => import("@/modules/AdminPanel/Settings/NotificationSettings.vue"),
             },
         ]
     },
@@ -236,8 +211,13 @@ const routes = [
     { path: '/admin/debts', redirect: '/debts' },
     { path: '/admin/categories', redirect: '/categories' },
     { path: '/admin/users', redirect: '/users' },
-    { path: '/admin/roles', redirect: '/roles' },
-    { path: '/admin/role-access', redirect: '/role-access' },
+    { path: '/roles', redirect: '/role/list' },
+    { path: '/role-access', redirect: '/role/access' },
+    { path: '/roles/list', redirect: '/role/list' },
+    { path: '/roles/access', redirect: '/role/access' },
+    { path: '/admin/roles', redirect: '/role/list' },
+    { path: '/admin/role-access', redirect: '/role/access' },
+    { path: '/admin/role', redirect: '/role' },
     { path: '/admin/profile', redirect: '/profile' },
     { path: '/admin/settings', redirect: '/settings' },
     { path: '/admin/settings/app-settings', redirect: '/settings/app-settings' },
@@ -251,7 +231,7 @@ const routes = [
     {
         path: "/:pathMatch(.*)*",
         name: "NotFound",
-        component: NotFound,
+        component: () => import("@/layouts/NotFound.vue"),
     },
 ];
 

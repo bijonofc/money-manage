@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('role_accesses', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('role_id',false);
-            $table->string('resource',100);
-            $table->char('role_access',1)->default('N')->comment('Y=Yes,N=No');
-            $table->unique(['role_id','resource'],'role_resource','BTREE');
+            $table->unsignedInteger('role_id', false);
+            $table->string('resource', 100);
+            $table->char('role_access', 1)->default('N')->comment('Y=Yes,N=No');
+            $table->unique(['role_id', 'resource'], 'role_resource', 'BTREE');
         });
     }
 

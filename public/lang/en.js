@@ -851,5 +851,17 @@ const lang = {
         "gbl.pro.status": "Processing Status",
         "available.withdrawl.balance": "Your withdrawable balance is",
         "min.balance.require": ". Minimum balance required to withdraw is",
+        "tx.description": "Description / Category",
+        "tx.type": "Type",
+        "tx.account": "Account",
+        "tx.amount": "Amount",
+        "tx.date": "Date",
+        "debt.creditor_name": "Person / Creditor",
+        "debt.type": "Type",
+        "debt.due_date": "Due Date",
+        "debt.principal": "Principal",
+        "debt.paid": "Paid",
+        "debt.remaining": "Remaining",
+        "debt.status": "Status",
     }
 };

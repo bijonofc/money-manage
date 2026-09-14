@@ -20,8 +20,7 @@
         </template>
 
         <template #body>
-            <user-form :user="user"/>
-
+            <user-form :user="user" :roles="props.roles"/>
         </template>
 
         <template #footer>
@@ -52,6 +51,10 @@ import UserForm from "@/components/UserForm.vue";
 const props = defineProps({
     user_id: {
         default: null
+    },
+    roles: {
+        type: Array,
+        default: () => []
     }
 })
 

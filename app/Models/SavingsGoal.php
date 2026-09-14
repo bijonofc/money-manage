@@ -4,12 +4,16 @@ namespace App\Models;
 
 use appsbd\Core\AppModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SavingsGoal extends AppModel
 {
     use HasFactory;
+
+    public static function getDefaultSearchProps(): array
+    {
+        return ['name', 'description'];
+    }
 
     protected $fillable = [
         'tenant_id',
@@ -45,6 +49,7 @@ class SavingsGoal extends AppModel
         if ($this->target_amount == 0) {
             return 0;
         }
+
         return round(($this->current_amount / $this->target_amount) * 100, 2);
     }
 

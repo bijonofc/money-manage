@@ -3,79 +3,53 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CategoryRequest;
+use App\Http\Resources\CategoryResource;
 use App\Models\Category;
 use App\Services\ActivityLogger;
 use App\Services\CategoryService;
 use appsbd\Libs\ApiDataResponse;
 use appsbd\Libs\ApiResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class CategoryController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
-
-        // Auto-seed default starter categories if this user doesn't have any yet
-        CategoryService::seedDefaultCategoriesForUser($tenantId);
+        $userId = (int) (auth()->id() ?? 1);
+        CategoryService::seedDefaultCategoriesForUser($userId);
 
         $response = new ApiDataResponse;
-        $response->searchFromRequest($request, Category::class, JsonResource::class, [], [], ['tenant_id' => $tenantId]);
+        $response->setDefaultSortData('id', 'desc');
+        $response->searchFromRequest($request, Category::class, CategoryResource::class, ['parent']);
 
         return $response->display();
     }
 
-    public function store(Request $request)
+    public function store(CategoryRequest $request): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
+        $userId = (int) (auth()->id() ?? 1);
+        $data = $request->validated();
+        $data['tenant_id'] = $userId;
+        $data['icon'] = $data['icon'] ?? 'tag';
+        $data['color'] = $data['color'] ?? '#6366f1';
+        $data['is_system'] = false;
+        $data['is_active'] = filter_var($data['is_active'] ?? true, FILTER_VALIDATE_BOOLEAN);
 
-        $validator = Validator::make($request->all(), [
-            'name' => [
-                'required',
-                'string',
-                'max:100',
-                Rule::unique('categories', 'name')->where('tenant_id', $tenantId),
-            ],
-            'type' => 'required|in:income,expense',
-            'icon' => 'nullable|string|max:50',
-            'color' => 'nullable|string|max:20',
-        ]);
-
-        if ($validator->fails()) {
-            foreach ($validator->errors()->all() as $error) {
-                ApiResponse::addErrorArray($error);
-            }
-            $response = new ApiResponse;
-
-            return $response->displayWithResponse(false, null, 422);
-        }
-
-        $category = Category::create([
-            'tenant_id' => $tenantId,
-            'name' => $request->input('name'),
-            'type' => $request->input('type'),
-            'parent_id' => $request->input('parent_id'),
-            'icon' => $request->input('icon', 'tag'),
-            'color' => $request->input('color', '#6366f1'),
-            'is_system' => false,
-            'is_active' => filter_var($request->input('is_active', true), FILTER_VALIDATE_BOOLEAN),
-        ]);
+        $category = Category::create($data);
 
         ActivityLogger::logCreated($category, $category->name);
 
         ApiResponse::addInfoArray(__('Category created successfully'));
         $response = new ApiResponse;
 
-        return $response->displayWithResponse(true, $category);
+        return $response->displayWithResponse(true, new CategoryResource($category));
     }
 
-    public function show($id)
+    public function show(int $id): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
-        $category = Category::where('tenant_id', $tenantId)->find($id);
+        $category = Category::with('parent')->find($id);
 
         if (! $category) {
             ApiResponse::addErrorArray(__('Category not found'));
@@ -86,13 +60,12 @@ class CategoryController extends Controller
 
         $response = new ApiResponse;
 
-        return $response->displayWithResponse(true, $category);
+        return $response->displayWithResponse(true, new CategoryResource($category));
     }
 
-    public function update(Request $request, $id)
+    public function update(CategoryRequest $request, int $id): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
-        $category = Category::where('tenant_id', $tenantId)->find($id);
+        $category = Category::find($id);
 
         if (! $category) {
             ApiResponse::addErrorArray(__('Category not found'));
@@ -101,29 +74,7 @@ class CategoryController extends Controller
             return $response->displayWithResponse(false, null, 404);
         }
 
-        $validator = Validator::make($request->all(), [
-            'name' => [
-                'sometimes',
-                'required',
-                'string',
-                'max:100',
-                Rule::unique('categories', 'name')->where('tenant_id', $tenantId)->ignore($category->id),
-            ],
-            'type' => 'sometimes|required|in:income,expense',
-            'icon' => 'nullable|string|max:50',
-            'color' => 'nullable|string|max:20',
-        ]);
-
-        if ($validator->fails()) {
-            foreach ($validator->errors()->all() as $error) {
-                ApiResponse::addErrorArray($error);
-            }
-            $response = new ApiResponse;
-
-            return $response->displayWithResponse(false, null, 422);
-        }
-
-        $category->fill($request->only(['name', 'type', 'parent_id', 'icon', 'color', 'is_active']));
+        $category->fill($request->validated());
         $category->save();
 
         ActivityLogger::logUpdated($category, $category->name);
@@ -131,13 +82,12 @@ class CategoryController extends Controller
         ApiResponse::addInfoArray(__('Category updated successfully'));
         $response = new ApiResponse;
 
-        return $response->displayWithResponse(true, $category);
+        return $response->displayWithResponse(true, new CategoryResource($category));
     }
 
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
-        $category = Category::where('tenant_id', $tenantId)->find($id);
+        $category = Category::find($id);
 
         if (! $category) {
             ApiResponse::addErrorArray(__('Category not found'));

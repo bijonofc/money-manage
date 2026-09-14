@@ -3,72 +3,55 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\SavingsContribution;
+use App\Http\Requests\SavingsContributionRequest;
+use App\Http\Requests\SavingsGoalRequest;
+use App\Http\Resources\SavingsGoalResource;
 use App\Models\SavingsGoal;
 use App\Services\ActivityLogger;
+use App\Services\SavingsGoalService;
 use appsbd\Libs\ApiDataResponse;
 use appsbd\Libs\ApiResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Validator;
 
 class SavingsGoalController extends Controller
 {
-    public function index(Request $request)
+    public function __construct(
+        private readonly SavingsGoalService $savingsGoalService
+    ) {}
+
+    public function index(Request $request): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
         $response = new ApiDataResponse;
-        $response->searchFromRequest($request, SavingsGoal::class, JsonResource::class, ['contributions'], [], ['tenant_id' => $tenantId]);
+        $response->setDefaultSortData('id', 'desc');
+        $response->searchFromRequest($request, SavingsGoal::class, SavingsGoalResource::class, ['contributions']);
 
         return $response->display();
     }
 
-    public function store(Request $request)
+    public function store(SavingsGoalRequest $request): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
+        $userId = (int) (auth()->id() ?? 1);
+        $data = $request->validated();
+        $data['tenant_id'] = $userId;
+        $data['current_amount'] = $data['current_amount'] ?? 0.00;
+        $data['icon'] = $data['icon'] ?? 'target';
+        $data['color'] = $data['color'] ?? '#10b981';
+        $data['is_active'] = filter_var($data['is_active'] ?? true, FILTER_VALIDATE_BOOLEAN);
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:100',
-            'target_amount' => 'required|numeric|min:0.01',
-            'current_amount' => 'nullable|numeric|min:0',
-            'deadline' => 'nullable|date',
-            'icon' => 'nullable|string|max:50',
-            'color' => 'nullable|string|max:20',
-        ]);
+        $goal = SavingsGoal::create($data);
 
-        if ($validator->fails()) {
-            foreach ($validator->errors()->all() as $error) {
-                ApiResponse::addErrorArray($error);
-            }
-            $response = new ApiResponse;
-
-            return $response->displayWithResponse(false, null, 422);
-        }
-
-        $goal = SavingsGoal::create([
-            'tenant_id' => $tenantId,
-            'name' => $request->input('name'),
-            'target_amount' => $request->input('target_amount'),
-            'current_amount' => $request->input('current_amount', 0.00),
-            'deadline' => $request->input('deadline'),
-            'icon' => $request->input('icon', 'target'),
-            'color' => $request->input('color', '#10b981'),
-            'description' => $request->input('description'),
-            'is_active' => filter_var($request->input('is_active', true), FILTER_VALIDATE_BOOLEAN),
-        ]);
-
-        ActivityLogger::logCreated($goal, "{$goal->name} (Target: ".number_format($goal->target_amount, 2).')');
+        ActivityLogger::logCreated($goal, "{$goal->name} (Target: ".number_format((float) $goal->target_amount, 2).')');
 
         ApiResponse::addInfoArray(__('Savings goal created successfully'));
         $response = new ApiResponse;
 
-        return $response->displayWithResponse(true, $goal);
+        return $response->displayWithResponse(true, new SavingsGoalResource($goal));
     }
 
-    public function show($id)
+    public function show(int $id): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
-        $goal = SavingsGoal::with('contributions')->where('tenant_id', $tenantId)->find($id);
+        $goal = SavingsGoal::with('contributions')->find($id);
 
         if (! $goal) {
             ApiResponse::addErrorArray(__('Savings goal not found'));
@@ -79,13 +62,12 @@ class SavingsGoalController extends Controller
 
         $response = new ApiResponse;
 
-        return $response->displayWithResponse(true, $goal);
+        return $response->displayWithResponse(true, new SavingsGoalResource($goal));
     }
 
-    public function update(Request $request, $id)
+    public function update(SavingsGoalRequest $request, int $id): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
-        $goal = SavingsGoal::where('tenant_id', $tenantId)->find($id);
+        $goal = SavingsGoal::find($id);
 
         if (! $goal) {
             ApiResponse::addErrorArray(__('Savings goal not found'));
@@ -94,21 +76,20 @@ class SavingsGoalController extends Controller
             return $response->displayWithResponse(false, null, 404);
         }
 
-        $goal->fill($request->only(['name', 'target_amount', 'current_amount', 'deadline', 'icon', 'color', 'description', 'is_active']));
+        $goal->fill($request->validated());
         $goal->save();
 
-        ActivityLogger::logUpdated($goal, "{$goal->name} (Target: ".number_format($goal->target_amount, 2).')');
+        ActivityLogger::logUpdated($goal, "{$goal->name} (Target: ".number_format((float) $goal->target_amount, 2).')');
 
         ApiResponse::addInfoArray(__('Savings goal updated successfully'));
         $response = new ApiResponse;
 
-        return $response->displayWithResponse(true, $goal);
+        return $response->displayWithResponse(true, new SavingsGoalResource($goal));
     }
 
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
-        $goal = SavingsGoal::where('tenant_id', $tenantId)->find($id);
+        $goal = SavingsGoal::find($id);
 
         if (! $goal) {
             ApiResponse::addErrorArray(__('Savings goal not found'));
@@ -127,11 +108,10 @@ class SavingsGoalController extends Controller
         return $response->displayWithResponse(true, null);
     }
 
-    public function contribute(Request $request, $id)
+    public function contribute(SavingsContributionRequest $request, int $id): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
-        $userId = auth()->id() ?? 1;
-        $goal = SavingsGoal::where('tenant_id', $tenantId)->find($id);
+        $userId = (int) (auth()->id() ?? 1);
+        $goal = SavingsGoal::find($id);
 
         if (! $goal) {
             ApiResponse::addErrorArray(__('Savings goal not found'));
@@ -140,70 +120,7 @@ class SavingsGoalController extends Controller
             return $response->displayWithResponse(false, null, 404);
         }
 
-        $amount = (float) $request->input('amount', 0);
-        if ($amount <= 0) {
-            ApiResponse::addErrorArray(__('Invalid contribution amount'));
-            $response = new ApiResponse;
-
-            return $response->displayWithResponse(false, null, 422);
-        }
-
-        $accountId = $request->input('account_id');
-        $note = $request->input('note');
-
-        $contribution = \Illuminate\Support\Facades\DB::transaction(function () use ($goal, $amount, $accountId, $note, $tenantId, $userId) {
-            if ($accountId) {
-                $account = \App\Models\Account::where('tenant_id', $tenantId)->find($accountId);
-                if ($account) {
-                    $account->decrement('balance', $amount);
-
-                    $category = \App\Models\Category::where('tenant_id', $tenantId)
-                        ->where('type', 'expense')
-                        ->where(function ($q) {
-                            $q->where('name', 'like', '%Saving%')
-                                ->orWhere('name', 'like', '%Investment%')
-                                ->orWhere('name', 'like', '%Other%');
-                        })
-                        ->first();
-
-                    \App\Models\Transaction::create([
-                        'tenant_id' => $tenantId,
-                        'user_id' => $userId,
-                        'transaction_type' => 'expense',
-                        'amount' => $amount,
-                        'account_id' => $accountId,
-                        'category_id' => $category ? $category->id : null,
-                        'date' => now()->toDateString(),
-                        'time' => now()->format('H:i'),
-                        'description' => "Savings deposit for goal: {$goal->name}".($note ? " - {$note}" : ''),
-                    ]);
-                }
-            }
-
-            $contrib = SavingsContribution::create([
-                'goal_id' => $goal->id,
-                'amount' => $amount,
-                'note' => $note,
-            ]);
-
-            $goal->increment('current_amount', $amount);
-
-            return $contrib;
-        });
-
-        ActivityLogger::log(
-            event: 'updated',
-            des: 'act.up',
-            desParam: [
-                'uname' => auth()->user()?->name ?? 'User',
-                'model' => "Savings Goal ({$goal->name}: deposited ".number_format($amount, 2).')',
-            ],
-            subjectType: SavingsGoal::class,
-            subjectId: $goal->id,
-            userId: $userId,
-            tenantId: $tenantId,
-            properties: ['amount' => $amount, 'note' => $note, 'new_total' => $goal->current_amount]
-        );
+        $contribution = $this->savingsGoalService->recordContribution($goal, $request->validated(), $userId);
 
         ApiResponse::addInfoArray(__('Contribution recorded and account updated successfully'));
         $response = new ApiResponse;

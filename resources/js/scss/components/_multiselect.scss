@@ -62,19 +62,91 @@
   }
 }
 .multiselect-dropdown {
-    background: var(--ab-card-bg) !important;
-    color: var(--ab-body-color) !important;
-    border-color: var(--ab-border-color) !important;
-    z-index: 1050 !important;
+    background: var(--ab-card-bg, #ffffff) !important;
+    color: var(--ab-body-color, #1e293b) !important;
+    border: 1px solid var(--ab-border-color, #e2e8f0) !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2), 0 8px 10px -6px rgba(0, 0, 0, 0.15) !important;
+    z-index: 99999 !important;
+    overflow: hidden;
 
     .multiselect-options {
-        padding-left: 0 !important;
-        padding: 0 !important;
+        padding: 4px 0 !important;
         margin: 0 !important;
         list-style: none !important;
     }
 
     .multiselect-option {
-        padding-left: 0.75rem !important;
+        padding: 8px 12px !important;
+        cursor: pointer;
+        color: var(--ab-body-color, inherit) !important;
+        font-size: 0.875rem;
+        transition: background 0.15s ease, color 0.15s ease;
+
+        &.is-pointed,
+        &:hover {
+            background: rgba(37, 99, 235, 0.1) !important;
+            color: var(--ab-main-color, #2563eb) !important;
+        }
+
+        &.is-selected {
+            background: var(--ab-main-color, #2563eb) !important;
+            color: #ffffff !important;
+        }
+    }
+}
+
+.apbd-multiselect-container {
+    z-index: 99999 !important;
+}
+
+[data-bs-theme="dark"] {
+    .multiselect {
+        background: #0b111e !important;
+        border-color: #334155 !important;
+        color: #f8fafc !important;
+
+        &.is-active {
+            background: #0b111e !important;
+            border-color: #3b82f6 !important;
+            color: #f8fafc !important;
+        }
+
+        .multiselect-single-label {
+            color: #f8fafc !important;
+        }
+
+        .multiselect-placeholder {
+            color: #94a3b8 !important;
+        }
+    }
+
+    .multiselect-dropdown {
+        background: #1e293b !important;
+        color: #f8fafc !important;
+        border-color: #334155 !important;
+        box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.6), 0 10px 15px -5px rgba(0, 0, 0, 0.5) !important;
+
+        .multiselect-option {
+            color: #f8fafc !important;
+            background: transparent !important;
+
+            &.is-pointed,
+            &:hover {
+                background: rgba(255, 255, 255, 0.08) !important;
+                color: #ffffff !important;
+            }
+
+            &.is-selected {
+                background: var(--ab-main-color, #2563eb) !important;
+                color: #ffffff !important;
+            }
+        }
+
+        .multiselect-no-options,
+        .multiselect-empty {
+            color: #94a3b8 !important;
+            padding: 8px 12px;
+        }
     }
 }

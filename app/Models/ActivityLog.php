@@ -11,6 +11,11 @@ class ActivityLog extends AppModel
 {
     use HasFactory;
 
+    public static function getDefaultSearchProps(): array
+    {
+        return ['event', 'des', 'ip_address'];
+    }
+
     protected $table = 'activity_logs';
 
     protected $fillable = [

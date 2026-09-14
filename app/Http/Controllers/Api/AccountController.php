@@ -3,70 +3,48 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AccountRequest;
+use App\Http\Resources\AccountResource;
 use App\Models\Account;
 use App\Services\ActivityLogger;
 use appsbd\Libs\ApiDataResponse;
 use appsbd\Libs\ApiResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Illuminate\Support\Facades\Validator;
 
 class AccountController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
         $response = new ApiDataResponse;
-        $response->searchFromRequest($request, Account::class, JsonResource::class, [], [], ['tenant_id' => $tenantId]);
+        $response->setDefaultSortData('id', 'desc');
+        $response->searchFromRequest($request, Account::class, AccountResource::class);
 
         return $response->display();
     }
 
-    public function store(Request $request)
+    public function store(AccountRequest $request): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
+        $userId = (int) (auth()->id() ?? 1);
+        $data = $request->validated();
+        $data['tenant_id'] = $userId;
+        $data['balance'] = $data['balance'] ?? 0.00;
+        $data['currency'] = $data['currency'] ?? 'BDT';
+        $data['is_active'] = filter_var($data['is_active'] ?? true, FILTER_VALIDATE_BOOLEAN);
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:100',
-            'account_type' => 'required|in:cash,bank,mobile,credit_card,other',
-            'balance' => 'nullable|numeric',
-            'currency' => 'nullable|string|max:3',
-            'account_number' => 'nullable|string|max:50',
-            'description' => 'nullable|string',
-        ]);
-
-        if ($validator->fails()) {
-            foreach ($validator->errors()->all() as $error) {
-                ApiResponse::addErrorArray($error);
-            }
-            $response = new ApiResponse;
-
-            return $response->displayWithResponse(false, null, 422);
-        }
-
-        $account = Account::create([
-            'tenant_id' => $tenantId,
-            'name' => $request->input('name'),
-            'account_type' => $request->input('account_type'),
-            'balance' => $request->input('balance', 0.00),
-            'currency' => $request->input('currency', 'BDT'),
-            'account_number' => $request->input('account_number'),
-            'description' => $request->input('description'),
-            'is_active' => filter_var($request->input('is_active', true), FILTER_VALIDATE_BOOLEAN),
-        ]);
+        $account = Account::create($data);
 
         ActivityLogger::logCreated($account, $account->name);
 
         ApiResponse::addInfoArray(__('Account created successfully'));
         $response = new ApiResponse;
 
-        return $response->displayWithResponse(true, $account);
+        return $response->displayWithResponse(true, new AccountResource($account));
     }
 
-    public function show($id)
+    public function show(int $id): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
-        $account = Account::where('tenant_id', $tenantId)->find($id);
+        $account = Account::find($id);
 
         if (! $account) {
             ApiResponse::addErrorArray(__('Account not found'));
@@ -77,13 +55,12 @@ class AccountController extends Controller
 
         $response = new ApiResponse;
 
-        return $response->displayWithResponse(true, $account);
+        return $response->displayWithResponse(true, new AccountResource($account));
     }
 
-    public function update(Request $request, $id)
+    public function update(AccountRequest $request, int $id): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
-        $account = Account::where('tenant_id', $tenantId)->find($id);
+        $account = Account::find($id);
 
         if (! $account) {
             ApiResponse::addErrorArray(__('Account not found'));
@@ -92,7 +69,7 @@ class AccountController extends Controller
             return $response->displayWithResponse(false, null, 404);
         }
 
-        $account->fill($request->only(['name', 'account_type', 'account_number', 'balance', 'currency', 'is_active', 'description', 'meta']));
+        $account->fill($request->validated());
         $account->save();
 
         ActivityLogger::logUpdated($account, $account->name);
@@ -100,13 +77,12 @@ class AccountController extends Controller
         ApiResponse::addInfoArray(__('Account updated successfully'));
         $response = new ApiResponse;
 
-        return $response->displayWithResponse(true, $account);
+        return $response->displayWithResponse(true, new AccountResource($account));
     }
 
-    public function destroy($id)
+    public function destroy(int $id): JsonResponse
     {
-        $tenantId = auth()->id() ?? 1;
-        $account = Account::where('tenant_id', $tenantId)->find($id);
+        $account = Account::find($id);
 
         if (! $account) {
             ApiResponse::addErrorArray(__('Account not found'));

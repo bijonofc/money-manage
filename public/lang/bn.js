@@ -1048,5 +1048,17 @@ const lang= {
         "Resend available in": "পুনরায় পাঠানোর সময় বাকি",
         "available.withdrawl.balance": "আপনার উত্তোলনযোগ্য ব্যালেন্স",
         "min.balance.require": "। ব্যালেন্স উত্তোলনের জন্য সর্বনিম্ন ব্যালেন্স থাকতে হবে",
+        "tx.description": "বিবরণ / ক্যাটাগরি",
+        "tx.type": "ধরন",
+        "tx.account": "অ্যাকাউন্ট",
+        "tx.amount": "পরিমাণ",
+        "tx.date": "তারিখ",
+        "debt.creditor_name": "ব্যক্তি / পাওনাদার",
+        "debt.type": "ধরন",
+        "debt.due_date": "পরিশোধের তারিখ",
+        "debt.principal": "আসল",
+        "debt.paid": "পরিশোধিত",
+        "debt.remaining": "অবশিষ্ট",
+        "debt.status": "স্ট্যাটাস",
     }
 };

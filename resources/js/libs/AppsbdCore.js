@@ -25,7 +25,9 @@ const setBrowserDarkStatus=()=>{
     }
 }
 const setDarkMode=(status)=>{
-    document.body.setAttribute('data-bs-theme', (status?'dark':'light'));
+    const theme = status ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-bs-theme', theme);
+    document.body.setAttribute('data-bs-theme', theme);
     app_data.darkMode=status;
 }
 const translate={};

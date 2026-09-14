@@ -36,10 +36,23 @@
             {{ titleslotProps.rowitem.title }} <i v-if="titleslotProps.rowitem.tooltip_note!=''" v-tooltip="this.$translateGettext(titleslotProps.rowitem.tooltip_note)" class="apb vps-help-circle apbd-pointer"></i>
           </template>
 
-          <template v-slot:[`slot${role.slug}`]="slotProps" v-for="role in roleStore.getRoles">
-            <span :class="(role.is_super=='Y'?'text-theme':'' || slotProps.rowitem.role_access.includes(role.id)?' text-theme ':' text-danger ')+ (role.editable && ($CheckACL('role-edit') || $CheckACL('np.change-access'))?' apbd-pointer':' apbd-text-bold')"  @click="changePermission(slotProps.rowitem,role)">
-              <i class="apb " :class=" role.is_super=='Y'?'apb-check':'' ||  slotProps.rowitem.role_access.includes(role.id)?'apb-check':'apb-x-close small'"></i>
-            </span>
+          <template v-for="role in roleStore.getRoles" :key="role.id" #[`slot${role.slug}`]="slotProps">
+            <div class="d-flex align-items-center justify-content-center py-1">
+              <button
+                type="button"
+                class="role-access-btn btn p-0 rounded-circle d-inline-flex align-items-center justify-content-center shadow-none"
+                :class="[
+                  hasAccess(slotProps.rowitem, role) ? 'btn-has-access' : 'btn-no-access',
+                  isRoleEditable(role) && canEditAccess ? 'is-editable' : 'is-readonly'
+                ]"
+                :disabled="!isRoleEditable(role) || !canEditAccess"
+                :title="getAccessTooltip(slotProps.rowitem, role)"
+                @click="changePermission(slotProps.rowitem, role)"
+              >
+                <Check v-if="hasAccess(slotProps.rowitem, role)" :size="16" :stroke-width="2.6" />
+                <X v-else :size="15" :stroke-width="2.6" />
+              </button>
+            </div>
           </template>
         </elite-grid>
       </div>
@@ -119,6 +132,7 @@ import {useRoleStore} from "./role";
 import APBDGridLoader from "@/components/APBDGridLoader.vue";
 import Multiselect from '@vueform/multiselect'
 import { AbFilterPanel as ApbdFilterPanel, AbModal as Modal, AbResponseMsg as ResponseMsg } from '@appsbd/vue3-appsbd-ui'
+import { Check, X } from '@lucide/vue'
 
 export default {
   name: "RoleAccess",
@@ -128,7 +142,9 @@ export default {
     APBDGridLoader,
     Modal,
     Multiselect,
-    EliteGrid
+    EliteGrid,
+    Check,
+    X
   },
   data() {
     return {
@@ -211,6 +227,9 @@ export default {
       }catch  {
         return [];
       }
+    },
+    canEditAccess() {
+      return Boolean(this.$CheckACL('role-edit') || this.$CheckACL('np.change-access'));
     }
   },
   methods: {
@@ -238,35 +257,71 @@ export default {
       this.gridData.rowdata = allData;
       this.gridData.records = allData.length;
     },
-    async changePermission(item,role){
-      if(!role.editable){
-        return ;
+    isRoleEditable(role) {
+      return Boolean(role && role.is_super !== 'Y' && role.editable !== false);
+    },
+    hasAccess(item, role) {
+      if (role?.is_super === 'Y') {
+        return true;
       }
-      if(!this.$CheckACL('role-edit') && !this.$CheckACL('np.change-access')){
-          this.$appsbdUtls.ShowNotificationbyType(this.$translateGettext('gbl.permission.denied'),'e');
-        return ;
+      if (!item?.role_access || !Array.isArray(item.role_access)) {
+        return false;
+      }
+      return item.role_access.some(id => String(id) === String(role.id));
+    },
+    getAccessTooltip(item, role) {
+      if (role?.is_super === 'Y') {
+        return 'Super Admin has all permissions';
+      }
+      const granted = this.hasAccess(item, role);
+      if (!this.isRoleEditable(role) || !this.canEditAccess) {
+        return granted ? 'Access Granted' : 'Access Denied';
+      }
+      return granted ? 'Click to remove access' : 'Click to grant access';
+    },
+    async changePermission(item, role) {
+      if (!this.isRoleEditable(role)) {
+        return;
+      }
+      if (!this.canEditAccess) {
+        if (this.$appsbdUtls?.ShowNotificationbyType) {
+          this.$appsbdUtls.ShowNotificationbyType(this.$translateGettext ? this.$translateGettext('gbl.permission.denied') : 'Permission Denied', 'e');
+        }
+        return;
       }
 
       let thisObj = this;
-      let alertMsg="";
-      if(item.role_access.includes(role.id)){
-        alertMsg=this.$translateGettext('remove.access', {role: role.title});
-      }else{
-        alertMsg=this.$translateGettext('give.access', {role: role.title});
-      }
+      let hasCurrentAccess = this.hasAccess(item, role);
+      let alertMsg = hasCurrentAccess
+        ? (this.$translateGettext ? this.$translateGettext('remove.access', { role: role.title }) : `Remove access for ${role.title}?`)
+        : (this.$translateGettext ? this.$translateGettext('give.access', { role: role.title }) : `Grant access for ${role.title}?`);
+
       this.$appsbdUtls.ShowConfirmRequest(alertMsg, async function () {
-        let response = await thisObj.roleStore.changePermission({res:item.res,role_slug:role.slug,role_id:role.id});
-          console.log(response);
-          if (response.status) {
-          if (response.data.role_access=='Y')
-          {
-            item.role_access.push(role.id);
-          }else {
-            item.role_access.splice(item.role_access.indexOf(role.id),1);
+        let response = await thisObj.roleStore.changePermission({
+          res: item.res,
+          role_slug: role.slug,
+          role_id: role.id
+        });
+        if (response && response.status) {
+          if (!Array.isArray(item.role_access)) {
+            item.role_access = [];
+          }
+          if (response.data && response.data.role_access === 'Y') {
+            if (!item.role_access.some(id => String(id) === String(role.id))) {
+              item.role_access.push(role.id);
+            }
+          } else {
+            let idx = item.role_access.findIndex(id => String(id) === String(role.id));
+            if (idx > -1) {
+              item.role_access.splice(idx, 1);
+            }
           }
         }
         return response;
-      },{confirmButtonText: thisObj.$translateGettext("gbl.yes"),cancelButtonText: thisObj.$translateGettext("No"),});
+      }, {
+        confirmButtonText: thisObj.$translateGettext ? thisObj.$translateGettext("gbl.yes") : "Yes",
+        cancelButtonText: thisObj.$translateGettext ? thisObj.$translateGettext("No") : "No",
+      });
     },
     closeModal() {
       this.isShowModal = false
@@ -343,6 +398,129 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+.role-access-btn {
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  min-height: 28px;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid transparent;
 
+  &.btn-has-access {
+    background-color: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border-color: rgba(16, 185, 129, 0.3);
+
+    &.is-editable:hover {
+      background-color: rgba(16, 185, 129, 0.28);
+      border-color: #10b981;
+      transform: scale(1.12);
+      box-shadow: 0 0 10px rgba(16, 185, 129, 0.35);
+    }
+  }
+
+  &.btn-no-access {
+    background-color: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+    border-color: rgba(239, 68, 68, 0.25);
+
+    &.is-editable:hover {
+      background-color: rgba(239, 68, 68, 0.25);
+      border-color: #ef4444;
+      transform: scale(1.12);
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.35);
+    }
+  }
+
+  &.is-readonly {
+    cursor: default !important;
+    opacity: 0.92;
+  }
+
+  &.is-editable {
+    cursor: pointer !important;
+  }
+}
+
+// Group header row & caret expand/collapse styling
+:deep(.elite-grid .elite-grid-content table.eg-table) {
+  tbody tr.grid-row-header {
+    cursor: pointer !important;
+    user-select: none !important;
+
+    th {
+      padding: 0.65rem 1rem !important;
+      font-size: 0.9375rem !important;
+      font-weight: 700 !important;
+
+      .grid-group-container {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+      }
+    }
+  }
+
+  // Caret icons: Closed (▶) and Opened (▼)
+  .eg-grp-collapse {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: 16px !important;
+    height: 16px !important;
+    margin-right: 6px !important;
+    cursor: pointer !important;
+    line-height: 1 !important;
+    vertical-align: middle !important;
+    transition: color 0.15s ease, transform 0.2s ease !important;
+
+    svg {
+      display: none !important; // Replaced with clean caret
+    }
+
+    // Closed icon: ▶ (pointing right)
+    &::before {
+      content: "" !important;
+      display: inline-block !important;
+      width: 0 !important;
+      height: 0 !important;
+      border-top: 5px solid transparent !important;
+      border-bottom: 5px solid transparent !important;
+      border-left: 6px solid currentColor !important;
+      border-right: 0 !important;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      vertical-align: middle !important;
+    }
+
+    // Opened icon: ▼ (pointing down)
+    &.is-collapse {
+      transform: none !important;
+
+      &::before {
+        border-left: 5px solid transparent !important;
+        border-right: 5px solid transparent !important;
+        border-top: 6px solid currentColor !important;
+        border-bottom: 0 !important;
+      }
+    }
+  }
+
+  // Sub-header row under each group (matching suggestion: Action, Administrator, etc.)
+  tbody tr.grid-head-row {
+    th {
+      font-size: 0.8125rem !important;
+      font-weight: 500 !important;
+      text-transform: capitalize !important;
+      letter-spacing: 0.01em !important;
+      padding: 0.45rem 0.85rem !important;
+      vertical-align: middle !important;
+      white-space: nowrap !important;
+
+      &.eg-align-center > div {
+        justify-content: center !important;
+      }
+    }
+  }
+}
 </style>

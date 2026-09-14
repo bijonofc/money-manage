@@ -12,4 +12,3 @@ Route::get('/test-email', [TestMailController::class, 'send']);
 Route::get('/{any}', function () {
     return view('app');
 })->where('any', '.*');
-

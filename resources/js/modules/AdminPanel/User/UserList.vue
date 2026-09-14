@@ -71,7 +71,7 @@
             </div>
         </div>
     </div>
-    <AddUserModal v-if="isShowModal" :user_id="userId" @close="closeModal" @reload="refreshGrid" />
+    <AddUserModal v-if="isShowModal" :user_id="userId" :roles="roles" @close="closeModal" @reload="refreshGrid" />
 </template>
 <script setup>
 import { ref, reactive,  onMounted,getCurrentInstance } from 'vue'
@@ -92,9 +92,11 @@ import AddUserModal from '@/modules/AdminPanel/User/AddUserModal.vue'
 import AppsbdUtls from '@/libs/AppsbdUtls.js'
 
 
-const userStore=useUserStore()
+const loginStore = useLoginStore()
+const userStore = useUserStore()
 const isShowLoader = ref(false)
 const isShowModal = ref(false)
+const roles = ref([])
 
 const userId = ref(null)
 
@@ -343,8 +345,14 @@ function deleteUser(id) {
         confirmOptions
     )
 }
-
-onMounted(() => loadGridData())
+onMounted(async () => {
+    loadGridData()
+    try {
+        roles.value = await loginStore.loadRoles()
+    } catch (e) {
+        console.error('Failed to load roles in UserList:', e)
+    }
+})
 
 </script>
 <style scoped lang="scss">

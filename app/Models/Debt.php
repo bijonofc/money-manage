@@ -4,12 +4,16 @@ namespace App\Models;
 
 use appsbd\Core\AppModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Debt extends AppModel
 {
     use HasFactory;
+
+    public static function getDefaultSearchProps(): array
+    {
+        return ['creditor_name', 'creditor_contact', 'description'];
+    }
 
     protected $fillable = [
         'tenant_id',

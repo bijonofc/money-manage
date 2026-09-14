@@ -2,31 +2,33 @@
 
 namespace App\Models;
 
-use appsbd\Core\AppModel;
 use appsbd\Libs\ACL_Resource;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+
 /**
  * Class RoleAccess
  *
- * @package App\Models\Admin
  * @property int $id
  * @property int $role_id
  * @property string $resource
  * @property string $role_access
+ *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RoleAccess newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RoleAccess newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RoleAccess query()
-
  */
 class RoleAccess extends Model
 {
     public $timestamps = false;
-    protected $fillable = ['role_access','resource','role_id'];
-    static $role_actions=[];
-    static $group_number=[];
 
-    public static function registerRoleAction_bk($action_param, $title, $group_title, $tooltip_note = ''){
+    protected $fillable = ['role_access', 'resource', 'role_id'];
+
+    public static $role_actions = [];
+
+    public static $group_number = [];
+
+    public static function registerRoleAction_bk($action_param, $title, $group_title, $tooltip_note = '')
+    {
         /* if(empty(self::$group_number[$group_title])){
              self::$group_number[$group_title]=str_pad(count(self::$group_number)+1,2,'0',STR_PAD_LEFT).'.'.$group_title;
          }
@@ -42,8 +44,9 @@ class RoleAccess extends Model
      *
      * @return ACL_Resource[]
      */
-    public static function getRoleActions(){
-        return apply_filters('acl-resources',[]);
+    public static function getRoleActions()
+    {
+        return apply_filters('acl-resources', []);
     }
 
     /**
@@ -51,27 +54,30 @@ class RoleAccess extends Model
      *
      * @return ACL_Resource
      */
-    public static function getRoleActionByID($id){
+    public static function getRoleActionByID($id)
+    {
         $role = Role::find($id);
 
         return self::getRoleActionByRole($role);
     }
-    public static function getRoleActionByRole($role){
+
+    public static function getRoleActionByRole($role)
+    {
         $accesses = [];
-        if ('Y'==$role->is_super)
-        {
-            $res =self::getRoleActions();
-            foreach ( $res as $re ) {
-                $accesses[ $re->action_param ] = true;
+        if ($role->is_super == 'Y') {
+            $res = self::getRoleActions();
+            foreach ($res as $re) {
+                $accesses[$re->action_param] = true;
             }
-        }else{
-            $acls = self::where('role_id',$role->id)->get();
-            foreach ( $acls as $acl ) {
-                if ( 'Y' == $acl->role_access ) {
+        } else {
+            $acls = self::where('role_id', $role->id)->get();
+            foreach ($acls as $acl) {
+                if ($acl->role_access == 'Y') {
                     $accesses[$acl->resource] = true;
                 }
             }
         }
+
         return $accesses;
     }
 }

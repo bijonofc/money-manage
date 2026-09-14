@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Role;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
@@ -52,8 +51,8 @@ class RoleSeeder extends Seeder
             ];
             foreach ($adminPermissions as $perm) {
                 \App\Models\RoleAccess::create([
-                    'role_id'     => 2,
-                    'resource'    => $perm,
+                    'role_id' => 2,
+                    'resource' => $perm,
                     'role_access' => 'Y',
                 ]);
             }
@@ -66,8 +65,8 @@ class RoleSeeder extends Seeder
             ];
             foreach ($managerPermissions as $perm) {
                 \App\Models\RoleAccess::create([
-                    'role_id'     => 3,
-                    'resource'    => $perm,
+                    'role_id' => 3,
+                    'resource' => $perm,
                     'role_access' => 'Y',
                 ]);
             }

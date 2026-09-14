@@ -230,6 +230,62 @@
     overflow: hidden;
 }
 
+[data-bs-theme="dark"] {
+    .modal-card {
+        background: #1e293b !important;
+        border: 1px solid #334155 !important;
+        color: #f8fafc !important;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7) !important;
+
+        .text-dark {
+            color: #f8fafc !important;
+        }
+
+        .border-bottom,
+        .border-top {
+            border-color: #334155 !important;
+        }
+
+        .btn-light {
+            background-color: rgba(255, 255, 255, 0.08) !important;
+            border-color: rgba(255, 255, 255, 0.12) !important;
+            color: #f8fafc !important;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.15) !important;
+            }
+        }
+
+        .input-group-text {
+            background-color: #0b111e !important;
+            border-color: #334155 !important;
+            color: #94a3b8 !important;
+        }
+
+        .form-control,
+        .form-select {
+            background-color: #0b111e !important;
+            border-color: #334155 !important;
+            color: #f8fafc !important;
+        }
+    }
+
+    .modal-content {
+        background-color: #1e293b !important;
+        color: #f8fafc !important;
+        border: 1px solid #334155 !important;
+
+        .modal-header,
+        .modal-footer {
+            border-color: #334155 !important;
+        }
+
+        .text-dark {
+            color: #f8fafc !important;
+        }
+    }
+}
+
 /* Bootstrap & AppsbdUI standard modal overrides */
 .modal.ab-modal,
 .modal.show,

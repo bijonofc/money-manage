@@ -5,11 +5,15 @@ namespace App\Models;
 use appsbd\Core\AppModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Account extends AppModel
 {
     use HasFactory;
+
+    public static function getDefaultSearchProps(): array
+    {
+        return ['name', 'account_number', 'account_type', 'description'];
+    }
 
     protected $fillable = [
         'tenant_id',
