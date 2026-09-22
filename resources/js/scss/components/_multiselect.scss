@@ -1,3 +1,19 @@
+:root,
+body {
+    --ms-tag-bg: var(--ab-primary, var(--bb-primary, #079455));
+    --ms-tag-color: #ffffff;
+    --ms-ring-color: rgba(var(--ab-primary-rgb, 7, 148, 85), 0.2);
+    --ms-ring-width: 4px;
+    --ms-border-color-active: var(--bb-apbd-border-color-focus, var(--ab-primary, #079455));
+    --ms-option-bg-selected: var(--ab-primary, var(--bb-primary, #079455));
+    --ms-option-color-selected: #ffffff;
+    --ms-option-bg-selected-pointed: var(--bb-primary-btn-hover, var(--ab-primary-btn-hover, #067647));
+    --ms-option-color-selected-pointed: #ffffff;
+    --ms-option-bg-pointed: var(--bb-primary-light, rgba(7, 148, 85, 0.12));
+    --ms-option-color-pointed: var(--ab-primary, var(--bb-primary, #079455));
+    --ms-spinner-color: var(--ab-primary, var(--bb-primary, #079455));
+}
+
 .multiselect-wrapper {
   min-height: 36px;
   display: flex;
@@ -26,13 +42,14 @@
     }
   &.is-active {
     outline: none !important;
-    box-shadow: none !important;
+    box-shadow: var(--bb-apbd-input-box-shadow, 0 0 0 4px rgba(7, 148, 85, 0.24)) !important;
     color: var(--ab-body-color);
     background-color: var(--ab-card-bg);
-    border-color: var(--ab-border-color);
+    border-color: var(--bb-apbd-border-color-focus, var(--ab-primary, #079455)) !important;
   }
     .multiselect-tag {
-        background: var(--ab-main-color);
+        background: var(--ab-primary, var(--bb-primary, #079455)) !important;
+        color: #ffffff !important;
         font-size: var(--ms-tag-font-size, .775rem);
         font-weight: var(--ms-tag-font-weight, 500);
     }
@@ -85,12 +102,18 @@
 
         &.is-pointed,
         &:hover {
-            background: rgba(37, 99, 235, 0.1) !important;
-            color: var(--ab-main-color, #2563eb) !important;
+            background: var(--bb-primary-light, rgba(7, 148, 85, 0.12)) !important;
+            color: var(--ab-primary, var(--bb-primary, #079455)) !important;
         }
 
         &.is-selected {
-            background: var(--ab-main-color, #2563eb) !important;
+            background: var(--ab-primary, var(--bb-primary, #079455)) !important;
+            color: #ffffff !important;
+        }
+
+        &.is-selected.is-pointed,
+        &.is-selected:hover {
+            background: var(--bb-primary-btn-hover, var(--ab-primary-btn-hover, #067647)) !important;
             color: #ffffff !important;
         }
     }
@@ -101,6 +124,12 @@
 }
 
 [data-bs-theme="dark"] {
+    --ms-tag-bg: var(--ab-primary, var(--bb-primary, #20523b));
+    --ms-option-bg-selected: var(--ab-primary, var(--bb-primary, #20523b));
+    --ms-option-bg-selected-pointed: var(--bb-primary-btn-hover, var(--ab-primary-btn-hover, #067647));
+    --ms-option-bg-pointed: rgba(var(--ab-primary-rgb, 32, 82, 59), 0.3);
+    --ms-option-color-pointed: #ffffff;
+
     .multiselect {
         background: #0b111e !important;
         border-color: #334155 !important;
@@ -108,7 +137,8 @@
 
         &.is-active {
             background: #0b111e !important;
-            border-color: #3b82f6 !important;
+            border-color: var(--ab-primary, var(--bb-primary, #079455)) !important;
+            box-shadow: 0 0 0 4px rgba(7, 148, 85, 0.35) !important;
             color: #f8fafc !important;
         }
 
@@ -133,12 +163,18 @@
 
             &.is-pointed,
             &:hover {
-                background: rgba(255, 255, 255, 0.08) !important;
+                background: rgba(var(--ab-primary-rgb, 7, 148, 85), 0.22) !important;
                 color: #ffffff !important;
             }
 
             &.is-selected {
-                background: var(--ab-main-color, #2563eb) !important;
+                background: var(--ab-primary, var(--bb-primary, #079455)) !important;
+                color: #ffffff !important;
+            }
+
+            &.is-selected.is-pointed,
+            &.is-selected:hover {
+                background: var(--bb-primary-btn-hover, var(--ab-primary-btn-hover, #067647)) !important;
                 color: #ffffff !important;
             }
         }

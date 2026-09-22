@@ -22,17 +22,17 @@
         </template>
 
         <template #footer>
-            <ab-button v-if="!props.is_force" color="danger" @click="emitClose" v-translate>
-                gbl.close
+            <ab-button v-if="!props.is_force" color="danger" @click="emitClose">
+                <translate>gbl.close</translate>
             </ab-button>
             <router-link v-if="props.is_force" class="apbd-btn btn btn-danger" to="/logout" v-translate>
                 gbl.logout
             </router-link>
-            <ab-button v-if="props.user_id && props.is_force" type="submit" color="primary" v-translate>
-                gbl.save.changes
+            <ab-button v-if="props.user_id && props.is_force" type="submit" color="primary">
+                <translate>gbl.save.changes</translate>
             </ab-button>
-            <ab-button v-else type="submit" color="primary" v-translate>
-                gbl.save
+            <ab-button v-else type="submit" color="primary">
+                <translate>gbl.save</translate>
             </ab-button>
         </template>
     </Modal>

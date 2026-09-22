@@ -41,7 +41,7 @@ class SavingsGoal extends AppModel
 
     public function contributions(): HasMany
     {
-        return $this->hasMany(SavingsContribution::class);
+        return $this->hasMany(SavingsContribution::class, 'goal_id');
     }
 
     public function getProgressAttribute(): float

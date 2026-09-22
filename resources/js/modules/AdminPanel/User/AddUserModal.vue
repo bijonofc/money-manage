@@ -24,14 +24,14 @@
         </template>
 
         <template #footer>
-            <ab-button color="danger" @click="emitClose" v-translate>
-                gbl.close
+            <ab-button color="danger" @click="emitClose">
+                <translate>gbl.close</translate>
             </ab-button>
-            <ab-button v-if="props.user_id" type="submit" color="primary" v-translate>
-                gbl.save.changes
+            <ab-button v-if="props.user_id" type="submit" color="primary">
+                <translate>gbl.save.changes</translate>
             </ab-button>
-            <ab-button v-else type="submit" color="primary" v-translate>
-                gbl.save
+            <ab-button v-else type="submit" color="primary">
+                <translate>gbl.save</translate>
             </ab-button>
         </template>
     </Modal>

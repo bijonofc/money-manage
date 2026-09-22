@@ -31,6 +31,10 @@
     <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
     @php
+        $requestedLocale = request()->cookie('app_locale', request()->query('locale', app()->getLocale()));
+        if (in_array($requestedLocale, ['en', 'bn'], true)) {
+            app()->setLocale($requestedLocale);
+        }
         $langFile = 'lang/' . app()->getLocale() . '.js';
         $langVersion = file_exists(public_path($langFile)) ? filemtime(public_path($langFile)) : time();
         $langUrl = asset($langFile) . '?v=' . $langVersion;
@@ -46,7 +50,7 @@
             currencySymbol:"{{env('CURRENCY_SYMBOL','৳')}}",
             locale:"{{app()->getLocale()}}", // here need a add function to convert php date time format to javascript function.
             site_key:"{{env('TURNSTILE_SITE_KEY','')}}", // here need a add function to convert php date time format to javascript function.
-            gl_client_id:"383506021268-b016dcou1r2g9bhmauffdcvftm84es8t.apps.googleusercontent.com", // here need a add function to convert php date time format to javascript function.
+            gl_client_id:"{{env('GOOGLE_CLIENT_ID','')}}", // here need a add function to convert php date time format to javascript function.
             is_prod: {{ app()->isProduction() ? 'true' : 'false' }},
             app_env: "{{ app()->environment() }}"
         };

@@ -7,7 +7,7 @@
             <apbd-filter-panel :is-single="true" @searchFilter="this.searchData" @reset="this.clearSearch" />
           </div>
           <div class="col-sm-4 text-end">
-          <ab-button v-if="$CheckACL('np.role-add')" color="primary" @click="showModal()" v-translate>add.role</ab-button>
+          <ab-button v-if="$CheckACL('np.role-add')" color="primary" @click="showModal()"><translate>add.role</translate></ab-button>
           </div>
         </div>
       </div>
@@ -42,11 +42,11 @@
           </template>
           <template v-slot:actionProperty="slotProps">
             <div v-if="slotProps.rowitem.slug!='super-admin'" class="d-flex justify-content-center gap-2">
-              <ab-button v-if="$CheckACL('np.role-update')" color="primary" @click="showModal(slotProps.rowitem.id)" v-translate>
-                gbl.edit.now
+              <ab-button v-if="$CheckACL('np.role-update')" color="primary" @click="showModal(slotProps.rowitem.id)">
+                <translate>gbl.edit.now</translate>
               </ab-button>
-              <ab-button v-if="$CheckACL('np.role-delete')" color="danger" @click="deleteRoleModal(slotProps.rowitem)" v-translate>
-                gbl.delete
+              <ab-button v-if="$CheckACL('np.role-delete')" color="danger" @click="deleteRoleModal(slotProps.rowitem)">
+                <translate>gbl.delete</translate>
               </ab-button>
             </div>
             <div v-else>-</div>

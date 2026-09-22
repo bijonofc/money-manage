@@ -129,3 +129,14 @@ label{
         min-height: unset!important;
     }
 }
+
+// Fractional gap utilities
+.gap-0\.5 {
+    gap: 0.125rem !important;
+}
+.gap-1\.5 {
+    gap: 0.375rem !important;
+}
+.gap-2\.5 {
+    gap: 0.625rem !important;
+}

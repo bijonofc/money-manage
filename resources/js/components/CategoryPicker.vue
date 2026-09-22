@@ -112,7 +112,7 @@
           class="chip-icon-badge rounded-circle d-flex align-items-center justify-content-center"
           :style="{ backgroundColor: cat.color || defaultColor(cat.type) }"
         >
-          <component :is="resolveIcon(cat.icon || cat.name)" :size="12" class="text-white" />
+          <component :is="resolveCategoryIcon(cat.icon || cat.name)" :size="12" class="text-white" />
         </span>
 
         <!-- Category Name -->
@@ -160,30 +160,8 @@ import {
   X,
   Check,
   Sparkles,
-  ShoppingCart,
-  Utensils,
-  Home,
-  Zap,
-  Car,
-  Heart,
-  BookOpen,
-  Film,
-  ShoppingBag,
-  User,
-  Shield,
-  CreditCard,
-  MoreHorizontal,
-  Wallet,
-  Building,
-  Briefcase,
-  Laptop,
-  TrendingUp,
-  Gift,
-  Coffee,
-  Plane,
-  Smartphone,
-  Flame,
 } from '@lucide/vue';
+import { resolveCategoryIcon } from '@/libs/CategoryIcons.js';
 import AxiosHelper from '@/libs/AppsbdAxiosHelper.js';
 import AppsbdURL from '@/libs/AppsbdURL.js';
 import AppsbdUtls from '@/libs/AppsbdUtls.js';
@@ -244,34 +222,6 @@ const displayCategories = computed(() => {
 
 function defaultColor(catType) {
   return catType === 'income' ? '#10b981' : '#6366f1';
-}
-
-function resolveIcon(iconNameOrTitle) {
-  if (!iconNameOrTitle) return Tag;
-  const lower = String(iconNameOrTitle).toLowerCase();
-
-  if (lower.includes('food') || lower.includes('eat') || lower.includes('restaurant') || lower.includes('grocer')) return Utensils;
-  if (lower.includes('coffee') || lower.includes('tea') || lower.includes('cafe')) return Coffee;
-  if (lower.includes('home') || lower.includes('rent') || lower.includes('housing')) return Home;
-  if (lower.includes('util') || lower.includes('bill') || lower.includes('electric') || lower.includes('power')) return Zap;
-  if (lower.includes('car') || lower.includes('transport') || lower.includes('ride') || lower.includes('uber')) return Car;
-  if (lower.includes('travel') || lower.includes('flight') || lower.includes('tour')) return Plane;
-  if (lower.includes('health') || lower.includes('med') || lower.includes('doctor')) return Heart;
-  if (lower.includes('edu') || lower.includes('course') || lower.includes('book')) return BookOpen;
-  if (lower.includes('movie') || lower.includes('entertain') || lower.includes('film') || lower.includes('fun')) return Film;
-  if (lower.includes('shop') || lower.includes('cloth') || lower.includes('bag')) return ShoppingBag;
-  if (lower.includes('cart') || lower.includes('market')) return ShoppingCart;
-  if (lower.includes('salary') || lower.includes('wage')) return Wallet;
-  if (lower.includes('business') || lower.includes('company')) return Building;
-  if (lower.includes('free') || lower.includes('remote') || lower.includes('tech') || lower.includes('laptop')) return Laptop;
-  if (lower.includes('invest') || lower.includes('stock') || lower.includes('profit') || lower.includes('crypto')) return TrendingUp;
-  if (lower.includes('gift') || lower.includes('bonus') || lower.includes('reward')) return Gift;
-  if (lower.includes('phone') || lower.includes('mobile') || lower.includes('recharge')) return Smartphone;
-  if (lower.includes('debt') || lower.includes('loan') || lower.includes('card')) return CreditCard;
-  if (lower.includes('person') || lower.includes('self')) return User;
-  if (lower.includes('insur') || lower.includes('safe')) return Shield;
-
-  return Tag;
 }
 
 function selectCategory(id) {

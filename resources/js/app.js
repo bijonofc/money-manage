@@ -66,7 +66,7 @@ import AppsbdUI, {
     AbToggle
 } from '@appsbd/vue3-appsbd-ui';
 import "@appsbd/vue3-appsbd-ui/style.css";
-import "@appsbd/vue3-appsbd-ui/skins/default.css";
+import "@appsbd/vue3-appsbd-ui/skins/green.css";
 
 // Fallback for app_settings when running outside blade template (e.g., direct Vite dev)
 window.app_settings = window.app_settings || {
@@ -80,10 +80,28 @@ window.app_settings = window.app_settings || {
     app_env: import.meta.env.MODE || 'development',
 };
 
+const banglaDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+
 AppsbdUIConfigure({
+    monthNames: [
+        "জানুয়ারি", "ফেব্রুয়ারি", "মার্চ", "এপ্রিল", "মে", "জুন",
+        "জুলাই", "আগস্ট", "সেপ্টেম্বর", "অক্টোবর", "নভেম্বর", "ডিসেম্বর",
+    ],
+    monthNamesShort: [
+        "জানু", "ফেব্রু", "মার্চ", "এপ্রিল", "মে", "জুন",
+        "জুলাই", "আগস্ট", "সেপ্টে", "অক্টো", "নভে", "ডিসে",
+    ],
+    dayNames: ["রবি", "সোম", "মঙ্গল", "বুধ", "বৃহস্পতি", "শুক্র", "শনি"],
+    formatDigit: (val) => {
+        if (window.app_settings?.locale === 'bn') {
+            return String(val).replace(/\d/g, (d) => banglaDigits[d]);
+        }
+        return String(val);
+    },
     size: 'md',
     currency: window.app_settings?.currencySymbol || '৳',
     currencyPosition: 'left_space',
+    rangeSeparator: window.app_settings?.locale === 'bn' ? " থেকে " : " to ",
     is24Hour: false,
     dateDataFormat: 'YYYY-MM-DD',
     dateDisplayFormat: 'YYYY-MM-DD',

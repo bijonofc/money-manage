@@ -23,7 +23,7 @@ class Budget extends AppModel
         'period',
         'start_date',
         'end_date',
-        'is_active',
+        'status',
         'alert_threshold',
     ];
 
@@ -32,7 +32,7 @@ class Budget extends AppModel
         'alert_threshold' => 'decimal:2',
         'start_date' => 'date',
         'end_date' => 'date',
-        'is_active' => 'boolean',
+        'status' => 'string',
     ];
 
     public function tenant()
@@ -52,6 +52,6 @@ class Budget extends AppModel
 
     public function scopeActive($query)
     {
-        return $query->where('is_active', true);
+        return $query->where('status', 'A');
     }
 }

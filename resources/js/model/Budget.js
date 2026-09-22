@@ -7,7 +7,7 @@ class Budget {
     this.start_date = new Date().toISOString().split('T')[0];
     this.end_date = null;
     this.alert_threshold = 80;
-    this.is_active = true;
+    this.status = 'A';
   }
 }
 

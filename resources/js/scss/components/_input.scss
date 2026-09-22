@@ -287,19 +287,73 @@ textarea.form-control {
   min-height: unset;
 
   &:focus{
-    box-shadow: 0 0 0 0.11rem var(--ab-primary);
+    border-color: var(--ab-primary, var(--bb-primary, #079455)) !important;
+    box-shadow: 0 0 0 0.2rem rgba(var(--ab-primary-rgb, 7, 148, 85), 0.25) !important;
     outline: none;
   }
   &:checked{
-    background-color: var(--ab-primary);
-    border-color: var(--ab-primary-very-light);
+    background-color: var(--ab-primary, var(--bb-primary, #079455)) !important;
+    border-color: var(--ab-primary, var(--bb-primary, #079455)) !important;
   }
 }
-.form-switch .form-check-input {
-  width: 2.5rem !important;
-  height: 1.5rem !important;
-  border-radius: 2.5rem !important;
 
+/* Global Switch & Toggle Button theme alignment */
+.form-switch,
+.apbd-toggle {
+    .form-check-input {
+        width: 2.5rem !important;
+        height: 1.5rem !important;
+        border-radius: 2.5rem !important;
+        cursor: pointer;
+        background-position: left center;
+        background-repeat: no-repeat;
+        transition: background-position 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+        &:not(:checked) {
+            background-color: var(--bb-apbd-toggle-not-checked-bg, #E9EAEB) !important;
+            border-color: var(--bb-apbd-toggle-not-checked-border-color, #D5D7DA) !important;
+            --bs-form-switch-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23ffffff'/%3E%3C/svg%3E") !important;
+            background-image: var(--bs-form-switch-bg) !important;
+        }
+
+        &:checked {
+            background-position: right center !important;
+            background-color: var(--ab-primary, var(--bb-primary, #079455)) !important;
+            border-color: var(--ab-primary, var(--bb-primary, #079455)) !important;
+            --bs-form-switch-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23ffffff'/%3E%3C/svg%3E") !important;
+            background-image: var(--bs-form-switch-bg) !important;
+
+            &:hover {
+                background-color: var(--bb-primary-btn-hover, var(--ab-primary-btn-hover, #067647)) !important;
+                border-color: var(--bb-primary-btn-hover, var(--ab-primary-btn-hover, #067647)) !important;
+            }
+        }
+
+        &:focus {
+            outline: 0 !important;
+            border-color: var(--bb-apbd-border-color-focus, var(--ab-primary, #079455)) !important;
+            box-shadow: var(--bb-apbd-input-box-shadow, 0 0 0 4px rgba(7, 148, 85, 0.24)) !important;
+            --bs-form-switch-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23ffffff'/%3E%3C/svg%3E") !important;
+            background-image: var(--bs-form-switch-bg) !important;
+        }
+
+        &.form-check-input-xs {
+            width: 1.75rem !important;
+            height: 0.875rem !important;
+        }
+        &.form-check-input-sm {
+            width: 2rem !important;
+            height: 1rem !important;
+        }
+        &.form-check-input-md {
+            width: 2.5rem !important;
+            height: 1.5rem !important;
+        }
+        &.form-check-input-lg {
+            width: 3rem !important;
+            height: 1.75rem !important;
+        }
+    }
 }
 
  .form-check-label{
@@ -449,9 +503,9 @@ textarea.form-control {
 
     &:focus {
       background-color: #0b111e !important;
-      border-color: #3b82f6 !important;
+      border-color: var(--ab-primary, #079455) !important;
       color: #f8fafc !important;
-      box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25) !important;
+      box-shadow: 0 0 0 0.25rem rgba(var(--ab-primary-rgb, 7, 148, 85), 0.35) !important;
     }
 
     &::placeholder {
@@ -461,6 +515,32 @@ textarea.form-control {
 
   .form-label {
     color: #f8fafc !important;
+  }
+
+  .form-switch,
+  .apbd-toggle {
+    .form-check-input {
+      &:not(:checked) {
+        background-color: #334155 !important;
+        border-color: #475569 !important;
+        --bs-form-switch-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%2394a3b8'/%3E%3C/svg%3E") !important;
+        background-image: var(--bs-form-switch-bg) !important;
+      }
+
+      &:checked {
+        background-color: var(--ab-primary, var(--bb-primary, #079455)) !important;
+        border-color: var(--ab-primary, var(--bb-primary, #079455)) !important;
+        --bs-form-switch-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23ffffff'/%3E%3C/svg%3E") !important;
+        background-image: var(--bs-form-switch-bg) !important;
+      }
+
+      &:focus {
+        border-color: var(--ab-primary, var(--bb-primary, #079455)) !important;
+        box-shadow: 0 0 0 4px rgba(7, 148, 85, 0.35) !important;
+        --bs-form-switch-bg: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'%3E%3Ccircle r='3' fill='%23ffffff'/%3E%3C/svg%3E") !important;
+        background-image: var(--bs-form-switch-bg) !important;
+      }
+    }
   }
 }
 

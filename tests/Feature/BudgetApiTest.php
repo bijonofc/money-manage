@@ -77,15 +77,24 @@ class BudgetApiTest extends TestCase
             'amount' => 3000.00,
             'period' => 'monthly',
             'start_date' => now()->startOfMonth()->toDateString(),
+            'status' => 'A',
+            'alert_threshold' => 80.00,
         ]);
 
         $response = $this->actingAs($user)->patchJson("/api/v1/budgets/{$budget->id}", [
             'amount' => 4500.00,
+            'status' => 'I',
+            'alert_threshold' => 90.00,
         ]);
 
         $response->assertStatus(200);
         $response->assertJsonPath('status', true);
         $response->assertJsonPath('data.amount', 4500);
+        $response->assertJsonPath('data.status', 'I');
+        $response->assertJsonPath('data.alert_threshold', 90);
+
+        $this->assertEquals('I', Budget::find($budget->id)->status);
+        $this->assertEquals(90.00, (float) Budget::find($budget->id)->alert_threshold);
     }
 
     public function test_can_delete_budget(): void

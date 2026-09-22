@@ -2,24 +2,30 @@
 @use "variable" as *;
 
 [data-bs-theme="dark"],
+[data-bs-theme="dark"] .multiselect-dropdown,
 [data-bs-theme="dark"] .v-popper--theme-dropdown,
 [data-bs-theme="dark"] .#{$app_prefix}app,
 [data-bs-theme="dark"] .appsbd-app,
 [data-bs-theme="dark"] body {
-    --ab-np-white: #1e293b;
+    --ab-np-white: var(--bb-apbd-card-bg, #1e293b);
     --ab-link-hover-bg: #334155;
-    --ab-body-bg: #0f172a;
-    --ab-body-color: #f8fafc;
-    --ab-sidebar-bg: #1e293b;
+    --ab-body-bg: var(--bb-apbd-bg-color, #0f172a);
+    --ab-body-color: var(--bb-apbd-main-text-color, #f8fafc);
+    --ab-sidebar-bg: var(--bb-apbd-sidebar-bg, #1e293b);
+    --ab-card-bg: var(--bb-apbd-card-bg, #1e293b);
+    --ab-modal-bg: var(--bb-apbd-modal-bg, #1e293b);
+    --ab-primary: var(--bb-primary, #20523b);
+    --ab-primary-rgb: var(--bb-primary-rgb, 32, 82, 59);
+    --ab-main-color: var(--bb-primary, #20523b);
+    --apbd-theme-color: var(--bb-theme, var(--bb-primary, #20523b));
+    --ab-border-color: var(--bb-apbd-border-color, #334155);
     --ab-visual-gradient: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
     --ab-circle-gradient: radial-gradient(circle at 30% 30%, #334155 0%, #1e293b 100%);
 
     --eg-cell-header-color: #1e293b;
-    --eg-pg-btn-bg: #334155;
-    --ab-card-bg: #1e293b;
+    --eg-pg-btn-bg: var(--bb-primary, #334155);
     --ab-white-smoke: #1e293b;
     --ab-link-active-bg: rgba(255, 255, 255, 0.08);
-    --ab-modal-bg: #1e293b;
     --bs-body-color: #f8fafc;
     --bs-body-bg: #0f172a;
     --bs-heading-color: #ffffff;
@@ -243,20 +249,26 @@
 .darkmode-layer{
     background:var(--ab-body-bg) !important;
 }
-.v-popper--theme-dropdown,.#{$app_prefix}app {
-    --apbd-theme-color: #{$primary};
+:root,
+body,
+.multiselect-dropdown,
+.v-popper--theme-dropdown,
+.#{$app_prefix}app,
+.appsbd-app {
+    --apbd-theme-color: var(--bb-theme, var(--bb-primary, #{$primary}));
   /**
   * color variables
   */
-    --ab-primary:#{$primary};
-    --ab-secondary:#{$secondary};
-    --ab-success:#{$success};
-    --ab-info:#{$info};
-    --ab-warning:#{$warning};
-    --ab-danger:#{$danger};
-    --ab-dark:#{$dark};
+    --ab-primary: var(--bb-primary, #{$primary});
+    --ab-primary-rgb: var(--bb-primary-rgb, 7, 148, 85);
+    --ab-secondary: var(--bb-secondary, #{$secondary});
+    --ab-success: var(--bb-success, #{$success});
+    --ab-info: var(--bb-info, #{$info});
+    --ab-warning: var(--bb-warning, #{$warning});
+    --ab-danger: var(--bb-danger, #{$danger});
+    --ab-dark: var(--bb-dark, #{$dark});
     --ab-custom-bg:#{$custom-bg};
-    --ab-light:#{$light};
+    --ab-light: var(--bb-light, #{$light});
 
     --ab-facebook-bg: #{$facebook};
     --ab-google-bg:#{$google};
@@ -266,13 +278,13 @@
     --ab-youtube-bg:#{$youtube};
     --ab-linkedin-bg:#{$linkedin};
 
-    --ab-primary-very-light:#{$primary_very_light};
-    --ab-primary-light:#{$primary_light};
-    --ab-primary-dark:#{$primary_dark};
-    --ab-primary-active:rgb(146 154 163 / 90%);
+    --ab-primary-very-light: var(--bb-primary-light, #{$primary_very_light});
+    --ab-primary-light: var(--bb-primary-light, #{$primary_light});
+    --ab-primary-dark: var(--bb-primary-btn-hover, #{$primary_dark});
+    --ab-primary-active: var(--bb-primary-light, rgb(146 154 163 / 90%));
 
-    --ab-primary-btn-hover:#{$primary_btn-hover};
-    --ab-primary-btn-shadow:#{$primary-btn-shadow};
+    --ab-primary-btn-hover: var(--bb-primary-btn-hover, #{$primary_btn-hover});
+    --ab-primary-btn-shadow: var(--bb-primary-btn-shadow, #{$primary-btn-shadow});
 
     --ab-secondary-very-light:#{$secondary_very_light};
     --ab-secondary-light:#{$secondary-light};
@@ -327,16 +339,16 @@
 
     --ab-visual-gradient:linear-gradient(135deg, #eef5ff 0%, #ffffff 100%);
     --ab-circle-gradient:radial-gradient(circle at 30% 30%, #ffffff 0%, #f3f7ff 30%, #eaf2ff 100%);
-    --ab-main-color:#{$primary};
+    --ab-main-color: var(--bb-primary, #{$primary});
     --ab-comment-mine-bg:#dcf8c6;
     --ab-comment-other-bg:#ece9e9;
     --ab-appsbd-bg-color:#fcfffe;
 
-    --ab-body-bg:#{$body-bg};
-    --ab-body-color:#{$body-color};
+    --ab-body-bg: var(--bb-body-bg, var(--bb-apbd-bg-color, #{$body-bg}));
+    --ab-body-color: var(--bb-apbd-main-text-color, #{$body-color});
 
-    --ab-card-bg:#{$white};
-    --ab-modal-bg: #f5f5f5;
+    --ab-card-bg: var(--bb-apbd-card-bg, #{$white});
+    --ab-modal-bg: var(--bb-apbd-modal-bg, #f5f5f5);
     --eg-no-record-color: #ff4925;
     --ab-white:#FFF;
     --ab-white-smoke: #f5f5f5;
@@ -369,7 +381,7 @@
 
     --ab-border-width: 1px;
     --ab-border-style: solid;
-    --ab-border-color: #dce1e9;
+    --ab-border-color: var(--bb-apbd-border-color, #dce1e9);
 
     /**
     * header variables

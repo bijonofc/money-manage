@@ -16,7 +16,7 @@ return new class extends Migration
             $table->enum('period', ['daily', 'weekly', 'monthly', 'yearly']);
             $table->date('start_date');
             $table->date('end_date')->nullable();
-            $table->boolean('is_active')->default(true);
+            $table->char('status', 1)->default('A')->comment('A=Active,I=Inactive');
             $table->decimal('alert_threshold', 5, 2)->default(80.00);
             $table->timestamps();
 

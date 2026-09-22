@@ -24,7 +24,7 @@
     --#{$bs_prefix}gray-700: #495057;
     --#{$bs_prefix}gray-800: #343a40;
     --#{$bs_prefix}gray-900: #212529;
-    --#{$bs_prefix}primary: #0d6efd;
+    --#{$bs_prefix}primary: var(--bb-primary, var(--ab-primary, #{$primary}));
     --#{$bs_prefix}secondary: #6c757d;
     --#{$bs_prefix}success: #198754;
     --#{$bs_prefix}info: #0dcaf0;
@@ -32,7 +32,7 @@
     --#{$bs_prefix}danger: #dc3545;
     --#{$bs_prefix}light: #f8f9fa;
     --#{$bs_prefix}dark: #212529;
-    --#{$bs_prefix}primary-rgb: 13, 110, 253;
+    --#{$bs_prefix}primary-rgb: var(--bb-primary-rgb, var(--ab-primary-rgb, 7, 148, 85));
     --#{$bs_prefix}secondary-rgb: 108, 117, 125;
     --#{$bs_prefix}success-rgb: 25, 135, 84;
     --#{$bs_prefix}info-rgb: 13, 202, 240;
@@ -88,10 +88,10 @@
     --#{$bs_prefix}tertiary-bg: #f8f9fa;
     --#{$bs_prefix}tertiary-bg-rgb: 248, 249, 250;
     --#{$bs_prefix}heading-color: inherit;
-    --#{$bs_prefix}link-color: #0d6efd;
-    --#{$bs_prefix}link-color-rgb: 13, 110, 253;
+    --#{$bs_prefix}link-color: var(--bb-primary, var(--ab-primary, #{$primary}));
+    --#{$bs_prefix}link-color-rgb: var(--bb-primary-rgb, var(--ab-primary-rgb, 7, 148, 85));
     --#{$bs_prefix}link-decoration: underline;
-    --#{$bs_prefix}link-hover-color: #0a58ca;
+    --#{$bs_prefix}link-hover-color: var(--bb-primary-btn-hover, var(--ab-primary-btn-hover, #067647));
     --#{$bs_prefix}link-hover-color-rgb: 10, 88, 202;
     --#{$bs_prefix}code-color: #d63384;
     --#{$bs_prefix}highlight-color: #212529;

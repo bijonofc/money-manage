@@ -1,7 +1,9 @@
 .sidemenu {
-    --ab-link-color: rgba(118, 117, 135, 0.92);
-    --ab-link-active-bg: #f9f9f9;
-    --ab-theme-color: #181d27;
+    --ab-sidebar-bg: var(--bb-apbd-sidebar-bg, var(--ab-card-bg, #ffffff));
+    --ab-link-color: var(--bb-apbd-sidebar-item-text-color, rgba(118, 117, 135, 0.92));
+    --ab-link-active-bg: var(--bb-apbd-sidebar-item-active-bg, var(--bb-primary-light, #f0fdf4));
+    --ab-theme-color: var(--bb-apbd-sidebar-item-active-text-color, var(--bb-primary, #079455));
+    --ab-link-hover-bg: var(--bb-apbd-sidebar-item-hover-bg, var(--bb-primary-light, #f9f9f9));
     height: 100% !important;
     z-index: 89;
     width: var(--ab-sidebar-width);
@@ -125,6 +127,12 @@
                     color: var(--ab-theme-color) !important;
                     background-color: var(--ab-link-active-bg) !important;
                     text-decoration: none !important;
+                    border-right-color: var(--ab-theme-color) !important;
+
+                    .sidebar-icon,
+                    .icon-wrapper {
+                        color: var(--ab-theme-color) !important;
+                    }
                 }
 
                 &:focus {
@@ -383,13 +391,14 @@
 
 [data-bs-theme="dark"] {
     .sidemenu {
-        --ab-link-color: #94a3b8;
-        --ab-link-active-bg: rgba(255, 255, 255, 0.08);
-        --ab-theme-color: #ffffff;
-        --ab-sidebar-submenu: #1e293b;
-        --ab-sidebar-submenu-color: #94a3b8;
-        --ab-sidebar-submenu-active: rgba(255, 255, 255, 0.08);
-        --ab-sidebar-submenu-active-color: #ffffff;
+        --ab-sidebar-bg: var(--bb-apbd-sidebar-bg, #1e293b);
+        --ab-link-color: var(--bb-apbd-sidebar-item-text-color, #94a3b8);
+        --ab-link-active-bg: var(--bb-apbd-sidebar-item-active-bg, rgba(255, 255, 255, 0.08));
+        --ab-theme-color: var(--bb-apbd-sidebar-item-active-text-color, var(--bb-primary, #ffffff));
+        --ab-sidebar-submenu: var(--bb-apbd-sidebar-bg, #1e293b);
+        --ab-sidebar-submenu-color: var(--bb-apbd-sidebar-submenu-text-color, #94a3b8);
+        --ab-sidebar-submenu-active: var(--bb-apbd-sidebar-item-active-bg, rgba(255, 255, 255, 0.08));
+        --ab-sidebar-submenu-active-color: var(--bb-apbd-sidebar-submenu-active-text-color, #ffffff);
 
         .brand-container {
             .brand-logo {

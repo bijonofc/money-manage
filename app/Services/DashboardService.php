@@ -50,7 +50,7 @@ class DashboardService
             ->get();
 
         $budgets = Budget::with('category')
-            ->whereRaw('is_active IS TRUE')
+            ->where('status', 'A')
             ->limit(5)
             ->get();
 

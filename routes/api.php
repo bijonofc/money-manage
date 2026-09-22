@@ -71,6 +71,7 @@ AppRoute::apiResource('categories', CategoryController::class);
 AppRoute::apiResource('transactions', TransactionController::class);
 
 // Budgets
+Route::match(['get', 'post'], 'budgets/{id}/transactions', [BudgetController::class, 'transactions']);
 AppRoute::apiResource('budgets', BudgetController::class);
 
 // Savings Goals

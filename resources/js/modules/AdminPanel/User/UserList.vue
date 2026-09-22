@@ -59,11 +59,11 @@
                             <ab-button v-if="slotProps.rowitem.status == 'P' && ($CheckACL('user-edit') || $CheckACL('np.user-update'))" color="success" size="sm" @click="confirmApprove(slotProps.rowitem)">
                                 <translate>Approve</translate>
                             </ab-button>
-                            <ab-button v-if="$CheckACL('user-edit') || $CheckACL('np.user-update')" color="primary" @click="showModal(slotProps.rowitem.id)" v-translate>
-                                gbl.edit.now
+                            <ab-button v-if="$CheckACL('user-edit') || $CheckACL('np.user-update')" color="primary" @click="showModal(slotProps.rowitem.id)">
+                                <translate>gbl.edit.now</translate>
                             </ab-button>
-                            <ab-button v-if="$CheckACL('user-delete') || $CheckACL('np.user-delete')" color="danger" @click="deleteUser(slotProps.rowitem.id)" v-translate>
-                                gbl.delete
+                            <ab-button v-if="$CheckACL('user-delete') || $CheckACL('np.user-delete')" color="danger" @click="deleteUser(slotProps.rowitem.id)">
+                                <translate>gbl.delete</translate>
                             </ab-button>
                         </div>
                     </template>
@@ -107,7 +107,7 @@ const gridData = reactive({
 const searchProps = ref([])
 const sortProps = ref(null)
 const data_column = [
-    EliteColumnModel.getColumn({ name: 'name', title: 'name', width: '150px', is_sortable: false }),
+    EliteColumnModel.getColumn({ name: 'name', title: 'gbl.name', width: '150px', is_sortable: false }),
     EliteColumnModel.getColumn({ name: 'email', title: 'gbl.email', width: '100px', is_sortable: false }),
     EliteColumnModel.getColumn({ name: 'username', title: 'gbl.username', width: '100px', is_sortable: false }),
     EliteColumnModel.getColumn({ name: 'role_name', title: 'gbl.role', width: '100px', is_sortable: false }),

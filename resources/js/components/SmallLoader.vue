@@ -12,7 +12,7 @@ import { computed } from "vue"
 
 const props = defineProps({
     show: { type: Boolean, default: false },
-    color: { type: String, default: "currentColor" },
+    color: { type: String, default: "var(--bb-primary, currentColor)" },
     size: { type: Number, default: 4 }
 })
 
