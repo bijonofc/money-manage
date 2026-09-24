@@ -22,15 +22,15 @@
 
         <slot />
 
-        <div class="d-grid">
+        <div class="d-flex justify-content-center">
             <ab-button
                 type="submit"
                 color="primary"
+                class="submit-btn"
                 :is-animated="loading"
                 :disabled="loading"
-                v-translate
             >
-                gbl.submit
+                <translate>gbl.submit</translate>
             </ab-button>
         </div>
 
@@ -77,5 +77,36 @@ const onSubmit = () => {
 
 
 <style scoped lang="scss">
+.submit-btn {
+    padding: 0.5rem 1.1rem !important;
+    font-weight: 500;
+    line-height: 1 !important;
+}
 
+:deep(.submit-btn) {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    line-height: 1 !important;
+    gap: 6px;
+}
+
+:deep(.submit-btn > span) {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1 !important;
+}
+
+:deep(.submit-btn span) {
+    line-height: 1 !important;
+}
+
+:deep(.submit-btn .icon) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
 </style>
+

@@ -8,8 +8,14 @@
 
         <slot />
 
-        <div class="d-grid">
-            <ab-button type="submit" color="primary" class="w-100" :is-animated="props.loading" :disabled="props.loading">
+        <div class="d-flex justify-content-center">
+            <ab-button
+                type="submit"
+                color="primary"
+                class="register-btn"
+                :is-animated="props.loading"
+                :disabled="props.loading"
+            >
                 <translate>Create Account</translate>
             </ab-button>
         </div>
@@ -34,3 +40,37 @@ const passwordConfirmation = defineModel('passwordConfirmation')
 
 const onSubmit = () => emit('submit')
 </script>
+
+<style scoped>
+.register-btn {
+    padding: 0.5rem 1.1rem !important;
+    font-weight: 500;
+    line-height: 1 !important;
+}
+
+:deep(.register-btn) {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    line-height: 1 !important;
+    gap: 6px;
+}
+
+:deep(.register-btn > span) {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 1 !important;
+}
+
+:deep(.register-btn span) {
+    line-height: 1 !important;
+}
+
+:deep(.register-btn .icon) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+</style>

@@ -33,8 +33,8 @@
 
             <!-- Confirm Button -->
             <div class="d-flex justify-content-center mb-3">
-                <ab-button type="submit" :disabled="loading || !isOtpComplete" color="primary" :is-animated="loading" v-translate>
-                    gbl.confirm
+                <ab-button type="submit" :disabled="loading || !isOtpComplete" color="primary" :is-animated="loading">
+                    <translate>gbl.confirm</translate>
                 </ab-button>
             </div>
 
@@ -49,8 +49,8 @@
                         <option value="s" v-translate>gbl.sms</option>
                     </select>
 
-                    <ab-button type="button" @click="resendOtp" color="primary" :is-animated="resending" :disabled="otpOption === '' || (countdown > 0 && maxResendCount >= 2)" v-translate>
-                        gbl.resend
+                    <ab-button type="button" @click="resendOtp" color="primary" :is-animated="resending" :disabled="otpOption === '' || (countdown > 0 && maxResendCount >= 2)">
+                        <translate>gbl.resend</translate>
                     </ab-button>
 
                     <!-- Countdown -->
