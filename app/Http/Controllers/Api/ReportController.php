@@ -18,7 +18,7 @@ class ReportController extends Controller
      */
     public function overview(Request $request)
     {
-        $tenantId = auth()->id() ?? 1;
+        $tenantId = auth()->id();
 
         // Parse Date Range
         $preset = $request->input('preset', 'this_month');
@@ -244,7 +244,7 @@ class ReportController extends Controller
      */
     public function export(Request $request)
     {
-        $tenantId = auth()->id() ?? 1;
+        $tenantId = auth()->id();
         $startDate = $request->input('start_date', Carbon::now()->startOfMonth()->toDateString());
         $endDate = $request->input('end_date', Carbon::now()->endOfMonth()->toDateString());
         $accountId = $request->input('account_id');

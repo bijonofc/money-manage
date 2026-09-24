@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use appsbd\Core\AppModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class RecurringTransaction extends AppModel
 {
-    use HasFactory;
+    use BelongsToTenant, HasFactory;
 
     public static function getDefaultSearchProps(): array
     {
@@ -42,11 +43,6 @@ class RecurringTransaction extends AppModel
         'last_processed_date' => 'date',
         'next_due_date' => 'date',
     ];
-
-    public function tenant()
-    {
-        return $this->belongsTo(User::class, 'tenant_id');
-    }
 
     public function category(): BelongsTo
     {

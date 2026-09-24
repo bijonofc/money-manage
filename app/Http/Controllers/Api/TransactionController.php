@@ -34,7 +34,7 @@ class TransactionController extends Controller
 
     public function store(TransactionRequest $request): JsonResponse
     {
-        $userId = (int) (auth()->id() ?? 1);
+        $userId = auth()->id();
         $transaction = $this->transactionService->create($request->validated(), $userId);
 
         ApiResponse::addInfoArray(__('Transaction recorded successfully'));

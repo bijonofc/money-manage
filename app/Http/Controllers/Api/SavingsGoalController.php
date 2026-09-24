@@ -31,7 +31,7 @@ class SavingsGoalController extends Controller
 
     public function store(SavingsGoalRequest $request): JsonResponse
     {
-        $userId = (int) (auth()->id() ?? 1);
+        $userId = auth()->id();
         $data = $request->validated();
         $data['tenant_id'] = $userId;
         $data['current_amount'] = $data['current_amount'] ?? 0.00;
@@ -110,7 +110,7 @@ class SavingsGoalController extends Controller
 
     public function contribute(SavingsContributionRequest $request, int $id): JsonResponse
     {
-        $userId = (int) (auth()->id() ?? 1);
+        $userId = auth()->id();
         $goal = SavingsGoal::find($id);
 
         if (! $goal) {

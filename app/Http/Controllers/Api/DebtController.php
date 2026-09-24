@@ -31,7 +31,7 @@ class DebtController extends Controller
 
     public function store(DebtRequest $request): JsonResponse
     {
-        $userId = (int) (auth()->id() ?? 1);
+        $userId = auth()->id();
         $debt = $this->debtService->createDebt($request->validated(), $userId);
 
         $typeLabel = $debt->type === 'owed_to' ? 'Borrowed from' : 'Lent to';
@@ -105,7 +105,7 @@ class DebtController extends Controller
 
     public function pay(DebtPaymentRequest $request, int $id): JsonResponse
     {
-        $userId = (int) (auth()->id() ?? 1);
+        $userId = auth()->id();
         $debt = Debt::find($id);
 
         if (! $debt) {

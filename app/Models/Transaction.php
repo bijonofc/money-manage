@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use appsbd\Core\AppModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Transaction extends AppModel
 {
-    use HasFactory;
+    use BelongsToTenant, HasFactory;
 
     public static function getDefaultSearchProps(): array
     {
@@ -46,11 +47,6 @@ class Transaction extends AppModel
         'latitude' => 'decimal:8',
         'longitude' => 'decimal:8',
     ];
-
-    public function tenant()
-    {
-        return $this->belongsTo(User::class, 'tenant_id');
-    }
 
     public function user()
     {

@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use appsbd\Core\AppModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class BudgetAlert extends AppModel
 {
-    use HasFactory;
+    use BelongsToTenant, HasFactory;
 
     protected $fillable = [
         'budget_id',
@@ -27,10 +28,5 @@ class BudgetAlert extends AppModel
     public function budget(): BelongsTo
     {
         return $this->belongsTo(Budget::class);
-    }
-
-    public function tenant()
-    {
-        return $this->belongsTo(User::class, 'tenant_id');
     }
 }

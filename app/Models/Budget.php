@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use appsbd\Core\AppModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Budget extends AppModel
 {
-    use HasFactory;
+    use BelongsToTenant, HasFactory;
 
     public static function getDefaultSearchProps(): array
     {
@@ -34,11 +35,6 @@ class Budget extends AppModel
         'end_date' => 'date',
         'status' => 'string',
     ];
-
-    public function tenant()
-    {
-        return $this->belongsTo(User::class, 'tenant_id');
-    }
 
     public function category(): BelongsTo
     {

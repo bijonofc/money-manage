@@ -17,8 +17,10 @@ class CategoryController extends Controller
 {
     public function index(Request $request): JsonResponse
     {
-        $userId = (int) (auth()->id() ?? 1);
-        CategoryService::seedDefaultCategoriesForUser($userId);
+        $userId = auth()->id();
+        if ($userId) {
+            CategoryService::seedDefaultCategoriesForUser($userId);
+        }
 
         $response = new ApiDataResponse;
         $response->setDefaultSortData('id', 'desc');
@@ -29,7 +31,7 @@ class CategoryController extends Controller
 
     public function store(CategoryRequest $request): JsonResponse
     {
-        $userId = (int) (auth()->id() ?? 1);
+        $userId = auth()->id();
         $data = $request->validated();
         $data['tenant_id'] = $userId;
         $data['icon'] = $data['icon'] ?? 'tag';

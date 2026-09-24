@@ -70,6 +70,26 @@ class RoleSeeder extends Seeder
                     'role_access' => 'Y',
                 ]);
             }
+
+            // Seed default permissions for Customer role (role_id = 4)
+            $customerPermissions = [
+                'account-list', 'account-add', 'account-edit', 'account-delete',
+                'transaction-list', 'transaction-add', 'transaction-edit', 'transaction-delete',
+                'budget-list', 'budget-add', 'budget-edit', 'budget-delete',
+                'savings-list', 'savings-add', 'savings-edit', 'savings-delete',
+                'debt-list', 'debt-add', 'debt-edit', 'debt-delete',
+                'category-list', 'category-add', 'category-edit', 'category-delete',
+                'report-list',
+                'setting-view', 'setting-edit',
+                'activity-list', 'activity-detail',
+            ];
+            foreach ($customerPermissions as $perm) {
+                \App\Models\RoleAccess::create([
+                    'role_id' => 4,
+                    'resource' => $perm,
+                    'role_access' => 'Y',
+                ]);
+            }
         }
 
     }

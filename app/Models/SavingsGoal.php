@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use appsbd\Core\AppModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SavingsGoal extends AppModel
 {
-    use HasFactory;
+    use BelongsToTenant, HasFactory;
 
     public static function getDefaultSearchProps(): array
     {
@@ -33,11 +34,6 @@ class SavingsGoal extends AppModel
         'deadline' => 'date',
         'is_active' => 'boolean',
     ];
-
-    public function tenant()
-    {
-        return $this->belongsTo(User::class, 'tenant_id');
-    }
 
     public function contributions(): HasMany
     {

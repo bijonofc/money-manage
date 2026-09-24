@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\BelongsToTenant;
 use appsbd\Core\AppModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends AppModel
 {
-    use HasFactory;
+    use BelongsToTenant, HasFactory;
 
     public static function getDefaultSearchProps(): array
     {
@@ -31,11 +32,6 @@ class Category extends AppModel
         'is_system' => 'boolean',
         'is_active' => 'boolean',
     ];
-
-    public function tenant()
-    {
-        return $this->belongsTo(User::class, 'tenant_id');
-    }
 
     public function parent(): BelongsTo
     {

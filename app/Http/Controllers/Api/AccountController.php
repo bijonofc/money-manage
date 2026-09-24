@@ -25,7 +25,7 @@ class AccountController extends Controller
 
     public function store(AccountRequest $request): JsonResponse
     {
-        $userId = (int) (auth()->id() ?? 1);
+        $userId = auth()->id();
         $data = $request->validated();
         $data['tenant_id'] = $userId;
         $data['balance'] = $data['balance'] ?? 0.00;

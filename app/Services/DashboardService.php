@@ -16,49 +16,62 @@ class DashboardService
 {
     public function getInitialData(int $userId): array
     {
-        $users = User::select('id', 'name', 'email', 'username', 'role_id', 'contact_no')->get();
-        $roles = Role::all();
+        $user = auth()->user();
+        $isSuper = ($user && $user->role && $user->role->is_super === 'Y');
 
-        $accounts = Account::whereRaw('is_active IS TRUE')->get();
+        $users = $isSuper ? User::select('id', 'name', 'email', 'username', 'role_id', 'contact_no')->get() : [];
+        $roles = $isSuper ? Role::all() : [];
+
+        $accounts = Account::where('tenant_id', $userId)->whereRaw('is_active IS TRUE')->get();
         $totalBalance = (float) $accounts->sum('balance');
 
         $startOfMonth = now()->startOfMonth()->toDateString();
         $endOfMonth = now()->endOfMonth()->toDateString();
 
-        $monthlyIncome = (float) Transaction::where('transaction_type', 'income')
+        $monthlyIncome = (float) Transaction::where('tenant_id', $userId)
+            ->where('transaction_type', 'income')
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
             ->sum('amount');
 
-        $monthlyExpense = (float) Transaction::where('transaction_type', 'expense')
+        $monthlyExpense = (float) Transaction::where('tenant_id', $userId)
+            ->where('transaction_type', 'expense')
             ->whereBetween('date', [$startOfMonth, $endOfMonth])
             ->sum('amount');
 
-        $totalIncome = (float) Transaction::where('transaction_type', 'income')
+        $totalIncome = (float) Transaction::where('tenant_id', $userId)
+            ->where('transaction_type', 'income')
             ->sum('amount');
 
-        $totalExpense = (float) Transaction::where('transaction_type', 'expense')
+        $totalExpense = (float) Transaction::where('tenant_id', $userId)
+            ->where('transaction_type', 'expense')
             ->sum('amount');
 
-        $recentTransactions = Transaction::with(['category', 'account'])
+        $recentTransactions = Transaction::where('tenant_id', $userId)
+            ->with(['category', 'account'])
             ->orderBy('date', 'desc')
             ->orderBy('id', 'desc')
             ->limit(8)
             ->get();
 
-        $savingsGoals = SavingsGoal::whereRaw('is_active IS TRUE')
+        $savingsGoals = SavingsGoal::where('tenant_id', $userId)
+            ->whereRaw('is_active IS TRUE')
             ->limit(5)
             ->get();
 
-        $budgets = Budget::with('category')
+        $budgets = Budget::where('tenant_id', $userId)
+            ->with('category')
             ->where('status', 'A')
             ->limit(5)
             ->get();
 
-        $debts = Debt::where('status', 'active')
+        $debts = Debt::where('tenant_id', $userId)
+            ->where('status', 'active')
             ->limit(5)
             ->get();
 
-        $categorySpending = Transaction::join('categories', 'transactions.category_id', '=', 'categories.id')
+        $categorySpending = Transaction::where('transactions.tenant_id', $userId)
+            ->join('categories', 'transactions.category_id', '=', 'categories.id')
+            ->where('categories.tenant_id', $userId)
             ->where('transactions.transaction_type', 'expense')
             ->whereBetween('transactions.date', [$startOfMonth, $endOfMonth])
             ->select(
@@ -86,8 +99,8 @@ class DashboardService
                 'total_income' => $totalIncome,
                 'total_expense' => $totalExpense,
                 'total_accounts' => $accounts->count(),
-                'total_categories' => Category::count(),
-                'total_transactions' => Transaction::count(),
+                'total_categories' => Category::where('tenant_id', $userId)->count(),
+                'total_transactions' => Transaction::where('tenant_id', $userId)->count(),
             ],
             'accounts' => $accounts,
             'recent_transactions' => $recentTransactions,

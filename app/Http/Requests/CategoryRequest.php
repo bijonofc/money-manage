@@ -14,7 +14,7 @@ class CategoryRequest extends AppFormRequest
 
     public function AppRules(): array
     {
-        $tenantId = auth()->id() ?? 1;
+        $tenantId = auth()->id();
         $id = $this->route('category')?->id ?? $this->route('category') ?? $this->route('id');
 
         return [

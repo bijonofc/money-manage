@@ -160,9 +160,27 @@ class RoleController extends Controller
             ['res_id' => 'transaction', 'res_title' => 'Transactions', 'action_param' => 'transaction-delete', 'action_title' => 'Delete Transaction'],
 
             ['res_id' => 'budget', 'res_title' => 'Budgets', 'action_param' => 'budget-list', 'action_title' => 'View Budgets'],
+            ['res_id' => 'budget', 'res_title' => 'Budgets', 'action_param' => 'budget-add', 'action_title' => 'Add Budget'],
+            ['res_id' => 'budget', 'res_title' => 'Budgets', 'action_param' => 'budget-edit', 'action_title' => 'Edit Budget'],
+            ['res_id' => 'budget', 'res_title' => 'Budgets', 'action_param' => 'budget-delete', 'action_title' => 'Delete Budget'],
+
             ['res_id' => 'savings', 'res_title' => 'Savings Goals', 'action_param' => 'savings-list', 'action_title' => 'View Savings Goals'],
+            ['res_id' => 'savings', 'res_title' => 'Savings Goals', 'action_param' => 'savings-add', 'action_title' => 'Add Savings Goal'],
+            ['res_id' => 'savings', 'res_title' => 'Savings Goals', 'action_param' => 'savings-edit', 'action_title' => 'Edit Savings Goal'],
+            ['res_id' => 'savings', 'res_title' => 'Savings Goals', 'action_param' => 'savings-delete', 'action_title' => 'Delete Savings Goal'],
+
             ['res_id' => 'debt', 'res_title' => 'Debts', 'action_param' => 'debt-list', 'action_title' => 'View Debts'],
+            ['res_id' => 'debt', 'res_title' => 'Debts', 'action_param' => 'debt-add', 'action_title' => 'Add Debt'],
+            ['res_id' => 'debt', 'res_title' => 'Debts', 'action_param' => 'debt-edit', 'action_title' => 'Edit Debt'],
+            ['res_id' => 'debt', 'res_title' => 'Debts', 'action_param' => 'debt-delete', 'action_title' => 'Delete Debt'],
+
             ['res_id' => 'category', 'res_title' => 'Categories', 'action_param' => 'category-list', 'action_title' => 'View Categories'],
+            ['res_id' => 'category', 'res_title' => 'Categories', 'action_param' => 'category-add', 'action_title' => 'Add Category'],
+            ['res_id' => 'category', 'res_title' => 'Categories', 'action_param' => 'category-edit', 'action_title' => 'Edit Category'],
+            ['res_id' => 'category', 'res_title' => 'Categories', 'action_param' => 'category-delete', 'action_title' => 'Delete Category'],
+
+            ['res_id' => 'report', 'res_title' => 'Reports', 'action_param' => 'report-list', 'action_title' => 'View Reports'],
+
             ['res_id' => 'setting', 'res_title' => 'Settings', 'action_param' => 'setting-view', 'action_title' => 'View Settings'],
             ['res_id' => 'setting', 'res_title' => 'Settings', 'action_param' => 'setting-edit', 'action_title' => 'Edit Settings'],
             ['res_id' => 'activity', 'res_title' => 'Activity Logs', 'action_param' => 'activity-list', 'action_title' => 'View Activity Logs'],

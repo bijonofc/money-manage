@@ -16,7 +16,14 @@ class DashboardController extends Controller
 
     public function initialData(Request $request): JsonResponse
     {
-        $userId = (int) (auth()->id() ?? 1);
+        $userId = auth()->id();
+        if (! $userId) {
+            ApiResponse::addErrorArray(__('Unauthorized'));
+            $response = new ApiResponse;
+
+            return $response->displayWithResponse(false, null, 401);
+        }
+
         $data = $this->dashboardService->getInitialData($userId);
 
         $response = new ApiResponse;

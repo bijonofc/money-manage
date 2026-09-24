@@ -69,12 +69,12 @@ class BudgetController extends Controller
 
     public function store(BudgetRequest $request): JsonResponse
     {
-        $userId = (int) (auth()->id() ?? 1);
+        $userId = auth()->id();
         $data = $request->validated();
         $data['tenant_id'] = $userId;
         $data['period'] = $data['period'] ?? 'monthly';
         $data['alert_threshold'] = $data['alert_threshold'] ?? 80.00;
-        $data['status'] = (!empty($data['status']) && in_array($data['status'], ['A', 'I'], true)) ? $data['status'] : 'A';
+        $data['status'] = (! empty($data['status']) && in_array($data['status'], ['A', 'I'], true)) ? $data['status'] : 'A';
 
         if (empty($data['end_date']) && ! empty($data['start_date'])) {
             $startDate = Carbon::parse($data['start_date']);

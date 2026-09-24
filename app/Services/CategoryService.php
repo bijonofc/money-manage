@@ -38,7 +38,7 @@ class CategoryService
      */
     public static function seedDefaultCategoriesForUser(int $userId): int
     {
-        $existingCount = Category::where('tenant_id', $userId)->count();
+        $existingCount = Category::withoutGlobalScope('tenant')->where('tenant_id', $userId)->count();
         if ($existingCount > 0) {
             return 0;
         }
