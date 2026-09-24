@@ -7,8 +7,9 @@
                 :message="msgs"
                 back-route="/login"
                 @submit="handleSubmit"
-            />
-            <Turnstile ref="turnstile" :site-key="rootData.site_key" @verified="verifiedToken" />
+            >
+                <Turnstile ref="turnstile" :site-key="rootData.site_key" @verified="verifiedToken" />
+            </forget-password-fields>
         </div>
     </div>
 </template>

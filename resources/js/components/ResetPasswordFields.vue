@@ -6,7 +6,7 @@
                 </span>
     </div>
 
-    <Form @submit="onSubmit">
+    <Form @submit="onSubmit" class="d-flex flex-column gap-3">
         <InputField
             name="password"
             rules="required"
@@ -22,6 +22,8 @@
             type="password"
             v-model="password_confirmation"
         />
+
+        <slot />
 
         <div class="d-grid">
             <ab-button

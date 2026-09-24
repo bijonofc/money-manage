@@ -32,7 +32,9 @@
                     v-model:passwordConfirmation="passwordConfirmation"
                     :loading="loading"
                     @submit="handleRegister"
-                />
+                >
+                    <Turnstile ref="turnstile" :site-key="rootData.site_key" @verified="verifiedToken" />
+                </RegisterFields>
 
                 <div class="divider" v-translate>login.or</div>
 
@@ -45,8 +47,6 @@
                     </router-link>
                 </div>
             </div>
-
-            <Turnstile ref="turnstile" :site-key="rootData.site_key" @verified="verifiedToken" />
         </div>
     </div>
 </template>

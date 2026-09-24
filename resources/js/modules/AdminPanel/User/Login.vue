@@ -9,7 +9,9 @@
                 </span>
             </div>
             <ResponseMsg :message='msgs' />
-            <login-fields v-model:email="email" v-model:password="password" :next="next" :loading="loading" @submit="handleLogin"/>
+            <login-fields v-model:email="email" v-model:password="password" :next="next" :loading="loading" @submit="handleLogin">
+                <Turnstile ref="turnstile" :site-key="rootData.site_key" @verified="verifiedToken" />
+            </login-fields>
             <div class="divider" v-translate>login.or</div>
             <google-login-button :is-disabled="next=='gpt'" ref="g_login"  :client-id="rootData.gl_client_id" :callback="loginWithGoogle"/>
             <div class="d-flex justify-content-between align-items-center mt-4">
@@ -34,7 +36,6 @@
             @submitOtp="onSubmitOtp"
             @resend="resendOtp"
         />
-        <Turnstile ref="turnstile" :site-key="rootData.site_key" @verified="verifiedToken" />
     </div>
 
 </template>
@@ -273,6 +274,7 @@ const getChannelCountdown = (channel) => {
     width: 100%;
     overflow-y: auto;
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 2rem 1rem;

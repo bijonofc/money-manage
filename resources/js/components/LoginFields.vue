@@ -19,7 +19,9 @@
             v-model="password"
         />
 
-        <div class="d-flex justify-content-center pt-1 mb-1">
+        <slot />
+
+        <div class="d-flex justify-content-center">
             <ab-button
                 type="submit"
                 color="primary"

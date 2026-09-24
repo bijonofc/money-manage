@@ -11,7 +11,7 @@
 
     <ResponseMsg :message="message" />
 
-    <Form @submit="onSubmit">
+    <Form @submit="onSubmit" class="d-flex flex-column gap-3">
         <InputField
             name="email"
             rules="required|email"
@@ -20,7 +20,9 @@
             v-model="email"
         />
 
-        <div class="d-grid mb-3">
+        <slot />
+
+        <div class="d-grid">
             <ab-button
                 type="submit"
                 color="primary"

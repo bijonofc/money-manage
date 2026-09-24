@@ -2,13 +2,14 @@
     <div class="login-container">
         <div class="login-box">
             <ResponseMsg :message="msgs" />
-            <reset-password-fields v-model:password="password" v-model:password_confirmation="password_confirmation" :loading="loading" @submit="handleResetPassword"/>
+            <reset-password-fields v-model:password="password" v-model:password_confirmation="password_confirmation" :loading="loading" @submit="handleResetPassword">
+                <Turnstile ref="turnstile" :site-key="rootData.site_key" @verified="verifiedToken" />
+            </reset-password-fields>
             <div class="text-center mt-3">
                 <small>
                     <router-link to="/login" class="text-decoration-none" v-translate>login.signin</router-link>
                 </small>
             </div>
-            <Turnstile ref="turnstile" :site-key="rootData.site_key" @verified="verifiedToken" />
         </div>
     </div>
 </template>
